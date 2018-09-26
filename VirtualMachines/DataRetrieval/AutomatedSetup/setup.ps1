@@ -5,7 +5,7 @@ choco install 7zip.install -y
 choco install python -y
 #do path choco does path?
 choco install pip -y
-
+python -m pip install --upgrade pip
 #use pip(package manager) to install selenium
 python -m pip install selenium
 
@@ -19,13 +19,7 @@ New-Item -ItemType directory -force -Path C:\webdriver
 
 $sourceFile = "C:\chromedriver.zip"
 
-Add-Type -Assembly System.IO.Compression.FileSystem
-$zip = [IO.Compression.ZipFile]::OpenRead($sourceFile)
-$zip.Entries | where {$_.Name -like '*.update'} | foreach {[System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, "C:\webdriver\chromedriver.exe", $true)}
-$zip.Dispose()
-#$zip = [IO.Compression.ZipFile]::OpenRead("C:\chromedriver.zip")
-#$zip.Entries | where {$_.Name -like '*.update'} | foreach {[System.IO.Compression.ZipFileExtensions]::ExtractToFile(${C:\chromedriver.zip}, "C:\webdriver\chromedriver.exe", $true)}
-#$zip.Dispose()
+[System.IO.Compression.ZipFile]::ExtractToDirectory( $sourceFile, "C:\webdriver" )
  
 #do path for chromedriver
 SETX path $Env:Path';C:\webdriver' /m
