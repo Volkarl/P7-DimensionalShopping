@@ -1,7 +1,10 @@
 import time
 import sys
 from selenium import webdriver
-url = sys.argv[1]
+
+url=sys.argv[1]
+
+print(url)
 
 def valuta(x):
     return {
