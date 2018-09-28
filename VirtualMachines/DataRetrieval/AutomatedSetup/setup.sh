@@ -10,27 +10,21 @@ apt install python3.7 -y
 # apt does path?
 
 # use pip(package manager) to install selenium
-apt install python-pip
-
-pip install selenium
-
-SELENIUM_STANDALONE_VERSION=3.4.0
-SELENIUM_SUBDIR=$(echo "$SELENIUM_STANDALONE_VERSION" | cut -d"." -f-2)
-wget -N http://selenium-release.storage.googleapis.com/$SELENIUM_SUBDIR/selenium-server-standalone-$SELENIUM_STANDALONE_VERSION.jar -P ~/
-sudo mv -f ~/selenium-server-standalone-$SELENIUM_STANDALONE_VERSION.jar /usr/local/bin/selenium-server-standalone.jar
+apt install python3-pip -y
 
 #chrome
-curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
-echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-apt install google-chrome-stable -y
+python3 -m pip install selenium
 
+webLoc = /home/sw706e18/webdriver
 #chromedriver
-mkdir ~/webdriver
-wget -N http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip -P ~/
-unzip ~/chromedriver_linux64.zip -d ~/
-rm ~/chromedriver_linux64.zip
-sudo mv -f ~/chromedriver ~/webdriver
-#do path stuff
-sudo chown root:root ~/webdriver/chromedriver
-sudo chmod 0755 ~/webdriver/chromedriver
+mkdir $webLoc
+#wget -N http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip -P ~/
+wget https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-arm7hf.tar.gz -P $webLoc
+#unzip ~/chromedriver_linux64.zip -d ~/
+#rm ~/chromedriver_linux64.zip
+#sudo mv -f ~/chromedriver ~/webdriver
 
+#do path stuff
+export PATH=$PATH:$webLoc
+chown -R sw706e18:sw706e18 /home/sw706e18
+chmod +x /home/sw706e18/webdriver/chromedriver
