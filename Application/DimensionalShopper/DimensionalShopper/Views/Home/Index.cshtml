@@ -25,16 +25,17 @@
     </div>
 </div>
 
-
-<div class="row"> <h1 class="text-center">USA</h1>
-    <div class="col-md-3">
+<div class="row table-bordered"> <h1 class="text-center">USA</h1> 
+    <!-- no-gutters DOESN'T WORK. col style heigh: 300px DOES WORK, but is hardcoded. Also I feel like I shouldn't have to write table-bordered on every row, just the top one, since they inherit style, but that doesn't work-->
+    <div class="col-md-3 table-bordered">
         <h2>Windows 10</h2>
         <ul>
             <li>Sample pages using ASP.NET Core MVC</li>
             <li>OS: windows 10, hardware: blabla: no cookies, Pris  </li>
         </ul>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 table-bordered">
+        
         <h2>Denmark</h2>
         <ul>
             <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
@@ -44,7 +45,7 @@
             <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
         </ul>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 table-bordered">
         <h2>Overview</h2>
         <ul>
             <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
@@ -56,7 +57,7 @@
             <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
         </ul>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 table-bordered">
         <h2>Run &amp; Deploy</h2>
         <ul>
             <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
