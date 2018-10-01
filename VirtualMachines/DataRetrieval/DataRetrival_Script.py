@@ -16,7 +16,7 @@ def valuta(x):
 
 
 #set webdriver
-driver = webdriver.Chrome()  # Optional argument, if not specified will search path.
+driver = webdriver.Firefox()  # Optional argument, if not specified will search path.
 driver.get(url)
 #time.sleep(5) # Let the user actually see something! why no need for waiting for callback
 #price = driver.find_element_by_xpath('//*[@id="flightModuleList"]').text.split('\n')[0].split(' ')[10]
