@@ -1,0 +1,61 @@
+﻿
+@*@page
+@model DimensionalPriceRunner.Pages.Shared._LayoutModel*@
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@*<environment names="Development">
+    <script src=~"/dist/main.js"></script>
+</environment>*@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>5D-PriceRunner - @ViewData["Title"]</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/dist/styles.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/dist/styles.css" asp-append-version="true" />
+    </environment>
+</head>
+
+
+<body>
+   @await Html.PartialAsync("_Header")
+    
+    <main role="main" class="container">
+        <h2 class="mt-3 mb-3">@ViewData["Title"]</h2>
+        @RenderBody()
+    </main>
+    
+    <environment names="Development">
+        <script src="~/dist/main.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/dist/main.js" asp-append-version="true"></script>
+    </environment>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

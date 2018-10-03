@@ -1,0 +1,54 @@
+﻿@page
+@model DimensionalPriceRunner.Pages.indexModel
+@{
+    ViewData["Title"] = "index";
+}
+
+
+<html>
+<head>
+    <title>lul</title>
+    <link rel="stylesheet" type="text/css" href="~/dist/main.js" />
+</head>
+<body>
+    <environment names="Development">
+        <script src="~/dist/main.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/dist/main.js" asp-append-version="true"></script>
+    </environment>
+
+</body>
+</html>
+
+<h2>index</h2>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">memes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+
+        </tr>
+    </tbody>
+</table>
