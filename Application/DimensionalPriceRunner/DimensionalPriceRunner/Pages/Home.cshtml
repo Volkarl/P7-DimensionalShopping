@@ -1,0 +1,323 @@
+﻿@page
+@model DimensionalPriceRunner.Pages.HomeModel
+@*@{
+    ViewData["Title"] = "Home";
+}*@
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
+    <script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script>
+    <script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
+    <meta charset='UTF-8'>
+    <meta name="robots" content="noindex">
+    <link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+    <link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+    <link rel="canonical" href="https://codepen.io/shamim539/pen/OxPXdv?depth=everything&order=popularity&page=13&q=vue+js&show_forks=false" />
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'>
+    <style class="cp-pen-styles">
+        #carousel3d .carousel-3d-slide {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            text-align: center;
+            background-color: #fff;
+            padding: 10px;
+            -webkit-transition: all .4s;
+            transition: all .4s;
+        }
+
+            #carousel3d .carousel-3d-slide.current {
+                background-color: #333;
+                color: #fff;
+            }
+
+                #carousel3d .carousel-3d-slide.current span {
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+    </style>
+</head>
+
+
+
+
+
+<body>
+
+    <!-- Page Content -->
+    <div class="container">
+
+
+        <div class="container" style="margin-top: 1%;">
+            <div class="my-4">
+                <div class="row">
+                    <div id="logo" class="text-center">
+                        <h1>Insert Link</h1><p>Expedia Links Only</p>
+                    </div>
+                    <form role="form" id="form-buscar" style="width: 80%; margin-left: 10%">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="1" class="form-control" type="text" name="search" placeholder="Expedia url..." required />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-success" type="submit">
+                                        <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Page Heading -->
+        @*<h1 class="my-4; text-center">USA</h1>*@
+
+
+
+        <div>
+            <h1 class="my-4; text-center">USA</h1>
+
+            <div id="carousel3d">
+                <carousel-3d :perspective="0" :space="200" :display="5" :controls-visible="true" :controls-prev-html="'❬'" 
+                             :controls-next-html="'❭'" :controls-width="30" :controls-height="60" 
+                             :clickable="true" :autoplay="false" :autoplay-timeout="5000">
+
+                    <slide :index="0">
+                        <span class="title">Web Development</span>
+                        <a href="#">Click Here</a>
+                    </slide>
+                    <slide :index="1">
+                        <span class="title">Web Design</span>
+                        <a href="#">Click Here</a>
+                    </slide>
+                    <slide :index="2">
+                        <span class="title">You know</span>
+                        <a href="#">Click Here</a>
+                    </slide>
+                    <slide :index="3">
+                        <span class="title">You know</span>
+                        <a href="#">Click Here</a>
+                    </slide>
+                    <slide :index="4">
+                        <span class="title">You know</span>
+                        <a href="#">Click Here</a>
+                    </slide>
+
+
+
+                </carousel-3d>
+
+
+                </div>
+                <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.7/vue.js'></script>
+                <script src='https://rawgit.com/Wlada/vue-carousel-3d/master/dist/vue-carousel-3d.min.js'></script>
+                <script>
+                    new Vue({
+                        el: '#carousel3d',
+                        data: {
+                            slides: 7
+                        },
+                        components: {
+                            'carousel-3d': Carousel3d.Carousel3d,
+                            'slide': Carousel3d.Slide
+                        }
+                    })
+                                                                                                            //# sourceURL=pen.js
+                </script>
+            </div>
+
+
+
+
+
+
+
+            @*OLD*@
+            <div>
+
+
+                @*<div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <p href="#" style="background-color: mediumpurple; height: 20%; font-size: xx-large; padding-left: 25%">
+                                From
+                                <span style="color: ghostwhite; bor">40$</span>
+                                <a href="#" style="font-size: large; color: yellow;">Booking.com</a>
+
+                            </p>
+                            <div class="card-body">
+                                <h4 class="card-title" style="margin-top: -10%;">
+                                    <a href="#">Info</a>
+                                </h4>
+                                <p class="card-text">
+                                    Date: 5 Nov - 19 Nov
+                                    From: London, England - To: Denver, USA (tur-retur)
+                                    Time: 13:25 - 19:16 (1 mellemlanding)
+                                    Airline: American Airlines
+                                    Rating: 6,5/10
+                                    Internet, TV, EL
+                                    Class: Business
+                                    Blandede sæder/kabineklasser: Nej
+                                    Normal Pris: 32,551 dkk
+
+
+
+
+
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Project Two</a>
+                                </h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Project Three</a>
+                                </h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure perspiciatis mollitia recusandae vero vel quam!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Project Four</a>
+                                </h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Project Five</a>
+                                </h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Project Six</a>
+                                </h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates, nemo repellat fugiat excepturi! Nemo, esse.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Project Seven</a>
+                                </h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Project Eight</a>
+                                </h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius adipisci dicta dignissimos neque animi ea, veritatis, provident hic consequatur ut esse! Commodi ea consequatur accusantium, beatae qui deserunt tenetur ipsa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+                <!-- Pagination -->
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>*@
+
+                <!-- /.container -->
+            </div>
+
+
+
+
+
+
+            <!-- Footer -->
+            <footer class="py-5 bg-dark">
+                <div class="container">
+                    <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+                </div>
+                <!-- /.container -->
+            </footer>
+
+            <!-- Bootstrap core JavaScript -->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
