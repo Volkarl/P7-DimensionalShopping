@@ -7,7 +7,6 @@ def crawlUrl(driver, url):
 	tdl = tldextract.extract(url)
 	domain = tdl.domain
 	print(f'domain: {domain}')
-	driver.get(url)
 	if domain == 'expedia':
 		return crawlExpedia(driver, tdl.suffix)
 	elif domain == 'whatsmyua': 

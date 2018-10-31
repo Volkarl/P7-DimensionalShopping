@@ -25,6 +25,9 @@ if deleteCookies == "True" :
 #### Is this necessary? I feel like we're not using any cookies anyway, since we open a new chrome webdriver each request
 
 # Get website
+driver.get(url)
+
+# Crawl HTML of website
 result = crawlUrl(driver, url)
 print(result)
 
