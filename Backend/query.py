@@ -18,10 +18,13 @@ print(f'Configuring user agent: {userAgent}')
 options.add_argument(f'user-agent={userAgent}')
 
 # Initialize VPN Connection
-subprocess.check_call("./startVPN.sh %s %s" % (location, password)) #try shell=True if it doesnt work
+#subprocess.check_call("./startVPN.sh %s %s" % (location, password)) #try shell=True if it doesnt work
+def bashCommand(cmd):
+    subprocess.Popen(cmd, shell=True, executable='/bin/bash')
+bash_command(f'./startVPN.sh {location} {password}')
 
 # Initialize
-driver = webdriver.Firefox(options = options)  # Optional argument, if not specified it will search the path environment var
+driver = webdriver.Firefox(executable_path = 'home/sw706/webdriver/geckodriver', options = options)  # Optional argument, if not specified it will search the path environment var
 
 # Cookies
 if deleteCookies == "True" : 
@@ -38,3 +41,5 @@ print(result)
 
 # Terminate
 driver.quit()
+
+######## NEED TO TERMINATE THE VPN CONNECTION AS WELL!
