@@ -1,24 +1,29 @@
-import time, sys
+import sys, subprocess
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from switchUserAgent import getUserAgentString
 from crawler import crawlUrl
 
 url = sys.argv[1]
-print(url)
+requestedUserAgent = sys.argv[2]
+deleteCookies = sys.argv[3]
+location = sys.argv[4]
+password = sys.argv[5]
 
 # Options and user agent
 options = Options()
 options.headless = True
-userAgent = getUserAgentString(sys.argv[2])
+userAgent = getUserAgentString(requestedUserAgent)
 print(f'Configuring user agent: {userAgent}')
 options.add_argument(f'user-agent={userAgent}')
+
+# Initialize VPN Connection
+subprocess.check_call("./startVPN.sh %s %s" % (location, password)) #try shell=True if it doesnt work
 
 # Initialize
 driver = webdriver.Firefox(options = options)  # Optional argument, if not specified it will search the path environment var
 
 # Cookies
-deleteCookies = sys.argv[3]
 if deleteCookies == "True" : 
 	print("Deleting Cookies")
 	driver.delete_all_cookies()
