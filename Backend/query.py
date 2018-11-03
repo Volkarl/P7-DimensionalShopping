@@ -7,7 +7,7 @@ from crawler import crawlUrl
 url = sys.argv[1]
 requestedUserAgent = sys.argv[2]
 deleteCookies = sys.argv[3]
-location = sys.argv[4]
+location = sys.argv[4] # Location is found using this site: https://account.ipvanish.com/index.php?t=Server+List&page=1
 password = sys.argv[5]
 
 # Options and user agent
@@ -18,10 +18,10 @@ print(f'Configuring user agent: {userAgent}')
 options.add_argument(f'user-agent={userAgent}')
 
 # Initialize VPN Connection
-#subprocess.check_call("./startVPN.sh %s %s" % (location, password)) #try shell=True if it doesnt work
-def bashCommand(cmd):
-    subprocess.Popen(cmd, shell=True, executable='/bin/bash')
-bash_command(f'./startVPN.sh {location} {password}')
+def bashCall(cmd):
+    subprocess.call(cmd, shell=True)
+
+bashCall(f'./startVPN.exp {location} {password}')
 
 # Initialize
 driver = webdriver.Firefox(executable_path = 'home/sw706/webdriver/geckodriver', options = options)  # Optional argument, if not specified it will search the path environment var
@@ -40,6 +40,7 @@ result = crawlUrl(driver, url)
 print(result)
 
 # Terminate
+bashCall('/home/sw706/ipvanish/ipvanish-vpn-linux stop')
 driver.quit()
 
 ######## NEED TO TERMINATE THE VPN CONNECTION AS WELL!

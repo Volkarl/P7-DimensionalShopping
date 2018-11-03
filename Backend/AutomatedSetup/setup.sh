@@ -52,6 +52,8 @@ chmod +x ~/ipvanish/ipvanish-vpn-linux
 #pip install tldextract doesnt work for p3
 pip3 install tldextract
 
+# Install the expect interpreter, which allows us to automate the execution of the vpn connection script
+sudo apt-get install expect
 
 # BEFORE RUNNING THE BACKEND SCRIPT, RUN THIS: export PATH=$PATH:/home/sw706/webdriver #### REMEMBER ENV VAR
 # tHIS APPENDS MY WEBDRIVER PATH TO THE ENV VAR
