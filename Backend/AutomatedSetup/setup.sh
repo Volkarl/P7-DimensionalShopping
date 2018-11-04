@@ -23,9 +23,9 @@ pip3 install selenium
 # Get Firefox webdriver 
 webLoc='/home/sw706/webdriver' ######################## USE ENV VAR INSTEAD OF sw706
 mkdir -p $webLoc
-wget https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz
-tar -xzvf geckodriver-v0.22.0-linux64.tar.gz geckodriver
-rm geckodriver-v0.22.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
+tar -xzvf geckodriver-v0.23.0-linux64.tar.gz geckodriver
+rm geckodriver-v0.23.0-linux64.tar.gz
 mv geckodriver $webLoc
 
 chmod +x $webloc/geckodriver
@@ -64,7 +64,8 @@ pip3 install tldextract
 # Install the expect interpreter, which allows us to automate the execution of the vpn connection script
 sudo apt-get install expect
 
-# BEFORE RUNNING THE BACKEND SCRIPT, RUN THIS: export PATH=$PATH:/home/sw706/webdriver #### REMEMBER ENV VAR
-# tHIS APPENDS MY WEBDRIVER PATH TO THE ENV VAR
-######## FIND SOME WAY TO MAKE THIS PART OF THE ENV VARS PERMANENTLY
-# No longer necessary, probably
+# Ensures that this user (sw706) can use sudo without having to supply a password
+# This is needed because the query.py script calls a number of subshells, which 
+# need to be in sudo. The script itself cannot be run in sudo, otherwise the
+# webdriver won't work (running browsers in sudo is dangerous)
+echo "sw706 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
