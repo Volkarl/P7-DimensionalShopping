@@ -1,12 +1,8 @@
 #!/bin/bash
 
+# This script needs to be run with sudo
+
 # ---------------------------------------------------------------------------------------------------------
-# Python and package managers
-
-# Update apt (package manager)
-apt update
-apt install curl -y
-
 # Install python and pip (python package manager)
 apt install python3.7 -y
 apt install python3-pip -y
@@ -14,31 +10,60 @@ apt install python3-pip -y
 # ---------------------------------------------------------------------------------------------------------
 # Web driver
 
+# Install the most up-to-date version of firefox
+apt install firefox
+
 # Install selenium, necessary for automating webdriver
-python3 -m pip install selenium
+pip3 install selenium
 
 # Get Firefox webdriver 
-webLoc='/home/sw706e18/webdriver'
+webLoc='~/webdriver'
 mkdir -p $webLoc
-wget https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz
-tar -xzvf geckodriver-v0.22.0-linux64.tar.gz geckodriver
-rm geckodriver-v0.22.0-linux64.tar.gz
+wget "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz"
+tar -xzvf geckodriver-v0.23.0-linux64.tar.gz geckodriver
+rm geckodriver-v0.23.0-linux64.tar.gz
 mv geckodriver $webLoc
+chmod +x $webLoc/geckodriver
 
-chmod +x /home/sw706e18/webdriver/geckodriver
+# ---------------------------------------------------------------------------------------------------------
+# DNS Settings
+# The DNS's used to resolve any urls are written in the automatically generated file: /etc/resolv.conf
+# Here, we install the linux default program to controls what is written in that file
+# Then we add the Google public DNS servers to the configuration, ensuring that it is always present
+# in the /etc/resolv.conf file
+# If we didn't do this, we could not get access to any websites after connecting to our VPN service 
+
+apt install -y resolvconf
+echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/head
+echo "nameserver 8.8.4.4" >> /etc/resolvconf/resolv.conf.d/head
 
 # ---------------------------------------------------------------------------------------------------------
 # Install openVPN and set it up for use with IPVanish
-apt-get install -y openvpn 
-mkdir ~/ipvanish
+
+apt install -y openvpn
+vanishLoc='~/ipvanish'
+mkdir $vanishLoc
 
 # Download the provided IPVanish VPN connectivity script
-wget http://files.ipvanish.com/ipvanish-vpn-linux -P ~/ipvanish 
-# Assign executable permission
-chmod +x ~/ipvanish/ipvanish-vpn-linux
+wget "http://files.ipvanish.com/ipvanish-vpn-linux" -P $vanishLoc 
+chmod +x $vanishLoc/ipvanish-vpn-linux
 
 # ---------------------------------------------------------------------------------------------------------
-# Extra packages necessary for the backend script
-pip install tldextract
+# Extra packages and commands necessary to run the backend script
 
-# BEFORE RUNNING THE BACKEND SCRIPT, RUN THIS: export PATH=$PATH:/home/sw706e18/webdriver 
+backendLoc='~/P7-DimensionalShopping/Backend'
+# Assign execute permissions to the backend scripts
+chmod +x $backendLoc/query.py
+chmod +x $backendLoc/startVPN.exp
+
+# Install tldextract for analyzing URL
+pip3 install tldextract
+# Install the expect interpreter, which allows us to automate the execution of the vpn connection script
+apt install expect
+
+# Ensures that this user (sw706) can use sudo without having to supply a password
+# This is needed because the query.py script calls a number of subshells, which 
+# need to be in sudo. The script itself cannot be run in sudo, otherwise the
+# webdriver won't work (running browsers in sudo is dangerous)
+echo "$(logname) ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# logname gets the user who executed the command, regardless of whether it was executed with sudo or not
