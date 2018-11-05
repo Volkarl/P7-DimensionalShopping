@@ -8,8 +8,9 @@ from crawler import crawlUrl
 url = sys.argv[1]
 requestedUserAgent = sys.argv[2]
 deleteCookies = sys.argv[3]
-location = sys.argv[4] # Location is found using this site: https://account.ipvanish.com/index.php?t=Server+List&page=1
-password = sys.argv[5]
+location = sys.argv[4] # Valid locations are found using this site: https://account.ipvanish.com/index.php?t=Server+List&page=1
+ipvanishEmail = sys.argv[5]
+ipvanishPassword = sys.argv[6]
 
 def bashCall(cmdString):
     subprocess.call(cmdString, shell=True)
@@ -17,23 +18,12 @@ def bashCall(cmdString):
 def isUserRoot():
 	return os.geteuid() == 0
 
-#def runWithNonRoot(cmdLambda):
-#	pid = os.fork()
-#	if pid == 0:
-#		# We are now in the non-root sub-process
-#		try: 
-#			os.seteuid(1000) # 1000 is a non-root user
-#			cmdLambda()
-#		finally: 
-#			os._exit(0) # Terminate with exit code 0
-#	os.waitpid(pid, 0) # Wait for completion of process with pid 0
+if isUserRoot():
+    exit("Running with root privileges is not allowed. Exiting.")
+    # Root is not allowed when running browsers (risky)
+    # I couldn't downgrade privileges, so this was the best alternative
 
-if(isUserRoot):
-    os.seteuid(1000) 
-    # Set process user id to something other than root, because root is not allowed
-    # when running browsers (risky)
-
-# Options and user agent
+# Options and user agent string
 options = Options()
 options.headless = True
 userAgent = getUserAgentString(requestedUserAgent)
@@ -50,15 +40,15 @@ options.add_argument(f'user-agent={userAgent}')
 
 # Initialize VPN Connection
 # Calls an expect script with a bash subshell that enters our ipvanish user information whenever it is prompted
-bashCall(f'sudo ./startVPN.exp {location} {password}')
+bashCall(f'sudo ~/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword}')
 
 # Initialize
-driver = webdriver.Firefox(executable_path = '/home/sw706/webdriver/geckodriver', options = options)
+driver = webdriver.Firefox(executable_path = '~/webdriver/geckodriver', options = options)
 
 # Cookies
-#if deleteCookies == "True" : 
-#	print("Deleting Cookies")
-#	driver.delete_all_cookies()
+if deleteCookies: 
+	print("Deleting Cookies")
+	driver.delete_all_cookies()
 #### Is this necessary? I feel like we're not using any cookies anyway, since we open a new webdriver each request
 
 # Get website
@@ -69,5 +59,7 @@ result = crawlUrl(driver, url)
 print(result)
 
 # Terminate VPN connection and selenium session
-bashCall('sudo /home/sw706/ipvanish/ipvanish-vpn-linux stop')
+bashCall('sudo ~/ipvanish/ipvanish-vpn-linux stop')
 driver.quit()
+
+## Perhaps add graceful termination with try-catch that calls my terminate commands

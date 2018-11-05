@@ -1,12 +1,13 @@
 #!/usr/bin/expect
 
 set serverName [lindex $argv 0];
-set password [lindex $argv 1];
+set email [lindex $argv 1];
+set password [lindex $argv 2];
 
-spawn /home/sw706/ipvanish/ipvanish-vpn-linux start
+spawn ~/ipvanish/ipvanish-vpn-linux start
 # Quotes are not allowed around the command passed into spawn: otherwise it would be looking for a script named "ipvanish-vpn-linux start" instead of just "ipvanish-vpn-linux"
 expect "Enter your IPVanish username: "
-send "thinhar2@gmail.com\n"
+send "$email\n"
 expect "Enter your IPVanish password: "
 send "$password\n"
 expect "Enter VPN server name: "

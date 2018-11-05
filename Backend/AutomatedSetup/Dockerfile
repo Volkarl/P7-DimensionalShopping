@@ -2,25 +2,15 @@ FROM library/ubuntu
 # Base image from hub.docker.com
 
 RUN apt update
+# Update package manager
+
 RUN apt-get install git
-WORKDIR /home
+
+WORKDIR ~
+# Set workdir to /home/USER 
+
 RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git"
-WORKDIR /P7-DimensionalShopping/Backend
-RUN chmod +x query.py
-RUN chmod +x /AutomatedSetup/setup.sh
-RUN ./AutomatedSetup/setup.sh
+RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
+RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 
 ### WHAT ABOUT SUDO? THESE THINGS NEED TO BE RUN WITH SUDO?
-
-
-### Is sudo necessary?
-# Update apt (package manager)
-# apt update
-# apt-get install git
-# cd /home
-# git clone https://github.com/Volkarl/P7-DimensionalShopping.git
-# cd /P7-DimensionalShopping/Backend
-# chmod +x query.py
-# chmod +x /AutomatedSetup/setup.sh
-# (SUDO???) ./AutomatedSetup/setup.sh
-
