@@ -4,7 +4,7 @@
 # Python and package managers
 
 # ??? DO WE EVEN NEED THIS?
-apt install curl -y
+#apt install curl -y
 
 # Install python and pip (python package manager)
 apt install python3.7 -y
@@ -21,14 +21,13 @@ sudo apt-get install firefox
 pip3 install selenium
 
 # Get Firefox webdriver 
-webLoc='/home/sw706/webdriver' ######################## USE ENV VAR INSTEAD OF sw706
+webLoc='~/webdriver'
 mkdir -p $webLoc
 wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
 tar -xzvf geckodriver-v0.23.0-linux64.tar.gz geckodriver
 rm geckodriver-v0.23.0-linux64.tar.gz
 mv geckodriver $webLoc
-
-chmod +x $webloc/geckodriver
+chmod +x $webLoc/geckodriver
 
 # ---------------------------------------------------------------------------------------------------------
 # The DNS's used to resolve any urls are written in the automatically generated file: /etc/resolv.conf
@@ -45,22 +44,23 @@ echo "nameserver 8.8.4.4" >> /etc/resolvconf/resolv.conf.d/head
 
 # ---------------------------------------------------------------------------------------------------------
 # Install openVPN and set it up for use with IPVanish
-apt-get install -y openvpn 
-mkdir ~/ipvanish
 
+apt-get install -y openvpn
+vanishLoc='~/ipvanish'
+mkdir $vanishLoc
 # Download the provided IPVanish VPN connectivity script
-wget http://files.ipvanish.com/ipvanish-vpn-linux -P ~/ipvanish 
-# Assign executable permission
-chmod +x ~/ipvanish/ipvanish-vpn-linux
+wget http://files.ipvanish.com/ipvanish-vpn-linux -P $vanishLoc 
+chmod +x $vanishLoc/ipvanish-vpn-linux
 
 # ---------------------------------------------------------------------------------------------------------
-# Extra packages necessary for the backend script
+# Extra packages and commands necessary to run the backend script
 
-chmod +x startVPN.sh
+# Assign execute permissions to the scripts
+chmod +x query.py
+chmod +x startVPN.exp
 
-# Install tldextract module for Python3
+# Install tldextract for analyzing URL
 pip3 install tldextract
-
 # Install the expect interpreter, which allows us to automate the execution of the vpn connection script
 sudo apt-get install expect
 

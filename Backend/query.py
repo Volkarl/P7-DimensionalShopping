@@ -40,7 +40,6 @@ userAgent = getUserAgentString(requestedUserAgent)
 print(f'Configuring user agent: {userAgent}')
 options.add_argument(f'user-agent={userAgent}')
 
-
 # There is no logging for the openVPN opening the VPN connection. The way it can be done is running adding the command: 
 # 'echo "log /home/sw706/ipvanish/openvpn.log" >> /home/sw706/ipvanish/openvpn.conf' after the "ipvanish-linux" script
 # has run at least once (this is the script that is run within "startVPN.exp") and then only initializing the VPN 
