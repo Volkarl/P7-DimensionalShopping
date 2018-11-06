@@ -18,8 +18,12 @@ RUN useradd -m $username
 RUN apt-get update -y
 # Update package manager
 
-RUN apt-get install apt-utils -y 
+RUN apt-get install -y apt-utils debconf-utils dialog 
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && echo 'resolvconf resolvconf/linkify-resolvconf boolean false' | debconf-set-selections
 # Install utility for reconfiguring missed options (mostly to avoid warnings during installation)
+
+# RUN apt-get update -y
+# RUN apt-get install -y resolvconf
 
 RUN apt-get install tzdata -y
 # Install time zone package, which manages our time zone information, which is a dependency for 
