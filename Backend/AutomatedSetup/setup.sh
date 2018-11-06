@@ -2,7 +2,7 @@
 
 # This script needs to be run with sudo
 
-user=$1
+username=$1
 
 # ---------------------------------------------------------------------------------------------------------
 # Install python and pip (python package manager)
@@ -67,5 +67,4 @@ apt-get install expect -y
 # This is needed because the query.py script calls a number of subshells, which 
 # need to be in sudo. The script itself cannot be run in sudo, otherwise the
 # webdriver won't work (running browsers in sudo is dangerous)
-echo "$user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-# logname gets the user who executed the command, regardless of whether it was executed with sudo or not
+echo "$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers

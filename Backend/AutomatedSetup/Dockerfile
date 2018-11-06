@@ -8,8 +8,6 @@ ARG username=sw706
 RUN useradd -m $username
 # Add user and create home directory
 
-USER $username
-
 # -------------------------------------------------------------------
 
 RUN apt-get update -y
@@ -19,8 +17,7 @@ RUN apt-get update -y
 
 RUN apt-get install git -y
 
-WORKDIR $HOME
-# Set workdir to /home/$username 
+WORKDIR /home/$username
 
 RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git"
 RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
