@@ -52,6 +52,11 @@ mkdir $vanishLoc
 wget "http://files.ipvanish.com/ipvanish-vpn-linux" -P $vanishLoc 
 chmod +x $vanishLoc/ipvanish-vpn-linux
 
+# These are needed for the ipvanish-vpn-linux script to run
+apt-get install sudo -y
+apt-get install iputils-ping -y
+apt-get install host -y
+
 # ---------------------------------------------------------------------------------------------------------
 # Extra packages and commands necessary to run the backend script
 
@@ -70,3 +75,6 @@ apt-get install expect -y
 # need to be in sudo. The script itself cannot be run in sudo, otherwise the
 # webdriver won't work (running browsers in sudo is dangerous)
 echo "$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+##### REEEEEEEEEEEEEEEEEEEEEEEEEEee
+########## ENSURE THIS ONE IS ACTUALLY RUN, BECAUSE IT WASNT FIRST I TESTED
