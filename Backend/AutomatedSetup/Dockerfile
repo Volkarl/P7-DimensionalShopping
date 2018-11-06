@@ -6,6 +6,8 @@ FROM library/ubuntu
 # Default user is root
 
 ARG username=sw706
+ARG DEBIAN_FRONTEND=noninteractive
+# This makes a number of warnings go away
 
 RUN useradd -m $username
 # Add user and create home directory
