@@ -260,3 +260,13 @@ paket-files/
 __pycache__/
 *.pyc
 Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/main\.js
+
+Application/BuildScripts/package-lock\.json
+
+Application/BuildScripts/package\.json
+
+Application/DimensionalPriceRunner/DimensionalPriceRunner/ClientApp/package-lock\.json
+
+Application/DimensionalPriceRunner/DimensionalPriceRunner/ClientApp/package\.json
+
+package-lock\.json
