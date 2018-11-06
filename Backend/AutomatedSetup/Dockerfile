@@ -11,12 +11,18 @@ RUN useradd -m $username
 # Add user and create home directory
 
 # -------------------------------------------------------------------
+# Package manager and things that really should be installed by default in Ubuntu
 
 RUN apt-get update -y
 # Update package manager
 
+RUN apt-get install apt-utils -y 
+# Install utility for reconfiguring missed options (mostly to avoid warnings during installation)
+
 RUN apt-get install tzdata -y
-# Install time zone package
+# Install time zone package, which manages our time zone information, which is a dependency for 
+# other packages. This is installed here to avoid the problem of future apt-get commands 
+# installing this package and prompting us for user input
 
 # -------------------------------------------------------------------
 
