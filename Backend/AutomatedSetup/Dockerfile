@@ -15,6 +15,9 @@ RUN useradd -m $username
 RUN apt-get update -y
 # Update package manager
 
+RUN apt-get install tzdata -y
+# Install time zone package
+
 # -------------------------------------------------------------------
 
 RUN apt-get install git -y
