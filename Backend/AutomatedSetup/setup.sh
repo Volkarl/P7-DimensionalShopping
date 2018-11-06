@@ -6,6 +6,8 @@ username=$1
 
 # ---------------------------------------------------------------------------------------------------------
 # Install python and pip (python package manager)
+apt-get install wget -y
+
 apt-get install python3.7 -y
 apt-get install python3-pip -y
 
