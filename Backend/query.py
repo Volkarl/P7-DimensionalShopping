@@ -11,6 +11,7 @@ deleteCookies = sys.argv[3]
 location = sys.argv[4] # Valid locations are found using this site: https://account.ipvanish.com/index.php?t=Server+List&page=1
 ipvanishEmail = sys.argv[5]
 ipvanishPassword = sys.argv[6]
+pcUsername = sys.argv[7]
 
 def bashCall(cmdString):
     subprocess.call(cmdString, shell=True)
@@ -39,11 +40,13 @@ options.add_argument(f'user-agent={userAgent}')
 # openvpn. This makes it so we cannot see the reason the VPN connection fails (for instance with mistyped IP).
 
 # Initialize VPN Connection
+homeDir = f'/home/{pcUsername}'
+
 # Calls an expect script with a bash subshell that enters our ipvanish user information whenever it is prompted
-bashCall(f'sudo ~/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword}')
+bashCall(f'sudo {homeDir}/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword}')
 
 # Initialize
-driver = webdriver.Firefox(executable_path = '~/webdriver/geckodriver', options = options)
+driver = webdriver.Firefox(executable_path = f'{homeDir}/webdriver/geckodriver', options = options)
 
 # Cookies
 if deleteCookies: 
