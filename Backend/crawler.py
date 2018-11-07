@@ -11,17 +11,17 @@ def crawlUrl(driver, url):
 		return crawlExpedia(driver, tdl.suffix)
 	elif domain == 'whatsmyua': 
 		return crawlUserAgent(driver)
-	elif domain == 'purevpn':
+	elif domain == 'whatismycountry':
 		return crawlLocation(driver)
 	else: 
 		return ""
 
 # -----------------------------------------------------------------------------------------------------
-# Requires website: https://www.purevpn.com/what-is-my-ip
+# Requires website: https://whatismycountry.com
 # The website shows our location
 
 def crawlLocation(driver):
-	return getElementText(driver, '//*[@id="ip-map-banner-box-location"]')
+	return getElementText(driver, '/html/body/div[2]/div[1]/div/div/div/div/div[1]/div/div/h2')
 
 # -----------------------------------------------------------------------------------------------------
 # Requires website: https://www.whatsmyua.info 
