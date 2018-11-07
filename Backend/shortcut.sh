@@ -2,4 +2,4 @@
 
 ipvanishPassword=$1
 
-./query.py "https://bearsmyip.com" "PcWindowsChrome" True "jnb-c01.ipvanish.com" "thinhar2@gmail.com" ipvanishPassword "sw706"
+/home/sw706/P7-DimensionalShopping/Backend/query.py "https://bearsmyip.com" "PcWindowsChrome" True "jnb-c01.ipvanish.com" "thinhar2@gmail.com" ipvanishPassword "sw706"
