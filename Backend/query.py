@@ -62,7 +62,7 @@ result = crawlUrl(driver, url)
 print(result)
 
 # Terminate VPN connection and selenium session
-bashCall('sudo ~/ipvanish/ipvanish-vpn-linux stop')
+bashCall(f'sudo {homeDir}/ipvanish/ipvanish-vpn-linux stop')
 driver.quit()
 
 ## Perhaps add graceful termination with try-catch that calls my terminate commands
