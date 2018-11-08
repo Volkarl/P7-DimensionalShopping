@@ -20,6 +20,8 @@ def isUserRoot():
 	return os.geteuid() == 0
 
 if isUserRoot():
+	# bashCall(f'sudo -su {pcUsername} query.py {url} {requestedUserAgent} {deleteCookies} {location} {ipvanishEmail} {ipvanishPassword} {pcUsername}')
+    # The above bashCall may be a solution, but, whatever: just don't run it with root to begin with
     exit("Running with root privileges is not allowed. Exiting.")
     # Root is not allowed when running browsers (risky)
     # I couldn't downgrade privileges, so this was the best alternative
@@ -39,11 +41,12 @@ options.add_argument(f'user-agent={userAgent}')
 # openvpn every time it is run (one that doesn't mention logging) and then also initializes the connection through
 # openvpn. This makes it so we cannot see the reason the VPN connection fails (for instance with mistyped IP).
 
-# Initialize VPN Connection
 homeDir = f'/home/{pcUsername}'
+# We use full path to ensure the files can be found where we expect
 
+# Initialize VPN Connection
 # Calls an expect script with a bash subshell that enters our ipvanish user information whenever it is prompted
-bashCall(f'sudo {homeDir}/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword}')
+bashCall(f'sudo {homeDir}/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword} {homeDir}')
 
 # Initialize
 driver = webdriver.Firefox(executable_path = f'{homeDir}/webdriver/geckodriver', options = options)
