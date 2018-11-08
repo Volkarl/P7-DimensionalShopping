@@ -39,6 +39,3 @@ WORKDIR /home/$username
 RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping && git checkout dockerfile-backend
 RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh $username
-
-RUN mkdir /dev/net
-RUN mknod /dev/net/tun c 10 200
