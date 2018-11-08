@@ -9,11 +9,8 @@
         _self = this;
         var xhrFile = new XMLHttpRequest();
         //Load content data 
-        //Has the format:XMLHttpRequest.open(method, url)
-        //               XMLHttpRequest.open(method, url, async)
-        //               XMLHttpRequest.open(method, url, async, user)
-        //               XMLHttpRequest.open(method, url, async, user, password)
-        xhrFile.open("GET", "./ClientApp/language/" + this.lang + ".json", false);// not sure if it slashes should be backslaches. 
+        //Has the format: XMLHttpRequest.open(method, url, async)
+        xhrFile.open("GET", "/ClientApp/language/" + this.lang + ".json", false);// not sure if it slashes should be backslaches. 
         xhrFile.onreadystatechange = function () {
             // 4 is the flag that signals that the operation is complete. 
             //Does not say if it was a  success or failed
@@ -38,6 +35,6 @@
                 }
             }
         }
-        xrhFile.send();
+        xhrFile.send();
     }
 }
