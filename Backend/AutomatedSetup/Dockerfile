@@ -21,8 +21,8 @@ ENTRYPOINT ["/dockerEntrypoint.sh"]
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
 # Entrypoint executes the commands as the container is started
 # Otherwise these changes to root directory would be lost within an intermediate container layer
-
-
+CMD [$username]
+# Passes the username to the entrypoint script
 
 
 
