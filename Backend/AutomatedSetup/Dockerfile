@@ -14,9 +14,9 @@ RUN useradd -m $username
 # -------------------------------------------------------------------
 # Network device
 
-COPY dockerEntrypoint.sh /home/$username
+COPY ./dockerEntrypoint.sh /
 
-ENTRYPOINT ["/home/$username/dockerEntrypoint.sh"]
+ENTRYPOINT ["/dockerEntrypoint.sh"]
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
 # Entrypoint executes the commands as the container is started
