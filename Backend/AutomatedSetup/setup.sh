@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# This script needs to be run with sudo
-
+# This script needs to be run with root priveleges
 username=$1
 
 # ---------------------------------------------------------------------------------------------------------

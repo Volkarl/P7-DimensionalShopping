@@ -34,10 +34,15 @@ RUN apt-get install git -y
 WORKDIR /home/$username
 RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping && git checkout dockerfile-backend
 RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
+
 RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh $username
+# Run setup script to install all remaining necessary dependecies
+# WHY CANT WE DO IT HERE
 
 # -------------------------------------------------------------------
 # Network device
+
+COPY dockerEntrypoint.sh .
 
 ENTRYPOINT ["dockerEntrypoint.sh"]
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
