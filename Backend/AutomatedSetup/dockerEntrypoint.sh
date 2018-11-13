@@ -4,5 +4,5 @@
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
 sudo mkdir -p /dev/net 
 sudo mknod /dev/net/tun c 10 200
-sudp chmod 666 /dev/net/tun
+sudo chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
