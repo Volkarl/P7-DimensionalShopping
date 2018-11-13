@@ -16,15 +16,13 @@ RUN useradd -m $username
 
 COPY ./dockerEntrypoint.sh /
 RUN chmod +x /dockerEntrypoint.sh
-ENTRYPOINT ["/dockerEntrypoint.sh"]
+ENTRYPOINT /dockerEntrypoint.sh $username
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
 # Entrypoint executes the commands as the container is started
 # Otherwise these changes to root directory would be lost within an intermediate container layer
-CMD [$username]
-# Passes the username to the entrypoint script
 
-
+# We are using the shell form of entrypoint, as it allows us to pass the username environment variable as input
 
 
 # -------------------------------------------------------------------
