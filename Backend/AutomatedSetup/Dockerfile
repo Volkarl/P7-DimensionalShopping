@@ -12,6 +12,22 @@ RUN useradd -m $username
 # Add user and corresponding home directory
 
 # -------------------------------------------------------------------
+# Network device
+
+COPY dockerEntrypoint.sh /home/$username
+
+ENTRYPOINT ["/home/$username/dockerEntrypoint.sh"]
+# Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
+# See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
+# Entrypoint executes the commands as the container is started
+# Otherwise these changes to root directory would be lost within an intermediate container layer
+
+
+
+
+
+
+# -------------------------------------------------------------------
 
 # Package manager and things that really should be installed by default in Ubuntu
 
@@ -38,14 +54,3 @@ RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh $username
 # Run setup script to install all remaining necessary dependecies
 # WHY CANT WE DO IT HERE
-
-# -------------------------------------------------------------------
-# Network device
-
-COPY dockerEntrypoint.sh .
-
-ENTRYPOINT ["dockerEntrypoint.sh"]
-# Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
-# See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
-# Entrypoint executes the commands as the container is started
-# Otherwise these changes to root directory would be lost within an intermediate container layer
