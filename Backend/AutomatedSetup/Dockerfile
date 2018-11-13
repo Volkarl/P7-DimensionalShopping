@@ -18,6 +18,7 @@ RUN useradd -m $username
 RUN mkdir -p /dev/net && mknod /dev/net/tun c 10 200 > /dev/null 2>&1 && chmod 666 /dev/net/tun
 # Mknod has its stdout and stderr piped to /dev/null, so it won't terminate if the file already exist
 # Then changes permissions to allow all users to read and write (not execute)
+RUN ls /dev && ls /dev/net
 
 # -------------------------------------------------------------------
 # Package manager and things that really should be installed by default in Ubuntu
