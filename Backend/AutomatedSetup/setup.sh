@@ -60,7 +60,7 @@ apt-get install host -y
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
 mkdir -p /dev/net
-mknod /dev/net/tun c 10 200 > /dev/null 2>&1
+mknod /dev/net/tun c 10 200 #> /dev/null 2>&1
 # Both have their stdout and stderr piped to /dev/null, if they fail because the files already exist
 # (Which they do, unless the OS is a minimal Ubuntu installation)
 chmod 666 /dev/net/tun
