@@ -13,6 +13,7 @@ RUN useradd -m $username
 
 # -------------------------------------------------------------------
 
+VOLUME /dev
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
 RUN mkdir -p /dev/net && mknod /dev/net/tun c 10 200 > /dev/null 2>&1 && chmod 666 /dev/net/tun && ls /dev && ls /dev/net
