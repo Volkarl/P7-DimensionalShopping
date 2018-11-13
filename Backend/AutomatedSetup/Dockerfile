@@ -13,15 +13,6 @@ RUN useradd -m $username
 
 # -------------------------------------------------------------------
 
-VOLUME /dev
-# Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
-# See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
-RUN mkdir -p /dev/net && mknod /dev/net/tun c 10 200 > /dev/null 2>&1 && chmod 666 /dev/net/tun && ls /dev && ls /dev/net
-# Mknod has its stdout and stderr piped to /dev/null, so it won't terminate if the file already exist
-# Then changes permissions to allow all users to read and write (not execute)
-RUN ls /dev && ls /dev/net
-
-# -------------------------------------------------------------------
 # Package manager and things that really should be installed by default in Ubuntu
 
 RUN apt-get update -y
@@ -44,3 +35,12 @@ WORKDIR /home/$username
 RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping && git checkout dockerfile-backend
 RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh $username
+
+# -------------------------------------------------------------------
+# Network device
+
+ENTRYPOINT ["dockerEntrypoint.sh"]
+# Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
+# See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
+# Entrypoint executes the commands as the container is started
+# Otherwise these changes to root directory would be lost within an intermediate container layer

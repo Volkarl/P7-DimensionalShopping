@@ -75,6 +75,3 @@ apt-get install expect -y
 # need to be in sudo. The script itself cannot be run in sudo, otherwise the
 # webdriver won't work (running browsers in sudo is dangerous)
 echo "$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-##### REEEEEEEEEEEEEEEEEEEEEEEEEEee
-########## ENSURE THIS ONE IS ACTUALLY RUN, BECAUSE IT WASNT FIRST I TESTED
