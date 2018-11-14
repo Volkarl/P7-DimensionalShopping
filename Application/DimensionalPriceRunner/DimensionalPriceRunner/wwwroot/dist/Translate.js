@@ -21,9 +21,10 @@
                 if (xhrFile.status === 200 || xhrFile.status == 0) {
                     var LangObject = JSON.parse(xhrFile.responseText);
                     console.log(LangObject["name1"]);// can be deleted
-                    var allDom = document.getElementsByTagName("*");
-                    for (var i = 0; i < allDom.length; i++) {
-                        var elem = allDom[i];
+                    // finds all elements with a specific tag
+                    var elementsfromtag = document.getElementsByTagName("*");
+                    for (var i = 0; i < elementsfromtag.length; i++) {
+                        var elem = elementsfromtag[i];
                         var key = elem.getAttribute(_self.attribute);
 
                         if (key != null) {
