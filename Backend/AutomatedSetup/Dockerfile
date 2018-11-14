@@ -12,18 +12,14 @@ RUN useradd -m $username
 # Add user and corresponding home directory
 
 # -------------------------------------------------------------------
-# Network device
+# Entrypoint script
 
 COPY ./dockerEntrypoint.sh /
+# Copies entrypoint script from the /P7-DimensionalShopping/Backend/AutomatedSetup directory into the root of the container
 RUN chmod +x /dockerEntrypoint.sh
-ENTRYPOINT /dockerEntrypoint.sh $username
-# Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
-# See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
+ENTRYPOINT /dockerEntrypoint.sh
 # Entrypoint executes the commands as the container is started
-# Otherwise these changes to root directory would be lost within an intermediate container layer
-
-# We are using the shell form of entrypoint, as it allows us to pass the username environment variable as input
-
+# We are currently using the shell form of entrypoint, but the exec form should also be usable
 
 # -------------------------------------------------------------------
 
@@ -51,4 +47,5 @@ RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 
 RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh $username
 # Run setup script to install all remaining necessary dependecies
-# WHY CANT WE DO IT HERE
+# The dependencies in this script are required to get the scripts to work on a "real" virtual machine, whereas the steps in 
+# this dockerfile are required to get it to work on a docker container
