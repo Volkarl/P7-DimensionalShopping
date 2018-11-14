@@ -4,9 +4,9 @@
   "flighturl": "Flight url",
   "information": "Information",
   "language": "Language",
-  "price": "Price",
+  "price": "Price:",
   "bestprice": "Best price",
   "vpnlocation": "VPN Location",
-  "os": "OS",
-  "help": "Help" 
+  "os": "Operating system:",
+  "help": "Help"
 }

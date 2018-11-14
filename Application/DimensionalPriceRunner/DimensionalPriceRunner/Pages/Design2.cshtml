@@ -6,19 +6,19 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<script src="C:\Users\nicks\Documents\github\P7-DimensionalShopping\Application\DimensionalPriceRunner\DimensionalPriceRunner\ClientApp\js\Translate.js"></script>
-<script>
-    function load(){
-        var translate = new Translate();
-        var currentLng = 'Danish';
-        var attributeName = 'data-tag';
-        translate.init(attributeName, currentLng);
-        translate.process(); 
-    }
-</script>
+
 <!-- Page Head -->
 <head>
-
+    <script src="dist\Translate.js"></script>
+    <script>
+        function load(){
+            var translate = new Translate();
+            var currentLng = 'Danish';
+            var attributeName = 'data-tag';
+            translate.init(attributeName, currentLng);
+            translate.process(); 
+        }
+    </script>
     @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
@@ -80,7 +80,8 @@
             <div class="my-4">
                 <div class="row">
                     <div id="logo" class="text-center">
-                        <h1>5D-PriceRunner</h1><p>Flight Links Only</p>
+                        <h1>5D-PriceRunner</h1><p><label data-tag="flighturl">
+                        </label></p>
                     </div>
                     <form role="form" id="form-buscar" style="width: 80%; margin-left: 10%">
                         <div class="form-group">
@@ -88,7 +89,7 @@
                                 <input id="1" class="form-control" data-tag="flighturl" type="text" name="search" placeholder="Flight url..." required />
                                 <span class="input-group-btn">
                                     <button class="btn btn-success" type="submit">
-                                        <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                                        <i class="glyphicon glyphicon-search" aria-hidden="true"></i> <label data-tag="search"></label>
                                     </button>
                                 </span>
                             </div>
@@ -110,8 +111,9 @@
                     <slide :index="2">
                         <img class="centered" style="opacity: 0.7; z-index: -1; max-height: 50%; max-width: 75%" src="https://www.foresightfactory.co/wp-content/uploads/2018/03/logo-british-airways.png" alt="Alternate Text" />
                         <div class="top-centered">
-                            <span>OS: <span class="font-weight-bold">Linux</span> <br></span>
-                            <span data-tag="price">Price: <span class="font-weight-bold">2643,75 DDK</span> </span>
+                            <span><label data-tag="os"></label> <span class="font-weight-bold">Linux</span> <br></span>
+                            <span ><label data-tag="price"> 
+                            </label> <span class="font-weight-bold">2643,75 DDK</span> </span>
                         </div>
                         <div class="bottom-centered">
                             <button type="button" class="btn btn-large btn-warning" data-tag="information" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
@@ -121,22 +123,23 @@
                     <slide :index="1">
                         <img class="centered" style="opacity: 0.7; z-index: -1; max-height: 50%; max-width: 75%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png" alt="Alternate Text" />
                         <div class="top-centered">
-                            <span>OS: <span class="font-weight-bold">iOS</span> <br></span>
-                            <span data-tag="price">Price: <span class="font-weight-bold">2563,50 DDK</span> </span>
+                            <span><label data-tag="os"> 
+                                </label>  <span class="font-weight-bold">iOS</span> <br></span>
+                            <span><label data-tag="price"></label> <span class="font-weight-bold">2563,50 DDK</span> </span>
                         </div>
                         <div class="container; bottom-centered">
-                            <button type="button" class="btn btn-large btn-warning" data-tag="information" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
+                            <button type="button" class="btn btn-large btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
                         </div>
                     </slide>
 
                     <slide :index="0">
                         <div class="top-left" style="top: -4px; left: 0px">
-                            <span class="table-bordered" style="background-color:yellow">Best Price</span>
+                            <span class="table-bordered" style="background-color:yellow"><label data-tag="bestprice"></label></span>
                         </div>
                         <img class="centered" style="opacity: 0.7; z-index: -1; max-height: 50%; max-width: 75%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png" alt="Alternate Text" />
                         <div class="top-centered">
-                            <span>OS: <span class="font-weight-bold">Windows</span> <br></span>
-                            <span data-tag="price">Price: <span class="font-weight-bold">2527,50 DDK</span> </span>
+                            <span><label data-tag="os"></label><span class="font-weight-bold">Windows</span> <br></span>
+                            <span><label data-tag="price"></label> <span class="font-weight-bold">2527,50 DDK</span> </span>
                         </div>
                         <div class="container; bottom-centered">
                             <button type="button" class="btn btn-large btn-warning" data-tag="information" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
@@ -156,19 +159,19 @@
                     <slide :index="2">
                         <img class="centered" style="opacity: 0.7; z-index: -1; max-height: 50%; max-width: 75%" src="https://www.foresightfactory.co/wp-content/uploads/2018/03/logo-british-airways.png" alt="Alternate Text" />
                         <div class="top-centered">
-                            <span>OS: <span class="font-weight-bold">Linux</span> <br></span>
-                            <span data-tag="price">Price: <span class="font-weight-bold">2643,75 DDK</span> </span>
+                            <span><label data-tag="os"></label> <span class="font-weight-bold">Linux</span> <br></span>
+                            <span ><label data-tag="price"></label> <span class="font-weight-bold">2643,75 DDK</span> </span>
                         </div>
                         <div class="container; bottom-centered">
-                            <button type="button" class="btn btn-large btn-warning" data-tag="information" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
+                            <button type="button" class="btn btn-large btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
                         </div>
                     </slide>
 
                     <slide :index="1">
                         <img class="centered" style="opacity: 0.7; z-index: -1; max-height: 50%; max-width: 75%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png" alt="Alternate Text" />
                         <div class="top-centered">
-                            <span>OS: <span class="font-weight-bold">iOS</span> <br></span>
-                            <span data-tag="price">Price: <span class="font-weight-bold">2563,50 DDK</span> </span>
+                            <span><label data-tag="os"></label> <span class="font-weight-bold">iOS</span> <br></span>
+                            <span><label data-tag="price"></label> <span class="font-weight-bold">2563,50 DDK</span> </span>
                         </div>
                         <div class="container; bottom-centered">
                             <button type="button" class="btn btn-large btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
@@ -177,12 +180,12 @@
 
                     <slide :index="0">
                         <div class="top-left" style="top: -4px; left: 0px">
-                            <span class="table-bordered" style="background-color:yellow">Best Price</span>
+                            <span class="table-bordered" style="background-color:yellow"><label data-tag="bestprice"></label></span>
                         </div>
                         <img class="centered" style="opacity: 0.7; z-index: -1; max-height: 50%; max-width: 75%" src="https://www.foresightfactory.co/wp-content/uploads/2018/03/logo-british-airways.png" alt="Alternate Text" />
                         <div class="top-centered">
-                            <span>OS: <span class="font-weight-bold">Windows</span> <br></span>
-                            <span data-tag="price">Price: <span class="font-weight-bold">2543,75 DDK</span> </span>
+                            <span><label data-tag="os"></label> <span class="font-weight-bold">Windows</span> <br></span>
+                            <span><label data-tag="price"></label> <span class="font-weight-bold">2543,75 DDK</span> </span>
                         </div>
                         <div class="container; bottom-centered">
                             <button type="button" class="btn btn-large btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Information</button>
