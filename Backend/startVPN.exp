@@ -3,8 +3,9 @@
 set serverName [lindex $argv 0];
 set email [lindex $argv 1];
 set password [lindex $argv 2];
+set homeDirectory [lindex $argv 3];
 
-spawn ~/ipvanish/ipvanish-vpn-linux start
+spawn $homeDirectory/ipvanish/ipvanish-vpn-linux start
 # Quotes are not allowed around the command passed into spawn: otherwise it would be looking for a script named "ipvanish-vpn-linux start" instead of just "ipvanish-vpn-linux"
 expect "Enter your IPVanish username: "
 send "$email\n"
