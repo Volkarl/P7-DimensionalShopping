@@ -22,7 +22,6 @@ ENTRYPOINT /dockerEntrypoint.sh
 # We are currently using the shell form of entrypoint, but the exec form should also be usable
 
 # -------------------------------------------------------------------
-
 # Package manager and things that really should be installed by default in Ubuntu
 
 RUN apt-get update -y
@@ -42,7 +41,8 @@ RUN apt-get install tzdata -y
 
 RUN apt-get install git -y
 WORKDIR /home/$username
-RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping && git checkout dockerfile-backend
+RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping 
+# If we want to use a specific git branch, just add "&& git checkout BRANCH-NAME" to the previous line
 RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 
 RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh $username
