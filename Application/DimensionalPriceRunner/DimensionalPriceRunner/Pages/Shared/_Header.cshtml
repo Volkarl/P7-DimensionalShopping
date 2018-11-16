@@ -3,7 +3,16 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  
+    <script src="dist\Translate.js"></script>
+    <script>
+        function switchlang(clang){
+            var translate = new Translate();
+            var currentLng = clang;
+            var attributeName = 'data-tag';
+            translate.init(attributeName, currentLng);
+            translate.process(); 
+        }
+    </script>
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
           <li class="nav-item">
@@ -29,8 +38,8 @@
               <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language</a>
                   <div class="dropdown-menu">
-                      <a class="dropdown-item"onclick="currentLng = 'Danish' && load()" href="#">Danish</a>
-                      <a class="dropdown-item"onclick="currentLng = 'English' && load()" href="#">English</a>
+                      <a class="dropdown-item"onclick="currentLng =  switchlang('Danish')" href="#">Danish</a>
+                      <a class="dropdown-item"onclick="currentLng = switchlang('English')" href="#">English</a>
                   </div>
               </li>
           </div>

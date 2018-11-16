@@ -18,9 +18,8 @@
                 //Status 200 denotes a successful request.
                 //Before the request is complete, the value of status will be 0. 
                 //Browsers report a status of 0 in case of XMLHttpRequest errors too.
-                if (xhrFile.status === 200 || xhrFile.status == 0) {
+                if (xhrFile.status === 200) {
                     var LangObject = JSON.parse(xhrFile.responseText);
-                    console.log(LangObject["name1"]);// can be deleted
                     // finds all elements with a specific tag
                     var elementsfromtag = document.getElementsByTagName("*");
                     for (var i = 0; i < elementsfromtag.length; i++) {
@@ -28,7 +27,6 @@
                         var key = elem.getAttribute(_self.attribute);
 
                         if (key != null) {
-                            console.log(key);//can be deleted
                             elem.innerHTML = LangObject[key];
                         }
                     }
