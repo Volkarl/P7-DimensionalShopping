@@ -1,0 +1,72 @@
+apiVersion: apps/v1                         # this is fucked up https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+kind: Deployment                            # define what should be made deplyment or service.
+                                            # deplyments define the actual pods where services are used for comuncation to the pod. 
+metadata:
+  name: dsb  # dimentional shopping backend # name
+  labels:                                   # label used by the pod template to find what deplyment they are.
+    app: ds-backend
+spec:
+  replicas: 1                               # how many pods should coexsist
+  selector:                                 # defines what pods the deplyment should manage.
+    matchLabels:                            # select the label of the pods the deplyment should manage.
+      app: ds-backend
+  template:                                 # define the template of a pod
+    metadata:                               # define the metadata of the template pod
+      labels:                               # define label of template pod
+        app: ds-backend
+    spec:                                   # define what the template should be build on docker useually a docker image
+      containers: 
+      - name: dsb-i                         # give the container a name
+        image: thinhar/dimentional-shopping-backend       # what docker image should it be based on
+        ports:
+        - containerPort: 80                 # open what port in the container (they basicly just add a option to the docker run command)
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service
+spec:                                       # specify data about what pods the service should enable inter cluster comunication to
+  ports:                                    # what port should the comunication go through
+  - port: 80
+  selector:                                 # define the target label of the pods the service should function as "ingress" for
+    app: ds-backend
+---
+apiVersion: apps/v1                         # this is fucked up https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+kind: Deployment                            # define what should be made deplyment or service, 
+                                            # deplyments define the actual pods where services are used for comuncation to the pod. 
+metadata:
+  name: dsf # dimentional shopping frontend # name
+  labels:                                   # label used by the pod template to find what deplyment they are.
+    app: ds-frontend
+spec:
+  replicas: 1                               # how many pods should coexsist
+  selector:                                 # defines what pods the deplyment should manage.
+    matchLabels:                            # select the label of the pods the deplyment should manage.
+      app: ds-frontend
+  template:                                 # define the template of a pod
+    metadata:                               # difine the metadata of the template pod
+      labels:                               # define label of template pod
+        app: ds-frontend
+    spec:                                   # define what the template should be build on docker useually a docker image
+      containers: 
+      - name: dsf-i                         # give the container a name
+        image: give dockerfilelink thing    # what docker image should it be based on
+        ports:
+        - containerPort: 22                 # open what port in the container (they basicly just add a option to the docker run command)
+
+# deplyment resource definition? skipping for now.
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsf-service
+spec:                                       # specify data about what pods the service should enable inter cluster comunication to
+  type: LoadBalancer                      
+  ports:                                    # what port should the comunication go through
+  - port: 22
+  selector:                                 # define the target label of the pods the service should function as "ingress" for
+    app: ds-frontend
+
+# ummmmmm ok lets have a load balancer. later.  type: LoadBalancer                        # type of service https://kubernetes.io/docs/concepts/services-networking/service/
