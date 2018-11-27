@@ -16,7 +16,7 @@ mknod /dev/net/tun c 10 200
 chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
 
-/home/sw706/P7-DimensionalShopping/Backend/query.py $url $requestedUserAgent $deleteCookies $location $ipvanishEmail $ipvanishPassword $pcUsername
+sudo -su $pcUsername /home/sw706/P7-DimensionalShopping/Backend/query.py $url $requestedUserAgent $deleteCookies $location $ipvanishEmail $ipvanishPassword $pcUsername
 
 #tail -f /dev/null
 # Runs forever
