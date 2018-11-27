@@ -17,7 +17,7 @@ RUN useradd -m $username
 COPY ./dockerEntrypoint.sh /
 # Copies entrypoint script from the /P7-DimensionalShopping/Backend/AutomatedSetup directory into the root of the container
 RUN chmod +x /dockerEntrypoint.sh
-ENTRYPOINT ["/bin/bash", "-c", "eval /dockerEntrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "-c"]
 CMD []
 # Entrypoint executes the supplied command as the container is started
 # Runs dockerEntrypoint.sh with the bash interpreter and any arguments that follow when the container is run
