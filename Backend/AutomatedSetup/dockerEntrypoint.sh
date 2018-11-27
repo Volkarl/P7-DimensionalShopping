@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Takes as input a string of the like: 
+queryArgs=$1
+
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
 mkdir -p /dev/net 
@@ -7,7 +10,9 @@ mknod /dev/net/tun c 10 200
 chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
 
-tail -f /dev/null
+eval "/home/sw706/P7-DimensionalShopping/Backend/query.py" queryArgs
+
+#tail -f /dev/null
 # Runs forever
 
 #/bin/bash 
