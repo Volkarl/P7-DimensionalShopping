@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # Takes as input a string of the like: 
-queryArgs=$1
+url=$1
+requestedUserAgent=$2
+deleteCookies=$3
+location=$4
+ipvanishEmail=$5
+ipvanishPassword=$6
+pcUsername=$7
 
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
 # See official documentation at https://www.kernel.org/doc/Documentation/networking/tuntap.txt
@@ -10,7 +16,7 @@ mknod /dev/net/tun c 10 200
 chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
 
-eval "/home/sw706/P7-DimensionalShopping/Backend/query.py" $queryArgs
+/home/sw706/P7-DimensionalShopping/Backend/query.py $url $requestedUserAgent $deleteCookies $location $ipvanishEmail $ipvanishPassword $pcUsername
 
 #tail -f /dev/null
 # Runs forever
