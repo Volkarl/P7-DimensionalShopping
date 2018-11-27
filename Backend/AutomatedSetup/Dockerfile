@@ -17,10 +17,11 @@ RUN useradd -m $username
 COPY ./dockerEntrypoint.sh /
 # Copies entrypoint script from the /P7-DimensionalShopping/Backend/AutomatedSetup directory into the root of the container
 RUN chmod +x /dockerEntrypoint.sh
-ENTRYPOINT ["/bin/bash", "-c", "eval /dockerEntrypoint.sh"]
-CMD []
-# Entrypoint executes the commands as the container is started
-# Runs dockerEntrypoint.sh with the bash interpreter and any arguments supplied when the container is run
+ENTRYPOINT ["/bin/bash", "-c", "/dockerEntrypoint.sh"]
+# Entrypoint executes the supplied command as the container is started
+# Runs dockerEntrypoint.sh with the bash interpreter and any arguments that follow when the container is run
+# The container has to be run with command "docker run -it --cap-add=NET_ADMIN 'arg1 arg2 arg3 arg4 arg5 arg6'", with the six
+# arguments that query.py requires, as the file is executed within the entrypoint script
 
 # -------------------------------------------------------------------
 # Package manager and things that really should be installed by default in Ubuntu

@@ -10,7 +10,7 @@ mknod /dev/net/tun c 10 200
 chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
 
-eval "/home/sw706/P7-DimensionalShopping/Backend/query.py" queryArgs
+eval "/home/sw706/P7-DimensionalShopping/Backend/query.py" $queryArgs
 
 #tail -f /dev/null
 # Runs forever
