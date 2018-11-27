@@ -17,7 +17,7 @@ spec:
     spec:                                   # define what the template should be build on docker useually a docker image
       containers: 
       - name: dsb-i                         # give the container a name
-        image: thinhar/dimentional-shopping-backend       # what docker image should it be based on
+        image: thinhar/dimensional-shopping-backend       # what docker image should it be based on
         ports:
         - containerPort: 80                 # open what port in the container (they basicly just add a option to the docker run command)
 
@@ -27,6 +27,7 @@ kind: Service
 metadata:
   name: dsb-service
 spec:                                       # specify data about what pods the service should enable inter cluster comunication to
+  type: LoadBalancer  
   ports:                                    # what port should the comunication go through
   - port: 80
   selector:                                 # define the target label of the pods the service should function as "ingress" for
