@@ -7,7 +7,10 @@ mknod /dev/net/tun c 10 200
 chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
 
-/bin/bash 
+tail -f /dev/null
+# Runs forever
+
+#/bin/bash 
 # Run terminal, because the container will otherwise exit immedeately
 # Now we can test directly on the container
 
