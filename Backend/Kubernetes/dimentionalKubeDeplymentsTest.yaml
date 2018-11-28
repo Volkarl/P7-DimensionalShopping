@@ -20,7 +20,21 @@ spec:
         image: thinhar/dimensional-shopping-backend       # what docker image should it be based on
         ports:
         - containerPort: 80                 # open what port in the container (they basicly just add a option to the docker run command)
-
+        volumeMounts:
+          # name must match the volume name below
+          - name: ipvanish-secret-volume
+            mountPath: /etc/ipvanish
+        command: ["/bin/bash"]
+        args: ["-c", "ping -c 1 8.8.8.8 && host www.google.com && mkdir /dev/net/hello"]
+        #args: ["https://ipstack.com/", "PcWindowsChrome", "True", "jnb-c01.ipvanish.com", "thinhar2@gmail.com", "snefri+15price", "sw706"]
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+      volumes:
+        - name: ipvanish-secret-volume
+          secret:
+            secretName: ipvanish
 ---
 apiVersion: v1
 kind: Service
