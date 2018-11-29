@@ -3,6 +3,24 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+    <script src="dist\Translate.js"></script>
+    <script>
+        function switchlang(clang){
+            var translate = new Translate();
+            var currentLng = clang;
+            var attributeName = 'data-tag';
+            translate.init(attributeName, currentLng);
+            translate.process(); 
+        }
+    </script>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link" asp-page="Home">Design1</a>
+          </li>
+          @*<li class="nav-item">
+          <a class="nav-link" asp-page="Form">M A R T I N L A N D</a>
+        </li>*@
 
           @*<li class="nav-item">
               <a class="nav-link" asp-page="Form">Tutorials</a>
