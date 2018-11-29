@@ -1,210 +1,38 @@
 ﻿@page
 @model LeanAspNetCore.Pages.FormModel
-@*@{
-    ViewData["Title"] = "Razor Pages Form";
-}*@
+@{
+  ViewData["Title"] = "Razor Pages Form";
+}
 
-<!DOCTYPE html>
-<html lang="en">
+@if (!String.IsNullOrEmpty(Model.Message))
+{
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    @Model.Message
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+}
 
-<!-- Page Head -->
-<head>
-
-    @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
-    <!------ Include the above in your HEAD tag ---------->
-    @*<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>*@
-    <!------ Include the above in your HEAD tag ---------->
-
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css'>
-    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-
-</head>
-
-<body>
-    <!-- Page Content -->
-    <div class="container">
-
-        @* Header *@
-        <div class="container" style="margin-top: 1%;">
-            <div class="my-4">
-                <div class="row">
-                    <div id="logo" class="text-center">
-                        <h1>5D-PriceRunner</h1><p>Flight Links Only</p>
-                    </div>
-                    <form role="form" id="form-buscar" style="width: 80%; margin-left: 10%">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input id="1" class="form-control" type="text" name="search" placeholder="Flight url..." required />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-success" type="submit">
-                                        <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Design 3 -->
-        <div class="container">
-            <div class="col-md-12">
-                <div class="carousel slide" id="myCarousel">
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <img style="opacity: 0.7; z-index: 1; max-height: 50%; max-width: 75%; margin-left: 15%" src="https://www.foresightfactory.co/wp-content/uploads/2018/03/logo-british-airways.png" alt="Alternate Text" />
-                                    </div>
-                                    <div class="panel-body text-center">
-                                        <h2 class="hprice pricetag">
-                                            <span class="symbol">1750,75 DKK</span>
-                                        </h2>
-                                        <h4 class="hprice pricetag">
-                                            <span class="font-weight-bold">Windows</span><br />
-                                            <span class="font-weight-bold">USA</span>
-                                        </h4>
-                                    </div>
-                                    <ul class="list-group list-group-flush text-center">
-                                        <li class="list-group-item">
-                                            <span>BLL - STN</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>10.40 - 11.25</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>1 Hour. 45 Min.</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>Direkte</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>Two - Way</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span style="color: forestgreen">Good Flight (7,2/10)</span>
-                                        </li>
-                                    </ul>
-                                    <div class="panel-footer btn-hide"> <a class="btn btn-lg btn-block btn-primary " href="#">Information</a> </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="item">
-                            <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <img style="opacity: 0.7; z-index: 1; max-height: 50%; max-width: 70%; margin-left: 15%; margin-top: 6%; margin-bottom: 10%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png" alt="Alternate Text" />
-                                    </div>
-                                    <div class="panel-body text-center">
-                                        <h2 class="hprice pricetag">
-                                            <span class="symbol">2150,25 DKK</span>
-                                        </h2>
-                                        <h4 class="hprice pricetag">
-                                            <span class="font-weight-bold">Linux</span><br />
-                                            <span class="font-weight-bold">Denmark</span>
-                                        </h4>
-                                    </div>
-                                    <ul class="list-group list-group-flush text-center">
-                                        <li class="list-group-item">
-                                            <span>BLL - STN</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>10.40 - 13.15</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>2 Hour. 35 Min.</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>1 Stop</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>Two - Way</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span style="color: goldenrod">Good Flight (5,7/10)</span>
-                                        </li>
-                                    </ul>
-                                    <div class="panel-footer btn-hide"> <a class="btn btn-lg btn-block btn-primary " href="#">Information</a> </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="item">
-                            <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <img style="opacity: 0.7; z-index: 1; max-height: 50%; max-width: 75%; margin-left: 15%" src="https://www.foresightfactory.co/wp-content/uploads/2018/03/logo-british-airways.png" alt="Alternate Text" />
-                                    </div>
-                                    <div class="panel-body text-center">
-                                        <h2 class="hprice pricetag">
-                                            <span class="symbol">2744,50 DKK</span>
-                                        </h2>
-                                        <h4 class="hprice pricetag">
-                                            <span class="font-weight-bold">iOS</span><br />
-                                            <span class="font-weight-bold">USA</span>
-                                        </h4>
-                                    </div>
-                                    <ul class="list-group list-group-flush text-center">
-                                        <li class="list-group-item">
-                                            <span>BLL - STN</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>15.30 - 17.15</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>1 Hour. 45 Min.</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>Direkte</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>Two - Way</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span style="color: crimson">Good Flight (4,2/10)</span>
-                                        </li>
-                                    </ul>
-                                    <div class="panel-footer btn-hide"> <a class="btn btn-lg btn-block btn-primary " href="#">Information</a> </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-
-
-
-                        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                        <a class="right carousel-control" href="#myCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
-                    </div>
-            </div>
-        </div>
-
-
-    </div>
-
-
-
-        <!-- Footer -->
-        <footer class="py-3 bg-dark invisible">
-            <div class="container">
-                <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
-            </div>
-            <!-- /.container -->
-        </footer>
-
-</body>
-</html>
+<div class="row">
+  <div class="col-sm-6">
+    <form method="post">
+      <div class="form-group">
+        <label asp-for="FormData.Email">Email</label>
+        <input asp-for="FormData.Email" type="email" class="form-control" aria-describedby="emailHelp">
+        <span asp-validation-for="FormData.Email" class="text-danger small"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="FormData.Password">Password</label>
+        <input asp-for="FormData.Password" type="password" class="form-control">
+        <span asp-validation-for="FormData.Password" class="text-danger small"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="FormData.ConfirmPassword">Confirm password</label> 
+        <input asp-for="FormData.ConfirmPassword" type="password" class="form-control">
+        <span asp-validation-for="FormData.ConfirmPassword" class="text-danger small"></span>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
