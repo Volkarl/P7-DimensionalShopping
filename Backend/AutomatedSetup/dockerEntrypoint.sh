@@ -16,6 +16,9 @@ mknod /dev/net/tun c 10 200
 chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
 
+mv /usr/bin/nping /usr/bin/ping
+# Renames the nping command to ping, necessary to get the ipvanish-vpn-linux script to run without trying to use ICMP
+
 echo $url $requestedUserAgent $deleteCookies $location $ipvanishEmail $ipvanishPassword $pcUsername > /home/$pcUsername/arguments
 sudo -u $pcUsername -i /bin/bash - <<-'EOF'
 	~/P7-DimensionalShopping/Backend/query.py $(cat arguments)

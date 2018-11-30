@@ -53,8 +53,9 @@ chmod +x $vanishLoc/ipvanish-vpn-linux
 
 # These are needed for the ipvanish-vpn-linux script to run
 apt-get install sudo -y
-apt-get install iputils-ping -y
 apt-get install host -y
+apt-get install nmap -y 
+# A TCP alternative to iputils-ping, which we cannot use, as it uses ICMP, which is not allowed by Azure
 
 # ---------------------------------------------------------------------------------------------------------
 # Extra packages and commands necessary to run the backend script
