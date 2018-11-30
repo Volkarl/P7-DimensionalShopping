@@ -1,0 +1,56 @@
+apiVersion: apps/v1                         # This is fucked up https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+kind: Deployment                            # Define what should be made deployment or service
+                                            # Deployments define the actual pods where services are used for comuncation to the pod 
+metadata:
+  name: dsb  # dimentional shopping backend # name
+  labels:                                   # label used by the pod template to find what deplyment they are.
+    app: ds-backend
+spec:
+  replicas: 1                               # How many pods should coexist
+  selector:                                 # Defines what pods the deplyment should manage
+    matchLabels:                            # Select the label of the pods that the deployment should manage
+      app: ds-backend
+  template:                                 # Define the template of a pod
+    metadata:                               # Define the metadata of the template pod
+      labels:                               # Define label of template pod
+        app: ds-backend
+    spec:                                   # Define the template to build on: useually a docker image
+      containers: 
+      - name: dsb-i                         # Give the container a name
+        image: thinhar/dimensional-shopping-backend       # Which docker image it should be based on
+        ports:
+        - containerPort: 80                 # Open ports in the containers (this basically just adds an option to the docker run command)
+        volumeMounts:
+          # Name must match the volume name below
+          - name: ipvanish-secret-volume
+            mountPath: /etc/ipvanish
+            # The path where the secret volume ends up (within the docker container)
+        args: ["https://ipstack.com/", "PcWindowsChrome", "True", "jnb-c01.ipvanish.com", "sw706"]
+        # Arguments that are passed to the entrypoint (in our case, a script)
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+      dnsPolicy: "None" # Ensures that the containers do not inherit their DNS configurations from Kube
+      # Otherwise we wouldn't be able to resolve DNS's once we've VPN'ed to a different location than where Kube is hosted
+      dnsConfig: # Configurations in this field end up in the file /etc/resolv.conf, which is where Linux looks to resolve DNS requests
+        nameservers: 
+          - 8.8.8.8
+          - 8.8.4.4
+          # Google's DNS servers, available anywhere in the world
+      volumes:
+        - name: ipvanish-secret-volume
+          secret:
+            secretName: ipvanish
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service
+spec:                                       # Specify data about which pods the service should enable inter-cluster-comunication for
+  type: LoadBalancer  
+  ports:                                    # Which port the comunication will go through
+  - port: 80
+  selector:                                 # Defines the target label of the pods that the service should function as a load balancer for
+    app: ds-backend
