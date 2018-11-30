@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/main\.js
+
+Backend/Kubernetes/sek\.yaml
