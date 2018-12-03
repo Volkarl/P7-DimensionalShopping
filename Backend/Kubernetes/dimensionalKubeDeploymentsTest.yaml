@@ -17,7 +17,7 @@ spec:
     spec:                                   # Define the template to build on: useually a docker image
       containers: 
       - name: dsb-i                         # Give the container a name
-        image: thinhar/dimensional-shopping-backend       # Which docker image it should be based on
+        image: thinhar/dimensional-shopper-backend2       # Which docker image it should be based on
         ports:
         - containerPort: 80                 # Open ports in the containers (this basically just adds an option to the docker run command)
         volumeMounts:

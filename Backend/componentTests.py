@@ -32,7 +32,7 @@ print f'{res2 == expectedLocation} | Result {res2}, Expected {expectedLocation}'
 # Test cookies
 deleteCookies = "True"
 res3 = queryCall(f'https://www.w3schools.com/js/js_cookies.asp {defaultUserAgent} {deleteCookies} {defaultVpnServer}')
-res3 = queryCall(f'https://www.w3schools.com/js/js_cookies.asp {defaultUserAgent} {deleteCookies} {defaultVpnServer}')
-print f'{res3 == vpnLocation} | Result {res3}, Expected ""'
-
-############### FIX
+res4 = queryCall(f'https://www.w3schools.com/js/js_cookies.asp {defaultUserAgent} {deleteCookies} {defaultVpnServer}')
+# Each call returns any saved cookies for the site, and afterwards clicks on a button to save a new cookie
+# Both calls should return the empty string
+print f'{res3 == "" && res4 == ""} | Result {res3} {res4}, Expected ""'
