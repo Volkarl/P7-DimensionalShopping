@@ -266,3 +266,7 @@ Application/BuildScripts/package-lock\.json
 Application/BuildScripts/package\.json
 
 package-lock\.json
+
+Backend/Kubernetes/sek\.yaml
+
+Application/DimensionalPriceRunner/DimensionalPriceRunner/Properties/PublishProfiles/registry\.hub\.docker\.com_thinhar\.pubxml
