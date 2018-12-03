@@ -27,6 +27,11 @@ spec:
             # The path where the secret volume ends up (within the docker container)
         args: ["https://ipstack.com/", "PcWindowsChrome", "True", "jnb-c01.ipvanish.com", "sw706"]
         # Arguments that are passed to the entrypoint (in our case, a script)
+
+        # command: ["/bin/bash"]
+        # args: ["-c", "sleep infinity"]
+        # For keeping the container alive to debug it manually
+
         securityContext:
           capabilities:
             add:
