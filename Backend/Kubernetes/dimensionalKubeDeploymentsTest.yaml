@@ -1,9 +1,25 @@
+
+# Frontend load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsf-service
+spec:                                       # Specify data about which pods the service should enable inter-cluster-comunication for
+  type: LoadBalancer  
+  ports:                                    # Which port the comunication will go through
+  - port: 80 # HTTP Default 
+  selector:                                 # Defines the target label of the pods that the service should function as a load balancer for
+    app: ds-frontend
+
+---
+
+# Backend
 apiVersion: apps/v1                         # This is fucked up https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
 kind: Deployment                            # Define what should be made deployment or service
                                             # Deployments define the actual pods where services are used for comuncation to the pod 
 metadata:
-  name: dsb  # dimentional shopping backend # name
-  labels:                                   # label used by the pod template to find what deplyment they are.
+  name: dsb # Dimentional Shopping Backend  # Name
+  labels:                                   # Label used by the pod template to find what deplyment they are.
     app: ds-backend
 spec:
   replicas: 1                               # How many pods should coexist
@@ -19,7 +35,7 @@ spec:
       - name: dsb-i                         # Give the container a name
         image: thinhar/dimensional-shopper-backend2       # Which docker image it should be based on
         ports:
-        - containerPort: 80                 # Open ports in the containers (this basically just adds an option to the docker run command)
+        - containerPort: 81                 # Open ports in the containers (this basically just adds an option to the docker run command)
         volumeMounts:
           # Name must match the volume name below
           - name: ipvanish-secret-volume
@@ -47,15 +63,30 @@ spec:
         - name: ipvanish-secret-volume
           secret:
             secretName: ipvanish
-        
+
 ---
-apiVersion: v1
-kind: Service
+
+# Frontend
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: dsb-service
-spec:                                       # Specify data about which pods the service should enable inter-cluster-comunication for
-  type: LoadBalancer  
-  ports:                                    # Which port the comunication will go through
-  - port: 80
-  selector:                                 # Defines the target label of the pods that the service should function as a load balancer for
-    app: ds-backend
+  name: dsf # Dimensional Shopping Frontend
+  labels:
+    app: ds-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ds-frontend
+  template:
+    metadata:
+      labels:
+        app: ds-frontend
+    spec:
+      containers:
+      - name: dsf-i
+        image: thinhar/dimensionalpricerunner
+        ports:
+        - containerPort: 80 # Same port as its corresponding load balancer
+
+# Deployment resource definition? skipping for now. ???????????????

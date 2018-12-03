@@ -9,7 +9,7 @@ To get our kubernetes configuration running, follow the steps in this file.
 5. Now, delete the folder "C:\Users\USERNAME\.kube". As far as we know, it's only necessary to delete the config file within, but who cares, as the files are generated again. 
 6. Login to azure with command: "az login", follow its instructions
 7. Login to a specific cluster (the one we created in step 1) with the command: "az aks get-credentials --resource-group CLUSTERRESOURCEGROUP --name CLUSTERNAME". The config file in the directoriy .kube (step 5) saves our cluster information, and will therefore have to be deleted every time we wish to access a new cluster with this command. 
-8. Build the cluster with our configurations with command: "kubectl apply -f PATHTOREPOSITORY\P7-DimensionalShopping\Backend\Kubernetes\dimensionalKubeDeploymentsTest.yaml"
+8. Build the cluster with our configurations with command: "kubectl apply -f PATHTOREPOSITORY\P7-DimensionalShopping\Backend\Kubernetes\dimensionalKubeDeployments.yaml"
 
 ## Status
 Check the status of the cluster with commands: "kubectl get all", "kubectl describe ITEM", "kubectl logs ITEM", etc. 
