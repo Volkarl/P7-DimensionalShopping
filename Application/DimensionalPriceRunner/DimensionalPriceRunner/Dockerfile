@@ -9,10 +9,10 @@ COPY ["DimensionalPriceRunner/DimensionalPriceRunner.csproj", "DimensionalPriceR
 RUN dotnet restore "DimensionalPriceRunner/DimensionalPriceRunner.csproj"
 COPY . .
 WORKDIR "/src/DimensionalPriceRunner"
-RUN dotnet build "DimensionalPriceRunner.csproj" -c Release -o /app
+RUN dotnet build "DimensionalPriceRunner.csproj" -c Release -v -o /app
 
 FROM build AS publish
-RUN dotnet publish "DimensionalPriceRunner.csproj" -c Release -o /app
+RUN dotnet publish "DimensionalPriceRunner.csproj" -c Release -v -o /app
 
 FROM base AS final
 WORKDIR /app

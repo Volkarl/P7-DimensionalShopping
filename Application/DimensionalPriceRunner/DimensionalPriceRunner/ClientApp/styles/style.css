@@ -241,3 +241,19 @@ img {
     transform: translate(-50%, -50%);
 }
 
+
+
+
+
+/* Increase Modal Header Close Button Size*/
+.modal-header .close {
+    font-size: 40px;
+}
+
+
+
+.vl {
+    border-bottom: 6px solid green;
+    height: 10px;
+    width: 100%;
+}
