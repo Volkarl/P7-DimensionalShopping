@@ -5,6 +5,7 @@ username=$1
 
 # ---------------------------------------------------------------------------------------------------------
 # Install python and pip (python package manager)
+
 apt-get install wget -y
 
 apt-get install python3.7 -y
@@ -53,8 +54,12 @@ chmod +x $vanishLoc/ipvanish-vpn-linux
 
 # These are needed for the ipvanish-vpn-linux script to run
 apt-get install sudo -y
-apt-get install iputils-ping -y
 apt-get install host -y
+
+apt-get install nmap -y 
+mv /usr/bin/nping /bin/ping
+# A TCP alternative to iputils-ping, which we cannot use, as it uses ICMP, which is not allowed by Azure
+# Renames the nping command to ping, necessary to get the ipvanish-vpn-linux script to run it
 
 # ---------------------------------------------------------------------------------------------------------
 # Extra packages and commands necessary to run the backend script

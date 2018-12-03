@@ -17,9 +17,12 @@ RUN useradd -m $username
 COPY ./dockerEntrypoint.sh /
 # Copies entrypoint script from the /P7-DimensionalShopping/Backend/AutomatedSetup directory into the root of the container
 RUN chmod +x /dockerEntrypoint.sh
-ENTRYPOINT /dockerEntrypoint.sh
-# Entrypoint executes the commands as the container is started
-# We are currently using the shell form of entrypoint, but the exec form should also be usable
+ENTRYPOINT ["/dockerEntrypoint.sh"]
+CMD ["DEFAULT ARGUMENTS HERE"]
+# Entrypoint executes the supplied command as the container is started
+# Runs dockerEntrypoint.sh with the bash interpreter and any arguments that follow when the container is run
+# The container has to be run with command "docker run -it --cap-add=NET_ADMIN 'arg1 arg2 arg3 arg4 arg5 arg6'", with the six
+# arguments that query.py requires, as the file is executed within the entrypoint script
 
 # -------------------------------------------------------------------
 # Package manager and things that really should be installed by default in Ubuntu
@@ -41,7 +44,7 @@ RUN apt-get install tzdata -y
 
 RUN apt-get install git -y
 WORKDIR /home/$username
-RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping 
+RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping
 # If we want to use a specific git branch, just add "&& git checkout BRANCH-NAME" to the previous line
 RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 
