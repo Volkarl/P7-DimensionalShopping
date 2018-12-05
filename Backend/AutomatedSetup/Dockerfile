@@ -52,3 +52,20 @@ RUN ./P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh $username
 # Run setup script to install all remaining necessary dependecies
 # The dependencies in this script are required to get the scripts to work on a "real" virtual machine, whereas the steps in 
 # this dockerfile are required to get it to work on a docker container
+
+# -------------------------------------------------------------------
+# HTTP Requests
+# Allows the backend to create a node/nodejs/http/express/REST server, which can be queried from the web
+
+RUN apt-get install -y curl \
+  && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
+  && apt-get install -y nodejs \
+  && curl -L https://www.npmjs.com/install.sh | sh
+# Install nodejs and npm
+
+RUN npm install --save express
+# Web framework for nodejs, a layer that we use for HTTP requests
+RUN npm install --save morgan
+# HTTP request logging for nodejs, useful for debugging 
+
+RUN chmod +x P7-DimensionalShopping/Backend/nodejs/callQuery.sh
