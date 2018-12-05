@@ -63,9 +63,11 @@ RUN apt-get install -y curl \
   && curl -L https://www.npmjs.com/install.sh | sh
 # Install nodejs and npm
 
-RUN npm install --save express
+WORKDIR /home/$username/P7-DimensionalShopping/Backend/nodejs
+RUN npm install express
 # Web framework for nodejs, a layer that we use for HTTP requests
-RUN npm install --save morgan
+RUN npm install morgan
 # HTTP request logging for nodejs, useful for debugging 
+WORKDIR /home/$username
 
 RUN chmod +x P7-DimensionalShopping/Backend/nodejs/callQuery.sh
