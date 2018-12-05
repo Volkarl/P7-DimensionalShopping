@@ -12,7 +12,7 @@ defaultDeleteCookies = "False"
 
 
 def queryCall(arguments):
-	subprocess.call(f'./query.py {arguments} {ipvanishUsername} {ipvanishPassword} {nonRootUser}')
+	subprocess.call(f'./query.py {arguments} {ipvanishUsername} {ipvanishPassword} {nonRootUser}', shell=True)
 
 # Perform tests -----------------
 
