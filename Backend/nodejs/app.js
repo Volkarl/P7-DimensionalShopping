@@ -1,0 +1,30 @@
+const express = require('express');
+const app = express();
+const morgan = require('morgan');
+
+const queryRoutes = require('./query');
+app.use(morgan('dev')); 
+// Log information dev style
+
+app.use('/query', queryRoutes);
+// All requests by name /query should be handled by queryRoutes
+
+app.use((req, res, next) => {
+	const error = new Error('not found');
+	error.status = 404;
+	next(error);
+})
+// Send error if we cant find the correct endpoint
+
+app.use((error, req, res, next) => {
+	res.status(error.status || 500);
+	res.json({
+		error: {
+			message: error.message
+		}
+	});
+});
+// "catch" errors and display the error message
+// Error code 500 if it doesnt have a error code defined prior
+
+module.exports = app;
