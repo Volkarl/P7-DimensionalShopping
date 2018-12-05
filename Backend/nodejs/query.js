@@ -26,7 +26,9 @@ router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
 
     exec(`./callQuery.sh ${curURL} ${curUA} ${curDELETECOOKIES} ${curLOCATION}`, function(err, stdout, stderr) {
         if (err) {
-            output = stderr;
+            res.status(400).json({
+            error: stderr
+        });
         }
         else {
             output = stdout;
