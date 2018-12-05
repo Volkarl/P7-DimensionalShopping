@@ -2,15 +2,22 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using static DimensionalPriceRunner.Program;
 
 namespace DimensionalPriceRunner.Pages
 {
     public class IndexModel : PageModel
     {
         public IEnumerable<Result> Results { get; set; }
-        public enum Currency { DKK, USD, EUR }
-        public Currency ActiveCurrency { get; set; }
 
+
+
+        public static string test { get; set; }
 
 
         public enum Airlines { Default, SAS, BritishAirways, test }
@@ -35,13 +42,28 @@ namespace DimensionalPriceRunner.Pages
         {
             public decimal Price { get; set; }
             public string Airline { get; set; }
+            public string[] Rating { get; set; }
+            public string Leg { get; set; }
+            public string TakeoffTime { get; set; }
+            public string FlightLength { get; set; }
+            public string Airports { get; set; }
+            public string Stops { get; set; }
+            public string TicketType { get; set; }
+            public string TicketUrl { get; set; }
 
-            public Ticket(decimal price, string airline)
+            public Ticket(decimal price, string airline, string[] rating, string leg, string takeoffTime, string flightLength, string airports, string stops, string ticketType, string ticketUrl)
             {
                 this.Price = price;
                 this.Airline = airline;
+                this.Rating = rating;
+                this.Leg = leg;
+                this.TakeoffTime = takeoffTime;
+                this.FlightLength = flightLength;
+                this.Airports = airports;
+                this.Stops = stops;
+                this.TicketType = ticketType;
+                this.TicketUrl = ticketUrl;
             }
-
         }
 
         public class Result
@@ -65,7 +87,9 @@ namespace DimensionalPriceRunner.Pages
 
         public void OnGet()
         {
-            ActiveCurrency = Currency.DKK;
+            //ActiveCurrency = Currency.USD;
+            ActiveLanguage = Language.English;
+            SearchBarMarginTop = 25;
 
 
 
@@ -73,7 +97,6 @@ namespace DimensionalPriceRunner.Pages
 
 
         }
-
 
 
         public void OnPost()
@@ -81,65 +104,121 @@ namespace DimensionalPriceRunner.Pages
             var searchInput = Request.Form["search"];
             ViewData["search-input"] = searchInput;
 
-            if (searchInput == "test@mail.com")
-            {
+            //var te = Request.Form["selected-currency"];
+            //ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
 
+
+            SearchBarMarginTop = 1;
+
+            //var curr = Request.Form["selected-currency"];
+            //var content = (Currency)Enum.Parse(typeof(Currency), curr);
+            //ActiveCurrency = content;
+
+            if (searchInput == "https://www.google.dk/")
+            {
 
                 Result one = new Result("a" + Guid.NewGuid(),
                     Airlines.SAS.ToString(),
                     "Windows 7", "Denmark",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 1000), AirlineDictionary[Airlines.SAS]));
+                    new Ticket(ConvertToCurrency(ActiveCurrency, 1000),
+                        AirlineDictionary[Airlines.SAS],
+                        "3,5".Split(new[] {',', '.'}),
+                        "Cityjet",
+                        "10.10 - 15.20",
+                        "5 t. 10 min.",
+                        "AMS - AAL",
+                        "1 mellemlanding (CPH)",
+                        "Returrejse",
+                        "https://www.google.com/"));
+
 
                 Result two = new Result("a" + Guid.NewGuid(),
-                    Airlines.BritishAirways.ToString(),
-                    "Windows 8", "USA",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 2000), AirlineDictionary[Airlines.BritishAirways]));
+                    Airlines.SAS.ToString(),
+                    "Windows 7", "Denmark",
+                    new Ticket(ConvertToCurrency(ActiveCurrency, 2000),
+                        AirlineDictionary[Airlines.BritishAirways],
+                        "5,0".Split(new[] { ',', '.' }),
+                        "Cityjet",
+                        "10.10 - 15.20",
+                        "5 t. 10 min.",
+                        "AMS - AAL",
+                        "1 mellemlanding (CPH)",
+                        "Returrejse",
+                        "https://www.google.com/"));
 
                 Result three = new Result("a" + Guid.NewGuid(),
                     Airlines.SAS.ToString(),
-                    "Windows 10", "Tyskland",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 3000), AirlineDictionary[Airlines.SAS]));
+                    "Windows 7", "Denmark",
+                    new Ticket(ConvertToCurrency(ActiveCurrency, 3000),
+                        AirlineDictionary[Airlines.Default],
+                        "0,4".Split(new[] { ',', '.' }),
+                        "Cityjet",
+                        "10.10 - 15.20",
+                        "5 t. 10 min.",
+                        "AMS - AAL",
+                        "1 mellemlanding (CPH)",
+                        "Returrejse",
+                        "https://www.google.com/"));
 
                 Result four = new Result("a" + Guid.NewGuid(),
-                    Airlines.BritishAirways.ToString(),
-                    "iOS", "USA",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 4000), AirlineDictionary[Airlines.BritishAirways]));
-
-
-                Result one2 = new Result("a" + Guid.NewGuid(),
                     Airlines.SAS.ToString(),
                     "Windows 7", "Denmark",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 5000), AirlineDictionary[Airlines.SAS]));
+                    new Ticket(ConvertToCurrency(ActiveCurrency, 4000),
+                        AirlineDictionary[Airlines.Default],
+                        "1,4".Split(new[] { ',', '.' }),
+                        "Cityjet",
+                        "10.10 - 15.20",
+                        "5 t. 10 min.",
+                        "AMS - AAL",
+                        "1 mellemlanding (CPH)",
+                        "Returrejse",
+                        "https://www.google.com/"));
 
-                Result two2 = new Result("a" + Guid.NewGuid(),
-                    Airlines.BritishAirways.ToString(),
-                    "Windows 8", "USA",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 6000), AirlineDictionary[Airlines.BritishAirways]));
-
-                Result three2 = new Result("a" + Guid.NewGuid(),
+                Result five = new Result("a" + Guid.NewGuid(),
                     Airlines.SAS.ToString(),
-                    "Windows 10", "Tyskland",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 7000), AirlineDictionary[Airlines.SAS]));
+                    "Windows 7", "Denmark",
+                    new Ticket(ConvertToCurrency(ActiveCurrency, 5000),
+                        AirlineDictionary[Airlines.SAS],
+                        "4,9".Split(new[] { ',', '.' }),
+                        "Cityjet",
+                        "10.10 - 15.20",
+                        "5 t. 10 min.",
+                        "AMS - AAL",
+                        "1 mellemlanding (CPH)",
+                        "Returrejse",
+                        "https://www.google.com/"));
 
-                Result four2 = new Result("a" + Guid.NewGuid(),
-                    Airlines.BritishAirways.ToString(),
-                    "iOS", "USA",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 8000), AirlineDictionary[Airlines.BritishAirways]));
 
 
-                Results = new List<Result>() {one, two, three, four, one2, two2, three2, four2};
+                Results = new List<Result>() {one, two, three, four, five};
 
 
 
             }
             else
             {
-                
+                S = "We did not find any plane tickets";
+                S2 = "please verify you entered a valid web address";
+                NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
+
+
+                Program.ProcessRepositories().Wait();
+
+                //S2 = test;
+
             }
 
             
 
         }
+
+        public int SearchBarMarginTop { get; set; }
+        public string NoResultImg { get; set; }
+
+        public bool B { get; set; }
+        public string S { get; set; }
+        public string S2 { get; set; }
+
 
 
 
