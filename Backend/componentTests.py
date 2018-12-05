@@ -10,11 +10,9 @@ defaultVpnServer = "jnb-c01.ipvanish.com"
 defaultUserAgent = "PcWindowsChrome"
 defaultDeleteCookies = "False"
 
-def pythonCall(cmdString):
-	subprocess.call(["python3", cmdString])
 
 def queryCall(arguments):
-	pythonCall(f'query.py {arguments} {ipvanishUsername} {ipvanishPassword} {nonRootUser}')
+	subprocess.call(f'./query.py {arguments} {ipvanishUsername} {ipvanishPassword} {nonRootUser}')
 
 # Perform tests -----------------
 
