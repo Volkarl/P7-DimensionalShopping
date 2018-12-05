@@ -8,9 +8,9 @@ RUN apt-get install -y curl \
   && apt-get install -y nodejs \
   && curl -L https://www.npmjs.com/install.sh | sh
 
-npm install --save express
+RUN npm install --save express
 # Web framework for nodejs, a layer that we use for HTTP requests
-npm install --save morgan
+RUN npm install --save morgan
 # HTTP request logging for nodejs, useful for debugging
 
-chmod +x callQuery.sh
+RUN chmod +x callQuery.sh
