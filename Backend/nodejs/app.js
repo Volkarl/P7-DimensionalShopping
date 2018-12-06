@@ -1,6 +1,8 @@
 const express = require('express');
+// Web framework for nodejs, a layer that we use for HTTP requests 
 const app = express();
 const morgan = require('morgan');
+// HTTP request logging for nodejs, useful for debugging 
 
 const queryRoutes = require('./query');
 app.use(morgan('dev')); 
