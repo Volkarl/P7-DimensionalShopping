@@ -64,10 +64,8 @@ RUN apt-get install -y curl \
 # Install nodejs and npm
 
 WORKDIR /home/$username/P7-DimensionalShopping/Backend/nodejs
-RUN npm install express
-# Web framework for nodejs, a layer that we use for HTTP requests
-RUN npm install morgan
-# HTTP request logging for nodejs, useful for debugging 
+RUN npm install
+# Installs the dependencies defined within the file "package.json"
 WORKDIR /home/$username
 
 RUN chmod +x P7-DimensionalShopping/Backend/nodejs/callQuery.sh
