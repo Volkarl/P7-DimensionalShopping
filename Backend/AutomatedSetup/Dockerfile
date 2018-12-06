@@ -17,12 +17,13 @@ RUN useradd -m $username
 COPY ./dockerEntrypoint.sh /
 # Copies entrypoint script from the /P7-DimensionalShopping/Backend/AutomatedSetup directory into the root of the container
 RUN chmod +x /dockerEntrypoint.sh
-ENTRYPOINT /dockerEntrypoint.sh sw706
+RUN echo $username > /etc/username
+# Saves pcUsername in file, so that we can read it from the file "callQuery.sh", and know where our openVPN files are placed
+# Variable cannot be passed to entrypoint script for reasons detailed in source: https://stackoverflow.com/questions/49133234/docker-entrypoint-with-env-variable-and-optional-arguments
+
+ENTRYPOINT /dockerEntrypoint.sh
 # Entrypoint executes the supplied command as the container is started
-# Runs dockerEntrypoint.sh with the bash interpreter and any arguments that follow when the container is run
-# The container has to be run with command "docker run -it --cap-add=NET_ADMIN 'arg1 arg2 arg3 arg4 arg5 arg6'", with the six
-# arguments that query.py requires, as the file is executed within the entrypoint script
-# Entrypoint is run in shell form, to ensure it replaces the variable $username with its contents
+# Runs dockerEntrypoint.sh with the shell interpreter and any arguments that follow when the container is run
 
 # -------------------------------------------------------------------
 # Package manager and things that really should be installed by default in Ubuntu
@@ -65,7 +66,8 @@ RUN apt-get install -y curl \
 
 WORKDIR /home/$username/P7-DimensionalShopping/Backend/nodejs
 RUN npm install morgan && npm install express
-# Installs the dependencies defined within the file "package.json"
+# Express: Web framework for nodejs, a layer that we use for HTTP requests 
+# HTTP request logging for nodejs, useful for debugging 
 WORKDIR /home/$username
 
 RUN chmod +x P7-DimensionalShopping/Backend/nodejs/callQuery.sh
