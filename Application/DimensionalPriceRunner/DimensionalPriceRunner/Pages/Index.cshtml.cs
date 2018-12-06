@@ -104,6 +104,11 @@ namespace DimensionalPriceRunner.Pages
             var searchInput = Request.Form["search"];
             ViewData["search-input"] = searchInput;
 
+
+
+
+            //ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
+
             //var te = Request.Form["selected-currency"];
             //ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
 
@@ -204,6 +209,9 @@ namespace DimensionalPriceRunner.Pages
 
                 Program.ProcessRepositories().Wait();
 
+                var te = Request.Form["test"];
+                ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
+                //S2 = te + " - " + Program.ActiveCurrency;
                 //S2 = test;
 
             }

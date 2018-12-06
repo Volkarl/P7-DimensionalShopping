@@ -76,18 +76,26 @@
                         <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                             <div class="my-list">
                                 <img src="@result.Ticket.Airline" style="width: 100%; height: auto" />
-                                <div class="offer">
-                                    OS:
-                                    <span>@result.OS</span>
+                                <div class="offer" style="width: 100%">
+                                    <div class="btn; float-left" data-toggle="tooltip" data-placement="top" title="OS ToolTip">
+                                        OS:
+                                    </div>
+                                    <span class="float-right">@result.OS</span>
                                 </div>
-                                <div class="offer">
-                                    VPN Location:
-                                    <span>@result.VPNLocation</span>
+                                <div class="offer" style="width: 100%">
+                                    <div class="btn; float-left" data-toggle="tooltip" data-placement="top" title="VPNLoc ToolTip">
+                                        VPN Location:
+                                    </div>
+                                    <span class="float-right">@result.VPNLocation</span>
                                 </div>
-                                <div class="offer">
-                                    Price:
-                                    <span>@result.Ticket.Price @Program.ActiveCurrency</span>
+                                <div class="offer" style="width: 100%">
+                                    <div class="btn; float-left" data-toggle="tooltip" data-placement="top" title="Price ToolTip">
+                                        Price:
+                                    </div>
+                                    <span class="float-right">@result.Ticket.Price @Program.ActiveCurrency</span>
                                 </div>
+
+
                                 <div class="detail">
                                     <div class="img-wrapper">
                                         <img class="img-responsive" src=@result.Ticket.Airline style="opacity: 0.7">
@@ -118,14 +126,14 @@
                                                                         <i class="fa fa-star-half-o"></i>
                                                                         for (int i = Int32.Parse(result.Ticket.Rating[0]); i < 4; i++)
                                                                         {
-                                                                             <i class="fa fa-star-o"></i>
+                                                                            <i class="fa fa-star-o"></i>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
                                                                         for (int i = Int32.Parse(result.Ticket.Rating[0]); i < 5; i++)
                                                                         {
-                                                                             <i class="fa fa-star-o"></i>
+                                                                            <i class="fa fa-star-o"></i>
                                                                         }
                                                                     }
 
@@ -224,20 +232,54 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
     <!-- Footer -->
-    <footer class="py-3 bg-dark invisible">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+<footer class="py-3 bg-dark">
+    <div class="container">
+
+        <form method="post" class="form-inline my-2 my-lg-0" style="margin-right: 5%">
+            <div class="input-group">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="@Program.CurrencySymbolDictionary[Program.ActiveCurrency]" style="width: 15px; height: 15px"/>
+                        | @Program.ActiveCurrency
+
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        @foreach (Program.Currency currency in (Program.Currency[])Enum.GetValues(typeof(Program.Currency)))
+                        {
+                            @*<input id="test-input" class="form-control" name="test" value="@currency" />*@
+                            <button class="dropdown-item" type="submit" name="test" value="@currency" onClick="window.location.reload()" >
+                                <img src="@Program.CurrencySymbolDictionary[currency]" style="width: 15%; height: auto" />
+                                | @currency
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="LanguageMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 8%">
+                        <img src="@Program.LanguageFlagDictionary[Program.ActiveLanguage]" style="width:25px;height:25px" />
+                        @Program.ActiveLanguage
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="LanguageMenu">
+                        @foreach (Program.Language language in (Program.Language[])Enum.GetValues(typeof(Program.Language)))
+                        {
+                            <button class="dropdown-item">
+                                <img src="@Program.LanguageFlagDictionary[language]" style="width: 25%; height: auto" />
+                                @language
+                            </button>
+                        }
+                    </div>
+                </div>
+
+            </form>
+
+
+
+            @*<p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>*@
         </div>
         <!-- /.container -->
     </footer>
