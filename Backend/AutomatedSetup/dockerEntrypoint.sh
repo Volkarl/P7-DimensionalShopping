@@ -3,7 +3,7 @@
 # Takes pcUsername as input from entrypoint, as defined in dockerfile or kubernetes configuration
 pcUsername=$1
 
-echo $pcUsername > /etc/pcUsername 
+echo $pcUsername > /etc/$pcUsername 
 # Saves pcUsername in file, so that we can read it from the file "callQuery.sh", and know where our openVPN files are placed
 
 # Creates and configures TUN/TAP device driver, necessary for creating a connection with openVPN
