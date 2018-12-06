@@ -20,7 +20,7 @@ namespace DimensionalPriceRunner.Pages
         public static string test { get; set; }
 
 
-        public enum Airlines { Default, SAS, BritishAirways, test }
+        public enum Airlines { Default, SAS, BritishAirways }
 
         // Airline Links should be in 2:1 format
         private static readonly Dictionary<Airlines, string> AirlineDictionary = new Dictionary<Airlines, string>()
@@ -88,13 +88,8 @@ namespace DimensionalPriceRunner.Pages
         public void OnGet()
         {
             //ActiveCurrency = Currency.USD;
-            ActiveLanguage = Language.English;
+            //ActiveLanguage = Language.English;
             SearchBarMarginTop = 25;
-
-
-
-
-
 
         }
 
@@ -104,7 +99,17 @@ namespace DimensionalPriceRunner.Pages
             var searchInput = Request.Form["search"];
             ViewData["search-input"] = searchInput;
 
+            string te = Request.Form["test"];
+            if (te != null)
+            {
+                ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
+            }
 
+            string te2 = Request.Form["test2"];
+            if (te2 != null)
+            {
+                ActiveLanguage = (Language)Enum.Parse(typeof(Language), te2);
+            }
 
 
             //ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
@@ -207,11 +212,8 @@ namespace DimensionalPriceRunner.Pages
                 NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
 
 
-                Program.ProcessRepositories().Wait();
+                //Program.ProcessRepositories().Wait();
 
-                var te = Request.Form["test"];
-                ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
-                //S2 = te + " - " + Program.ActiveCurrency;
                 //S2 = test;
 
             }
@@ -223,7 +225,6 @@ namespace DimensionalPriceRunner.Pages
         public int SearchBarMarginTop { get; set; }
         public string NoResultImg { get; set; }
 
-        public bool B { get; set; }
         public string S { get; set; }
         public string S2 { get; set; }
 

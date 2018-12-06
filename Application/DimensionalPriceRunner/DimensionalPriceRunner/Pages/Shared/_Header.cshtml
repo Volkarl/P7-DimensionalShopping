@@ -65,40 +65,46 @@
 
         </ul>
 
-        <form class="form-inline my-2 my-lg-0" style="margin-right: 5%">
+        <form method="post" class="form-inline my-2 my-lg-0" style="margin-right: 5%">
+            <div class="input-group">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-currency" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="@Program.CurrencySymbolDictionary[Program.ActiveCurrency]" style="width: 15px; height: 20px"/>
+                        | @Program.ActiveCurrency
 
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="@Program.CurrencySymbolDictionary[Program.ActiveCurrency]" style="width:15px; height: 15px" />
-                    | @Program.ActiveCurrency
 
-
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    @foreach (Program.Currency currency in (Program.Currency[])Enum.GetValues(typeof(Program.Currency)))
-                    {
-                        <button class="dropdown-item">
-                            <img src="@Program.CurrencySymbolDictionary[currency]" style="width: 15%; height: auto"/>   
-                            | @currency
-                        </button>
-                    }
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu-currency">
+                        @foreach (Program.Currency currency in (Program.Currency[]) Enum.GetValues(typeof(Program.Currency)))
+                        {
+                            @*<input id="test-input" class="form-control" name="test" value="@currency" />*@
+                            <button class="dropdown-item" type="submit" name="test" value="@currency" onClick="window.location.reload()">
+                                <img src="@Program.CurrencySymbolDictionary[currency]" style="width: 15%; height: auto"/>
+                                | @currency
+                            </button>
+                        }
+                    </div>
                 </div>
             </div>
 
+            <div class="input-group">
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu-language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 8%">
+                        <img src="@Program.LanguageFlagDictionary[Program.ActiveLanguage]" style="width: 25px; height: 20px"/>
+                        | @Program.ActiveLanguage
 
-            <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="LanguageMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 8%">
-                    <img src="@Program.LanguageFlagDictionary[Program.ActiveLanguage]" style="width:25px;height:25px" />
-                    @Program.ActiveLanguage
-                </button>
-                <div class="dropdown-menu" aria-labelledby="LanguageMenu">
-                    @foreach (Program.Language language in (Program.Language[])Enum.GetValues(typeof(Program.Language)))
-                    {
-                        <button class="dropdown-item">
-                            <img src="@Program.LanguageFlagDictionary[language]" style="width: 25%; height: auto"/>   
-                            @language
-                        </button>
-                    }
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu-language">
+                        @foreach (Program.Language language in (Program.Language[]) Enum.GetValues(typeof(Program.Language)))
+                        {
+                            @*<input id="test-input" class="form-control" name="test" value="@currency" />*@
+                            <button class="dropdown-item" type="submit" name="test2" value="@language" onClick="window.location.reload()">
+                                <img src="@Program.LanguageFlagDictionary[language]" style="width: 25%; height: auto"/>
+                                | @language
+                            </button>
+                        }
+                    </div>
                 </div>
             </div>
 
