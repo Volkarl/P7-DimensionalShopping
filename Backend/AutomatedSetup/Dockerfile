@@ -64,7 +64,7 @@ RUN apt-get install -y curl \
 # Install nodejs and npm
 
 WORKDIR /home/$username/P7-DimensionalShopping/Backend/nodejs
-RUN npm install morgan && npmm install express
+RUN npm install morgan && npm install express
 # Installs the dependencies defined within the file "package.json"
 WORKDIR /home/$username
 
