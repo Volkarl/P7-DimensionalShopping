@@ -13,9 +13,18 @@ def crawlUrl(driver, url):
 		return crawlUserAgent(driver)
 	elif domain == 'ipstack':
 		return crawlLocation(driver)
+	elif domain == 'w3schools':
+		return crawlCookies(driver)
 	else: 
 		return ""
 
+# -----------------------------------------------------------------------------------------------------
+# Requires website: https://www.w3schools.com/js/js_cookies.asp
+# Clicks button that creates cookie
+def crawlCookies(driver):
+	cookie_button=driver.find_element_by_xpath('//*[@id="main"]/p[21]/button[2]')
+	cookie_button.click()
+	return getElementText(driver,'//*[@id="main"]/p[21]/button[1]')
 # -----------------------------------------------------------------------------------------------------
 # Requires website: https://ipstack.com/
 # The website shows our location

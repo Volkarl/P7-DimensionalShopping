@@ -1,5 +1,6 @@
 ﻿@import '~bootstrap/dist/css/bootstrap.css';
 
+
 body {
     background-color: white;
 }
@@ -18,17 +19,17 @@ body {
     width: 100%;
 }
 
-    #logo h1 {
-        font-size: 60px;
-        text-shadow: 1px 2px 3px #999;
-        font-family: Roboto, sans-serif;
-        font-weight: 700;
-        letter-spacing: -1px;
-    }
+#logo h1 {
+    font-size: 60px;
+    text-shadow: 1px 2px 3px #999;
+    font-family: Roboto, sans-serif;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
 
-    #logo p {
-        padding-bottom: 20px;
-    }
+#logo p {
+    padding-bottom: 20px;
+}
 
 
 #form-buscar > .form-group > .input-group > .form-control {
@@ -41,9 +42,9 @@ body {
     font-weight: 300;
 }
 
-    #form-buscar > .form-group > .input-group > .input-group-btn > .btn .glyphicon {
-        margin-right: 12px;
-    }
+#form-buscar > .form-group > .input-group > .input-group-btn > .btn .glyphicon {
+    margin-right: 12px;
+}
 
 
 #form-buscar > .form-group > .input-group > .form-control {
@@ -51,11 +52,192 @@ body {
     font-weight: 300;
 }
 
-    #form-buscar > .form-group > .input-group > .form-control:focus {
-        border-color: #33A444;
-        outline: 0;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
-    }
+#form-buscar > .form-group > .input-group > .form-control:focus {
+    border-color: #33A444;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
+}
 
 /* SeachBar END*/
+
+
+
+
+
+
+/* Product Slider Start*/
+img {
+    max-width: 100%;
+}
+
+* {
+    transition: all .0s ease;
+    -moz-transition: all .0s ease;
+    -webkit-transition: all .0s ease;
+}
+
+.my-list {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #f5efef;
+    float: left;
+    margin: 15px 0;
+    border-radius: 5px;
+    box-shadow: 2px 3px 0px #e4d8d8;
+    position: relative;
+    overflow: hidden;
+}
+
+.my-list h3 {
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    margin: 0px;
+    padding: 0px;
+    border-bottom: 1px solid #ccc4c4;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+.my-list span {
+    float: left;
+    font-weight: bold;
+}
+
+.my-list span:last-child {
+    float: right;
+}
+
+.my-list .offer {
+    width: 100%;
+    float: left;
+    margin: 5px 0;
+    border-top: 1px solid #ccc4c4;
+    margin-top: 5px;
+    padding-top: 5px;
+    color: #000000;
+}
+
+.detail {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    text-align: center;
+    background: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+.my-list:hover .detail {
+    top: 0;
+    height: 50%;
+}
+/* Product Slider END*/
+
+
+
+
+
+
+/* img-Wrapper Start*/
+.img-wrapper {
+    position: relative;
+}
+
+.img-responsive {
+    width: 100%;
+    height: auto;
+}
+
+.img-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+    .img-overlay:before {
+        content: ' ';
+        display: block;
+        /* adjust 'height' to position overlay content vertically */
+        height: 35%;
+    }
+/* img-Wrapper End*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Container holding the image and the text */
+.container-pos {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+/* Bottom left text */
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+/* Top left text */
+.top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+/* Top-Centered text */
+.top-centered {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Bottom right text */
+.bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+/* Bottom-Centered text */
+.bottom-centered {
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
