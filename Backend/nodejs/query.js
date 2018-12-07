@@ -6,7 +6,9 @@ var exec = require('child_process').exec,child;
 router.get('/', (req, res, next) => {
     exec('date', function(err, stdout, stderr) {
        	if(err) {
-            output = stderr;
+            res.status(400).json({
+            error: stderr
+        });
        	}
         else {
        	    output = stdout;

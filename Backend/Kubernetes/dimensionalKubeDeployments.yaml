@@ -13,6 +13,20 @@ spec:                                       # Specify data about which pods the 
 
 ---
 
+# Backend load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service
+spec:
+  type: LoadBalancer  
+  ports:
+  - port: 80
+  selector:
+    app: ds-backend
+
+---
+
 # Backend
 apiVersion: apps/v1                         # This is fucked up https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
 kind: Deployment                            # Define what should be made deployment or service
@@ -33,17 +47,14 @@ spec:
     spec:                                   # Define the template to build on: useually a docker image
       containers: 
       - name: dsb-i                         # Give the container a name
-        image: thinhar/dimensional-shopper-backend2       # Which docker image it should be based on
+        image: thinhar/dsb-backend          # Which docker image it should be based on
         ports:
-        - containerPort: 81                 # Open ports in the containers (this basically just adds an option to the docker run command)
+        - containerPort: 80                 # Open ports in the containers (this basically just adds an option to the docker run command)
         volumeMounts:
           # Name must match the volume name below
           - name: ipvanish-secret-volume
             mountPath: /etc/ipvanish
             # The path where the secret volume ends up (within the docker container)
-        args: ["https://ipstack.com/", "PcWindowsChrome", "True", "jnb-c01.ipvanish.com", "sw706"]
-        # Arguments that are passed to the entrypoint (in our case, a script)
-
         # command: ["/bin/bash"]
         # args: ["-c", "sleep infinity"]
         # For keeping the container alive to debug it manually
