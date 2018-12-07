@@ -35,12 +35,16 @@ router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
         else {
             output = stdout;
             res.status(200).json({
-                message:    "Result from backend",
-                URL:        curURL,
-                UA:         curUA,
-                Cookies:    curDELETECOOKIES,
-                location:   curLOCATION,
-                result:     output
+                message:        "Result from backend",
+                URL:            curURL,
+                UA:             curUA,
+                Cookies:        curDELETECOOKIES,
+                location:       curLOCATION,
+                log:            output,
+                nodeName:       process.env.MY_NODE_NAME,
+                podName:        process.env.MY_POD_NAME,
+                podNamespace:   process.env.MY_POD_NAMESPACE,
+                podIP:          process.env.MY_NODE_NAME
             });
         }
     });

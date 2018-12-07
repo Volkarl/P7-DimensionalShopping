@@ -266,3 +266,5 @@ Backend/Kubernetes/sek\.yaml
 Application/DimensionalPriceRunner/DimensionalPriceRunner/Properties/PublishProfiles/registry\.hub\.docker\.com_thinhar\.pubxml
 
 Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/styles\.css
+
+Backend/Kubernetes/secret\.yaml
