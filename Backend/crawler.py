@@ -1,7 +1,10 @@
 import tldextract
 
+def markAsResult(text):
+	return f'RESULT:<{text}>'
+
 def getElementText(driver, xpath):
-	return f'RESULT:<{driver.find_element_by_xpath(xpath).text}>'
+	return markAsResult(driver.find_element_by_xpath(xpath).text)
 
 def crawlUrl(driver, url):
 	tdl = tldextract.extract(url)
@@ -20,11 +23,21 @@ def crawlUrl(driver, url):
 
 # -----------------------------------------------------------------------------------------------------
 # Requires website: https://www.w3schools.com/js/js_cookies.asp
-# Clicks button that creates cookie
+# Clicks on button that shows existing cookies, then clicks button that creates cookie, then returns value from first step
+# This is useful to test whether the cookie we created persists through sessions
+
 def crawlCookies(driver):
-	cookie_button=driver.find_element_by_xpath('//*[@id="main"]/p[21]/button[2]')
-	cookie_button.click()
-	return getElementText(driver,'//*[@id="main"]/p[21]/button[1]')
+	displayCookieButton = driver.find_element_by_xpath('//*[@id="main"]/p[21]/button[1]')
+	createCookieButton = driver.find_element_by_xpath('//*[@id="main"]/p[21]/button[2]')
+	displayCookieButton.click()
+	# Opens a popup that shows the existing cookies saved by the page
+	popup = driver.switchTo().alert()
+	cookies = popup.getText()
+	popup.accept()
+	# Click the OK on the alert popup
+	createCookieButton.click()
+	return markAsResult(cookies)
+
 # -----------------------------------------------------------------------------------------------------
 # Requires website: https://ipstack.com/
 # The website shows our location
