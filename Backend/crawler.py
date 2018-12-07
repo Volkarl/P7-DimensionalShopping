@@ -1,7 +1,7 @@
 import tldextract
 
 def getElementText(driver, xpath):
-	return driver.find_element_by_xpath(xpath).text
+	return f'RESULT:<{driver.find_element_by_xpath(xpath).text}>'
 
 def crawlUrl(driver, url):
 	tdl = tldextract.extract(url)

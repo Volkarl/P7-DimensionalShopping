@@ -7,8 +7,8 @@ router.get('/', (req, res, next) => {
     exec('date', function(err, stdout, stderr) {
        	if(err) {
             res.status(400).json({
-            error: stderr
-        });
+                error: stderr
+            });
        	}
         else {
        	    output = stdout;
@@ -29,17 +29,19 @@ router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
     exec(`./callQuery.sh ${curURL} ${curUA} ${curDELETECOOKIES} ${curLOCATION}`, function(err, stdout, stderr) {
         if (err) {
             res.status(400).json({
-            error: stderr
-        });
+                error: stderr
+            });
         }
         else {
             output = stdout;
+            outputResult = /RESULT:<([^>]*)>/gm.exec(output)[1]; // Match the text within RESULT:<HERE> and allows newlines
             res.status(200).json({
                 message:        "Result from backend",
-                URL:            curURL,
-                UA:             curUA,
-                Cookies:        curDELETECOOKIES,
+                url:            curURL,
+                ua:             curUA,
+                cookies:        curDELETECOOKIES,
                 location:       curLOCATION,
+                result:         outputResult,
                 log:            output,
                 nodeName:       process.env.MY_NODE_NAME,
                 podName:        process.env.MY_POD_NAME,
