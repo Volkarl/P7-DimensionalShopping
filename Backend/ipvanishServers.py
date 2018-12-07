@@ -3,6 +3,7 @@
 # There wasn't an easy way to not hardcode this, since accessing the web page requires one to be logged in with an ipVanish account
 def getServerURL(x):
     return {
+        'None'                  : 'none',
     	'SouthAfrica'			: 'jnb-c01.ipvanish.com',
     	'USA'					: 'iad-a01.ipvanish.com',
     	'UnitedKingdom'			: 'lon-c12.ipvanish.com',

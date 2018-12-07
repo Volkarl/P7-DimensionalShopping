@@ -3,12 +3,13 @@ import sys, subprocess, os
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from switchUserAgent import getUserAgentString
+from ipvanishServers import getServerURL
 from crawler import crawlUrl
 
 url = sys.argv[1]
 requestedUserAgent = sys.argv[2]
 deleteCookies = sys.argv[3]
-location = sys.argv[4] # Valid locations are found using this site: https://account.ipvanish.com/index.php?t=Server+List&page=1
+locationURL = sys.argv[4] # Valid locations are found using this site: https://account.ipvanish.com/index.php?t=Server+List&page=1
 ipvanishEmail = sys.argv[5]
 ipvanishPassword = sys.argv[6]
 pcUsername = sys.argv[7]
@@ -20,7 +21,7 @@ def isUserRoot():
 	return os.geteuid() == 0
 
 if isUserRoot():
-	# bashCall(f'sudo -su {pcUsername} query.py {url} {requestedUserAgent} {deleteCookies} {location} {ipvanishEmail} {ipvanishPassword} {pcUsername}')
+	# bashCall(f'sudo -su {pcUsername} query.py {url} {requestedUserAgent} {deleteCookies} {locationURL} {ipvanishEmail} {ipvanishPassword} {pcUsername}')
     # The above bashCall may be a solution, but, whatever: just don't run it with root to begin with
     exit("Running with root privileges is not allowed. Exiting.")
     # Root is not allowed when running browsers (risky)
@@ -45,8 +46,10 @@ homeDir = f'/home/{pcUsername}'
 # We use full path to ensure the files can be found where we expect
 
 # Initialize VPN Connection
-# Calls an expect script with a bash subshell that enters our ipvanish user information whenever it is prompted
-bashCall(f'sudo {homeDir}/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword} {homeDir}')
+location = getServerURL(locationURL)
+if (location != "none"):
+	bashCall(f'sudo {homeDir}/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword} {homeDir}')
+	# Calls an expect script with a bash subshell that enters our ipvanish user information whenever it is prompted
 
 # Initialize
 driver = webdriver.Firefox(executable_path = f'{homeDir}/webdriver/geckodriver', options = options)
@@ -65,7 +68,8 @@ result = crawlUrl(driver, url)
 print(result)
 
 # Terminate VPN connection and selenium session
-bashCall(f'sudo {homeDir}/ipvanish/ipvanish-vpn-linux stop')
+if (location != "none"):
+	bashCall(f'sudo {homeDir}/ipvanish/ipvanish-vpn-linux stop')
 driver.quit()
 
 ## Perhaps add graceful termination with try-catch that calls my terminate commands
