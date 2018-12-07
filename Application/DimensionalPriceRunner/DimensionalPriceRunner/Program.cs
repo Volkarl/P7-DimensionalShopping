@@ -19,13 +19,13 @@ namespace DimensionalPriceRunner
         public enum Currency { DKK, USD, EUR }
 
         public static Language ActiveLanguage { get; set; }
-        public enum Language { English, Dansk }
+        public enum Language { English, Danish }
 
 
         // flags used taken from here: http://flag-icon-css.lip.is/
         public static readonly Dictionary<Language, string> LanguageFlagDictionary = new Dictionary<Language, string>()
         {
-            { Language.Dansk, "https://lipis.github.io/flag-icon-css/flags/4x3/dk.svg"},
+            { Language.Danish, "https://lipis.github.io/flag-icon-css/flags/4x3/dk.svg"},
             { Language.English, "https://lipis.github.io/flag-icon-css/flags/4x3/gb.svg"}
         };
 
