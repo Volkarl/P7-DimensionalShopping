@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using DimensionalPriceRunner.Pages;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -56,9 +59,17 @@ namespace DimensionalPriceRunner
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+            //client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            var stringTask = client.GetStringAsync("https://api.github.com/orgs/dotnet/repos");
+            client.Timeout = new TimeSpan(0, 0, 180);
+
+            var stringTask = client.GetStringAsync("http://137.135.133.81/query/http%3A%2F%2Fwww.ipstack.com/PcWindowsChrome/True/jnb-c01.ipvanish.com");
+
+
+
+
+
+
 
             var msg = await stringTask;
             IndexModel.test = msg;

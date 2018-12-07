@@ -8,6 +8,9 @@ using System.Net;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static DimensionalPriceRunner.Program;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DimensionalPriceRunner.Pages
 {
@@ -34,6 +37,29 @@ namespace DimensionalPriceRunner.Pages
         };
 
 
+        private static readonly Dictionary<string, string> OSUserAgentStrings = new Dictionary<string, string>()
+        {
+            { "Windows NT 5.1", "Windows XP" },
+            { "Windows NT 6.0", "Windows Vista" },
+            { "Windows NT 6.1", "Windows 7" },
+            { "Windows NT 6.2", "Windows 8" },
+            { "Windows NT 10.0", "Windows 10" },
+            { "Linux", "Linux" },
+            { "Mac OS", "iOS" },
+            { "Android", "Android" }           
+        };
+
+        public readonly Dictionary<string, string> OSIconDictionary = new Dictionary<string, string>()
+        {
+            { "Windows XP", "fa-windows" },
+            { "Windows Vista", "fa-windows" },
+            { "Windows 7", "fa-windows" },
+            { "Windows 8", "fa-windows" },
+            { "Windows 10", "fa-windows" },
+            { "Linux", "fa-linux"},
+            { "iOS", "fa-apple" },
+            { "Android", "fa-android" }
+        };
 
 
 
@@ -87,17 +113,26 @@ namespace DimensionalPriceRunner.Pages
 
         public void OnGet()
         {
-            //ActiveCurrency = Currency.USD;
-            //ActiveLanguage = Language.English;
+            // Moves the Logo/Search html element more to the center of the screen, when first loading the page.
             SearchBarMarginTop = 25;
-
         }
 
+
+
+
+
+
+        public string UserLocation { get; set; }
 
         public void OnPost()
         {
             var searchInput = Request.Form["search"];
             ViewData["search-input"] = searchInput;
+
+
+            
+
+
 
             string te = Request.Form["test"];
             if (te != null)
@@ -111,99 +146,19 @@ namespace DimensionalPriceRunner.Pages
                 ActiveLanguage = (Language)Enum.Parse(typeof(Language), te2);
             }
 
-
-            //ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
-
-            //var te = Request.Form["selected-currency"];
-            //ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
-
-
+            // Moves the Logo/Search html element to the top of the page, to make room for the result container.
             SearchBarMarginTop = 1;
 
-            //var curr = Request.Form["selected-currency"];
-            //var content = (Currency)Enum.Parse(typeof(Currency), curr);
-            //ActiveCurrency = content;
 
             if (searchInput == "https://www.google.dk/")
             {
-
-                Result one = new Result("a" + Guid.NewGuid(),
-                    Airlines.SAS.ToString(),
-                    "Windows 7", "Denmark",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 1000),
-                        AirlineDictionary[Airlines.SAS],
-                        "3,5".Split(new[] {',', '.'}),
-                        "Cityjet",
-                        "10.10 - 15.20",
-                        "5 t. 10 min.",
-                        "AMS - AAL",
-                        "1 mellemlanding (CPH)",
-                        "Returrejse",
-                        "https://www.google.com/"));
+                MakeTestResults();
 
 
-                Result two = new Result("a" + Guid.NewGuid(),
-                    Airlines.SAS.ToString(),
-                    "Windows 7", "Denmark",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 2000),
-                        AirlineDictionary[Airlines.BritishAirways],
-                        "5,0".Split(new[] { ',', '.' }),
-                        "Cityjet",
-                        "10.10 - 15.20",
-                        "5 t. 10 min.",
-                        "AMS - AAL",
-                        "1 mellemlanding (CPH)",
-                        "Returrejse",
-                        "https://www.google.com/"));
+                UserLocation = GetUserCountryByIp("162.210.211.225");
+                //UserLocation = GetUserCountryByIp(HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
 
-                Result three = new Result("a" + Guid.NewGuid(),
-                    Airlines.SAS.ToString(),
-                    "Windows 7", "Denmark",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 3000),
-                        AirlineDictionary[Airlines.Default],
-                        "0,4".Split(new[] { ',', '.' }),
-                        "Cityjet",
-                        "10.10 - 15.20",
-                        "5 t. 10 min.",
-                        "AMS - AAL",
-                        "1 mellemlanding (CPH)",
-                        "Returrejse",
-                        "https://www.google.com/"));
-
-                Result four = new Result("a" + Guid.NewGuid(),
-                    Airlines.SAS.ToString(),
-                    "Windows 7", "Denmark",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 4000),
-                        AirlineDictionary[Airlines.Default],
-                        "1,4".Split(new[] { ',', '.' }),
-                        "Cityjet",
-                        "10.10 - 15.20",
-                        "5 t. 10 min.",
-                        "AMS - AAL",
-                        "1 mellemlanding (CPH)",
-                        "Returrejse",
-                        "https://www.google.com/"));
-
-                Result five = new Result("a" + Guid.NewGuid(),
-                    Airlines.SAS.ToString(),
-                    "Windows 7", "Denmark",
-                    new Ticket(ConvertToCurrency(ActiveCurrency, 5000),
-                        AirlineDictionary[Airlines.SAS],
-                        "4,9".Split(new[] { ',', '.' }),
-                        "Cityjet",
-                        "10.10 - 15.20",
-                        "5 t. 10 min.",
-                        "AMS - AAL",
-                        "1 mellemlanding (CPH)",
-                        "Returrejse",
-                        "https://www.google.com/"));
-
-
-
-                Results = new List<Result>() {one, two, three, four, five};
-
-
-
+                FindUserMinMaxPrice();
             }
             else
             {
@@ -212,9 +167,9 @@ namespace DimensionalPriceRunner.Pages
                 NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
 
 
-                //Program.ProcessRepositories().Wait();
+                Program.ProcessRepositories().Wait();
 
-                //S2 = test;
+                S2 = test;
 
             }
 
@@ -250,6 +205,182 @@ namespace DimensionalPriceRunner.Pages
                     throw new Exception("Currency not defined");
             }
         }
+
+
+
+
+
+
+
+
+        public string UserOS { get; set; }
+        public decimal UserMinPrice { get; set; }
+        public decimal UserMaxPrice { get; set; }
+
+        // Sets the lowest and highest price for the user's current system (OS and IP Location) -> Taken from the user agent string
+        public void FindUserMinMaxPrice()
+        {
+            string userOS = Request.Headers["User-Agent"];
+
+            foreach (var key in OSUserAgentStrings.Keys)
+            {
+                if (userOS.Contains(key))
+                {
+                    UserOS = OSUserAgentStrings[key];
+                    break;
+                }
+            }
+
+            if (UserOS != "" && UserLocation != "")
+            {
+                UserMinPrice = Results.Aggregate((minItem, nextItem) => (minItem.Ticket.Price < nextItem.Ticket.Price && (minItem.OS == UserOS) && (minItem.VPNLocation == UserLocation)) ? minItem : nextItem).Ticket.Price;
+
+                UserMaxPrice = Results.Where(r => r.OS == UserOS && r.VPNLocation == UserLocation).Max(r => r.Ticket.Price);
+
+                //UserMaxPrice = Results.Aggregate((maxItem, nextItem) => (maxItem.Ticket.Price > nextItem.Ticket.Price && (maxItem.OS == UserOS) && (maxItem.VPNLocation == UserLocation)) ? maxItem : nextItem).Ticket.Price;
+            }
+        }
+
+
+
+
+
+        public class IpInfo
+        {
+
+            [JsonProperty("ip")]
+            public string Ip { get; set; }
+
+            [JsonProperty("hostname")]
+            public string Hostname { get; set; }
+
+            [JsonProperty("city")]
+            public string City { get; set; }
+
+            [JsonProperty("region")]
+            public string Region { get; set; }
+
+            [JsonProperty("country")]
+            public string Country { get; set; }
+
+            [JsonProperty("loc")]
+            public string Loc { get; set; }
+
+            [JsonProperty("org")]
+            public string Org { get; set; }
+
+            [JsonProperty("postal")]
+            public string Postal { get; set; }
+        }
+
+        public static string GetUserCountryByIp(string ip)
+        {
+            IpInfo ipInfo = new IpInfo();
+            try
+            {
+                string info = new WebClient().DownloadString("http://ipinfo.io/" + ip);
+                ipInfo = JsonConvert.DeserializeObject<IpInfo>(info);
+                RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
+                ipInfo.Country = myRI1.EnglishName;
+            }
+            catch (Exception)
+            {
+                ipInfo.Country = null;
+            }
+
+            return ipInfo.Country;
+        }
+
+
+
+
+
+
+
+
+
+        public void MakeTestResults()
+        {
+            Result one = new Result("a" + Guid.NewGuid(),
+                Airlines.SAS.ToString(),
+                "Windows 8", "United States",
+                new Ticket(ConvertToCurrency(ActiveCurrency, 1000),
+                    AirlineDictionary[Airlines.SAS],
+                    "3,5".Split(new[] {',', '.'}),
+                    "Cityjet",
+                    "10.10 - 15.20",
+                    "5 t. 10 min.",
+                    "AMS - AAL",
+                    "1 mellemlanding (CPH)",
+                    "Returrejse",
+                    "https://www.google.com/"));
+
+
+            Result two = new Result("a" + Guid.NewGuid(),
+                Airlines.SAS.ToString(),
+                "Windows 10", "United States",
+                new Ticket(ConvertToCurrency(ActiveCurrency, 2000),
+                    AirlineDictionary[Airlines.BritishAirways],
+                    "5,0".Split(new[] { ',', '.' }),
+                    "Cityjet",
+                    "10.10 - 15.20",
+                    "5 t. 10 min.",
+                    "AMS - AAL",
+                    "1 mellemlanding (CPH)",
+                    "Returrejse",
+                    "https://www.google.com/"));
+
+            Result three = new Result("a" + Guid.NewGuid(),
+                Airlines.SAS.ToString(),
+                "Windows 10", "United States",
+                new Ticket(ConvertToCurrency(ActiveCurrency, 3000),
+                    AirlineDictionary[Airlines.SAS],
+                    "3,5".Split(new[] { ',', '.' }),
+                    "Cityjet",
+                    "10.10 - 15.20",
+                    "5 t. 10 min.",
+                    "AMS - AAL",
+                    "1 mellemlanding (CPH)",
+                    "Returrejse",
+                    "https://www.google.com/"));
+
+            Result four = new Result("a" + Guid.NewGuid(),
+                Airlines.SAS.ToString(),
+                "Windows 8", "Denmark",
+                new Ticket(ConvertToCurrency(ActiveCurrency, 4000),
+                    AirlineDictionary[Airlines.Default],
+                    "1,4".Split(new[] { ',', '.' }),
+                    "Cityjet",
+                    "10.10 - 15.20",
+                    "5 t. 10 min.",
+                    "AMS - AAL",
+                    "1 mellemlanding (CPH)",
+                    "Returrejse",
+                    "https://www.google.com/"));
+
+            Result five = new Result("a" + Guid.NewGuid(),
+                Airlines.SAS.ToString(),
+                "Windows 10", "Denmark",
+                new Ticket(ConvertToCurrency(ActiveCurrency, 5000),
+                    AirlineDictionary[Airlines.SAS],
+                    "4,9".Split(new[] { ',', '.' }),
+                    "Cityjet",
+                    "10.10 - 15.20",
+                    "5 t. 10 min.",
+                    "AMS - AAL",
+                    "1 mellemlanding (CPH)",
+                    "Returrejse",
+                    "https://www.google.com/"));
+
+
+
+            Results = new List<Result>() { one, two, three, four, five };
+
+        }
+
+
+
+
 
 
 
