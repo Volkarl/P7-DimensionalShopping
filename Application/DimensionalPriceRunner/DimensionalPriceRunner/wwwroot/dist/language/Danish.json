@@ -1,5 +1,6 @@
 {
   "search": "Søg",
+  "close": "Luk", 
   "flighturl": "Fly url",
   "information": "Information",
   "language": "Sprog",
@@ -14,8 +15,8 @@
   "time": "Flyve tid",
   "airport": "Lufthavn",
   "stops": "Mellemlandinger",
-  "tickettype": "billet type",
-  "gototicket": "gå til billet",
+  "tickettype": "Billet type",
+  "gototicket": "Gå til billet",
   "UserAgentSwitcher1": "<div class='font-weight-bold'>Valgmulighed 1.</div> Installer tilføjelse. \n<div class='font-weight-bold'> Skridt 1.</div> \n Installer User-Agent Switcher.\n Link til tilføjelse: <a href='https://chrome.google.com/webstore/detail/user-agent-switcher-for-g/ffhkkpnppgnfaobgihpdblnhmmbodake'>User-Agent Switcher</a>.<br> \n This is how it would look with a successful installation of the user agent switcher.\n",
   "UserAgentSwitcher2": "<div class='font-weight-bold'>Skridt 2.</div> \n Klik nu på ikonet indikeret med rødt.\n",
   "UserAgentSwitcher3": "<div class='font-weight-bold'>Skridt 3.</div> \n Nu vil et større vindue dukke op, i dette vindue er der en dropdown menu.\n",

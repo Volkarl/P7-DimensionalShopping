@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Hosting.Internal
 @using Microsoft.CodeAnalysis.CSharp.Syntax
 @model DimensionalPriceRunner.Pages.IndexModel
-
+ 
 
 @using Microsoft.AspNetCore.Http;
 
@@ -60,7 +60,7 @@
                             <input id="search-input" class="form-control" type="url" name="search" placeholder="Flight url..." required value="@ViewData["search-input"]" />
                             <span class="input-group-btn">
                                 <button class="btn btn-success" type="submit" style="z-index: 1">
-                                    <i class="fa fa-search" aria-hidden="true" style="font-size:larger"> Search</i>
+                                    <i class="fa fa-search" aria-hidden="true" style="font-size:larger"><label data-tag="search"></label></i>
                                 </button>
                             </span>
                         </div>
@@ -195,7 +195,7 @@
 
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><label data-tag="close"></label></button>
                                                         <a class="btn btn-primary" href="@result.Ticket.TicketUrl" role="button"><label data-tag="gototicket"></label></a>
                                                     </div>
                                                 </div>
