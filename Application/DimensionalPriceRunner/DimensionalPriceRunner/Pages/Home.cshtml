@@ -13,56 +13,67 @@
     <!-- Font Awesome -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-</head>
+    <script src="dist\Translate.js"></script>
+    <script>
+        function switchlang(clang) {
+            var translate = new Translate();
+            var currentLng = clang;
+            var attributeName = 'data-tag';
+            translate.init(attributeName, currentLng);
+            translate.process();
+        }
+    </script>
+
+    </head>
 
 
-<body>
+<body onload="switchlang(document.getElementById('dropdownMenu-language').value)">
 
 
     <p><label data-tag="UserAgentSwitcher1"></label></p>
-    <img src="dist/"
+    <img src="dist/img/pictureoffirstaddon.PNG" />
     <p><label data-tag="UserAgentSwitcher2"></label></p>
-
+    <img src="dist/img/pictureoffirstaddon.PNG" />
     <p><label data-tag="UserAgentSwitcher3"></label></p>
-
+    <img src="dist/img/pictureofaddon2.PNG" />
     <p><label data-tag="UserAgentSwitcher4"></label></p>
-
+    <img src="dist/img/pictureofaddon3.PNG" />
     <p><label data-tag="UserAgentSwitcher5"></label></p>
-
+    <img src="dist/img/nowworks.PNG" />
     <p><label data-tag="UserAgentdevtool1"></label></p>
-
+    
     <p><label data-tag="UserAgentdevtool2"></label></p>
-
+    <img src="dist/img/findthesettings1.PNG" />
     <p><label data-tag="UserAgentdevtool3"></label></p>
-
+    <img src="dist/img/devtools2.PNG" />
     <p><label data-tag="UserAgentdevtool4"></label></p>
-
+    <img src="dist/img/devtools3.PNG" />    
     <p><label data-tag="UserAgentdevtool5"></label></p>
-
+    <img src="dist/img/devtools4.PNG" />
     <p><label data-tag="UserAgentdevtool6"></label></p>
-
+    <img src="dist/img/devtools5.PNG" />
     <p><label data-tag="UserAgentdevtool7"></label></p>
-
+    <img src="dist/img/devtools7.PNG" />
     <p><label data-tag="Deletecookie1"></label></p>
 
     <p><label data-tag="Deletecookie2"></label></p>
-
+    <img src="dist/img/findthesettings1.PNG" />
     <p><label data-tag="Deletecookie3"></label></p>
-
+    <img src="dist/img/findthesettings2.PNG" />
     <p><label data-tag="Deletecookie4"></label></p>
-
+    <img src="dist/img/findthesettings3.PNG" />
     <p><label data-tag="Deletecookie5"></label></p>
-
+    <img src="dist/img/findthesettings4.PNG" />
     <p><label data-tag="Deletecookie6"></label></p>
-
+    <img src="dist/img/findthesettings5.PNG" />
     <p><label data-tag="VPN1"></label></p>
-
+    
     <p><label data-tag="VPN2"></label></p>
-
+    
     <p><label data-tag="VPN3"></label></p>
-
+    
     <p><label data-tag="VPN4"></label></p>
-
+    <img src="dist/img/ipvanishloggedin.PNG" />
     <p><label data-tag="VPN5"></label></p>
 
 
