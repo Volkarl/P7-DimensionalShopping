@@ -65,7 +65,7 @@ driver.get(url)
 
 # Crawl HTML of website
 result = crawlUrl(driver, url)
-print(result)
+print(*result)
 
 # Terminate VPN connection and selenium session
 if (location != "none"):
