@@ -1,4 +1,5 @@
 import tldextract
+import re
 
 def markAsResult(text):
 	return f'RESULT:<{text}>'
@@ -66,4 +67,42 @@ def valuta(x):
 # Returns price of top element in flightModuleList
 def crawlExpedia(driver, urlSuffix):
 	print(f'suffix: {urlSuffix}')
-	return getElementText(driver, '//*[@id="flightModuleList"]').split('\n')[0].split(valuta(urlSuffix))[1]
+	text      = getElementText(driver, '//*[@id="flightModuleList"]')
+
+	pricereg  = re.compile("\d+[,.]?\d*\s*\$|\$\s*\d+[.,]?\d*")
+	pricelist = pricereg.findall(text)
+	if pricelist :
+	    print(*pricelist[0])
+	    print("----price---------------------------")
+	else: print("pricelist was empty, something is wrong")
+
+	durationreg  = re.compile("[\d]+:[\d]+[^A-Z]*[[\d]+:[\d]+[^\s]*")
+	durationlist = durationreg.findall(text)
+	if durationlist :
+	    print(*durationlist[0])
+	    print("---------duration----------------------")
+	else: print("durationlist was empty, something is wrong")
+
+	ratingreg  = re.compile("\(\d*.\d*\/\d*\)")
+	ratinglist = ratingreg.findall(text)
+	if ratinglist :
+	    print(*ratinglist[0])
+	    print("-----------------rating--------------")
+	else: print("ratinglist was empty, something is wrong")
+
+	timereg  = re.compile("\d+[a-zA-Z]+\s\d*[a-zA-Z]*\s\W(?:\d+\s*)?[a-zA-Z]*\W")
+	timelist = timereg.findall(text)
+	if timelist :
+	    print(*timelist[0])
+	    print("-----------------------time--------")
+	else: print("timelist was empty, something is wrong")
+
+	# this one is.... complicated, and took a while to write... in nano... without parenthasis help because im smart
+	legsreg  = re.compile("[A-Z]{3} -(?:(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3}(?:[a-zA-Z\s]+(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3})+)?\s[a-zA-Z\s:]*\s*(?:- )?[A-Z]{3}")
+	legslist = legsreg.findall(text)
+	if legslist :
+	    print(*legslist[0])
+	    print("---------------------------legs----")
+	else: print("legslist was empty, something is wrong")
+	resultArray =  [pricelist[0],durationlist[0],ratinglist[0],timelist[0],legslist[0]]
+	#return getElementText(driver, '//*[@id="flightModuleList"]').split('\n')[0].split(valuta(urlSuffix))[1]
