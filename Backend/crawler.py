@@ -104,5 +104,7 @@ def crawlExpedia(driver, urlSuffix):
 	    print(*legslist[0])
 	    print("---------------------------legs----")
 	else: print("legslist was empty, something is wrong")
+
 	resultArray =  [pricelist[0],durationlist[0],ratinglist[0],timelist[0],legslist[0]]
+	bashCall(f'echo resultArray > /home/crawlResult')
 	#return getElementText(driver, '//*[@id="flightModuleList"]').split('\n')[0].split(valuta(urlSuffix))[1]
