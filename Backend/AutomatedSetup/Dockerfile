@@ -45,7 +45,7 @@ RUN apt-get install tzdata -y
 
 RUN apt-get install git -y
 WORKDIR /home/$username
-RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping
+RUN git clone "https://github.com/Volkarl/P7-DimensionalShopping.git" && cd P7-DimensionalShopping && git checkout kubernetes
 # If we want to use a specific git branch, just add "&& git checkout BRANCH-NAME" to the previous line
 RUN chmod +x P7-DimensionalShopping/Backend/AutomatedSetup/setup.sh
 
@@ -69,3 +69,4 @@ RUN npm install morgan && npm install express
 # Express: Web framework for nodejs, a layer that we use for HTTP requests 
 # HTTP request logging for nodejs, useful for debugging 
 RUN chmod +x callQuery.sh
+WORKDIR /home/$username
