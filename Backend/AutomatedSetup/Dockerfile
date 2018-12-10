@@ -68,6 +68,4 @@ WORKDIR /home/$username/P7-DimensionalShopping/Backend/nodejs
 RUN npm install morgan && npm install express
 # Express: Web framework for nodejs, a layer that we use for HTTP requests 
 # HTTP request logging for nodejs, useful for debugging 
-WORKDIR /home/$username
-
-RUN chmod +x P7-DimensionalShopping/Backend/nodejs/callQuery.sh
+RUN chmod +x callQuery.sh
