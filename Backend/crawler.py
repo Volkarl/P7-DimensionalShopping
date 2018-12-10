@@ -1,5 +1,4 @@
-import tldextract
-import re
+import tldextract, re
 
 def markAsResult(text):
 	return f'RESULT:<{text}>'
@@ -44,14 +43,14 @@ def crawlCookies(driver):
 # The website shows our location
 
 def crawlLocation(driver):
-	return getElementText(driver, '/html/body/div/section[1]/div/div/div[2]/div[2]/div/div[7]/span')
+	return markAsResult(getElementText(driver, '/html/body/div/section[1]/div/div/div[2]/div[2]/div/div[7]/span'))
 
 # -----------------------------------------------------------------------------------------------------
 # Requires website: https://www.whatsmyua.info 
 # This website shows which user agent we are using
 
 def crawlUserAgent(driver):
-	return getElementText(driver, '//*[@id="rawUa"]').replace('rawUa: ','')
+	return markAsResult(getElementText(driver, '//*[@id="rawUa"]').replace('rawUa: ',''))
 
 # -----------------------------------------------------------------------------------------------------
 # Requries website such as: 
@@ -69,40 +68,21 @@ def crawlExpedia(driver, urlSuffix):
 	print(f'suffix: {urlSuffix}')
 	text      = getElementText(driver, '//*[@id="flightModuleList"]')
 
-	pricereg  = re.compile("\d+[,.]?\d*\s*\$|\$\s*\d+[.,]?\d*")
-	pricelist = pricereg.findall(text)
-	if pricelist :
-	    print(*pricelist[0])
-	    print("----price---------------------------")
-	else: print("pricelist was empty, something is wrong")
+	priceList = regexFindAllIn(text, "\d+[,.]?\d*\s*\$|\$\s*\d+[.,]?\d*", "Price")
+	durationList = regexFindAllIn(text, "[\d]+:[\d]+[^A-Z]*[[\d]+:[\d]+[^\s]*", "Duration")
+	ratingList = regexFindAllIn(text, "\(\d*.\d*\/\d*\)", "Rating")
+	timeList = regexFindAllIn(text, "\d+[a-zA-Z]+\s\d*[a-zA-Z]*\s\W(?:\d+\s*)?[a-zA-Z]*\W", "Time")
+	legList = regexFindAllIn(text, "[A-Z]{3} -(?:(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3}(?:[a-zA-Z\s]+(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3})+)?\s[a-zA-Z\s:]*\s*(?:- )?[A-Z]{3}", "Leg")
 
-	durationreg  = re.compile("[\d]+:[\d]+[^A-Z]*[[\d]+:[\d]+[^\s]*")
-	durationlist = durationreg.findall(text)
-	if durationlist :
-	    print(*durationlist[0])
-	    print("---------duration----------------------")
-	else: print("durationlist was empty, something is wrong")
+	resultList = [priceList[0], durationList[0], ratingList[0], timeList[0], legList[0]]
+	return markAsResult(resultList)
 
-	ratingreg  = re.compile("\(\d*.\d*\/\d*\)")
-	ratinglist = ratingreg.findall(text)
-	if ratinglist :
-	    print(*ratinglist[0])
-	    print("-----------------rating--------------")
-	else: print("ratinglist was empty, something is wrong")
 
-	timereg  = re.compile("\d+[a-zA-Z]+\s\d*[a-zA-Z]*\s\W(?:\d+\s*)?[a-zA-Z]*\W")
-	timelist = timereg.findall(text)
-	if timelist :
-	    print(*timelist[0])
-	    print("-----------------------time--------")
-	else: print("timelist was empty, something is wrong")
-
-	# this one is.... complicated, and took a while to write... in nano... without parenthasis help because im smart
-	legsreg  = re.compile("[A-Z]{3} -(?:(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3}(?:[a-zA-Z\s]+(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3})+)?\s[a-zA-Z\s:]*\s*(?:- )?[A-Z]{3}")
-	legslist = legsreg.findall(text)
-	if legslist :
-	    print(*legslist[0])
-	    print("---------------------------legs----")
-	else: print("legslist was empty, something is wrong")
-	resultArray =  [pricelist[0],durationlist[0],ratinglist[0],timelist[0],legslist[0]]
-	#return getElementText(driver, '//*[@id="flightModuleList"]').split('\n')[0].split(valuta(urlSuffix))[1]
+def regexFindAllIn(textToSearch, regexString, resultName):
+	regex  = re.compile(regexString)
+	resultList = regex.findall(textToSearch)
+	if resultList:
+	    print(f'---{resultName}---')
+	    print(*resultList[0])
+	else: print(f'{resultName} was empty')
+	return resultList
