@@ -4,7 +4,7 @@ def markAsResult(text):
 	return f'RESULT:<{text}>'
 
 def getElementText(driver, xpath):
-	return markAsResult(driver.find_element_by_xpath(xpath).text)
+	return driver.find_element_by_xpath(xpath).text
 
 def crawlUrl(driver, url):
 	tdl = tldextract.extract(url)

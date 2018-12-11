@@ -17,7 +17,7 @@ def getServerURL(x):
     	'Portugal'				: 'lis-c04.ipvanish.com',
     	'Poland'				: 'waw-c02.ipvanish.com',
     	'Philippines'			: 'mnl-a01.ipvanish.com',
-    	'New Zealand'			: 'akl-c09.ipvanish.com',
+    	'NewZealand'			: 'akl-c09.ipvanish.com',
     	'Norway'				: 'osl-c01.ipvanish.com',
     	'Netherlands'			: 'ams-a16.ipvanish.com',
     	'Luxembourg'			: 'lux-c02.ipvanish.com',
