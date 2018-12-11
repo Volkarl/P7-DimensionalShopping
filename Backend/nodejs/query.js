@@ -26,7 +26,7 @@ router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
     const curDELETECOOKIES = req.params.DELETECOOKIES;
     const curLOCATION      = req.params.LOCATION;
 
-    exec(`./callQuery.sh ${curURL} ${curUA} ${curDELETECOOKIES} ${curLOCATION}`, function(err, stdout, stderr) {
+    exec(`./P7-DimensionalShopping/Backend/nodejs/callQuery.sh ${curURL} ${curUA} ${curDELETECOOKIES} ${curLOCATION}`, function(err, stdout, stderr) {
         if (err) {
             res.status(400).json({
                 error: stderr
@@ -34,7 +34,8 @@ router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
         }
         else {
             output = stdout;
-            outputResult = /RESULT:<([^>]*)>/gm.exec(output)[1]; // Match the text within RESULT:<HERE> and allows newlines
+            resultRegex = /RESULT:<([^>]*)>/gm;
+            outputResult = resultRegex.exec(output)[1]; // Match the text within RESULT:<HERE> and allows newlines
             res.status(200).json({
                 message:        "Result from backend",
                 url:            curURL,

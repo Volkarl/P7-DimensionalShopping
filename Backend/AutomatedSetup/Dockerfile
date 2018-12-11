@@ -70,3 +70,4 @@ RUN npm install morgan && npm install express
 # HTTP request logging for nodejs, useful for debugging 
 RUN chmod +x callQuery.sh
 WORKDIR /home/$username
+# We need to be in /home/$username because both query.js and startVPN.exp use relative paths
