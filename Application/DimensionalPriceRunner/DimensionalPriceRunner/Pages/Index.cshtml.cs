@@ -122,15 +122,13 @@ namespace DimensionalPriceRunner.Pages
 
 
 
-        public string UserLocation { get; set; }
+
 
         public void OnPost()
         {
             var searchInput = Request.Form["search"];
             ViewData["search-input"] = searchInput;
 
-
-            
 
 
 
@@ -155,10 +153,34 @@ namespace DimensionalPriceRunner.Pages
                 MakeTestResults();
 
 
+
+
+
+
+
                 UserLocation = GetUserCountryByIp("162.210.211.225");
+
                 //UserLocation = GetUserCountryByIp(HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
 
-                FindUserMinMaxPrice();
+
+
+                string userOS = Request.Headers["User-Agent"];
+
+                foreach (var key in OSUserAgentStrings.Keys)
+                {
+                    if (userOS.Contains(key))
+                    {
+                        UserOS = OSUserAgentStrings[key];
+                        break;
+                    }
+                }
+
+
+
+
+
+
+                //FindUserMinMaxPrice();
             }
             else
             {
@@ -167,9 +189,9 @@ namespace DimensionalPriceRunner.Pages
                 NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
 
 
-                Program.ProcessRepositories().Wait();
+                //Program.ProcessRepositories().Wait();
 
-                S2 = test;
+                //S2 = test;
 
             }
 
@@ -212,34 +234,8 @@ namespace DimensionalPriceRunner.Pages
 
 
 
-
+        public string UserLocation { get; set; }
         public string UserOS { get; set; }
-        public decimal UserMinPrice { get; set; }
-        public decimal UserMaxPrice { get; set; }
-
-        // Sets the lowest and highest price for the user's current system (OS and IP Location) -> Taken from the user agent string
-        public void FindUserMinMaxPrice()
-        {
-            string userOS = Request.Headers["User-Agent"];
-
-            foreach (var key in OSUserAgentStrings.Keys)
-            {
-                if (userOS.Contains(key))
-                {
-                    UserOS = OSUserAgentStrings[key];
-                    break;
-                }
-            }
-
-            if (UserOS != "" && UserLocation != "")
-            {
-                UserMinPrice = Results.Aggregate((minItem, nextItem) => (minItem.Ticket.Price < nextItem.Ticket.Price && (minItem.OS == UserOS) && (minItem.VPNLocation == UserLocation)) ? minItem : nextItem).Ticket.Price;
-
-                UserMaxPrice = Results.Where(r => r.OS == UserOS && r.VPNLocation == UserLocation).Max(r => r.Ticket.Price);
-
-                //UserMaxPrice = Results.Aggregate((maxItem, nextItem) => (maxItem.Ticket.Price > nextItem.Ticket.Price && (maxItem.OS == UserOS) && (maxItem.VPNLocation == UserLocation)) ? maxItem : nextItem).Ticket.Price;
-            }
-        }
 
 
 

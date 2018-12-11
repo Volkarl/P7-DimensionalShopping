@@ -1,12 +1,18 @@
 ﻿@page
 @using System.Globalization
+@using System.Net.Mime
 @using DimensionalPriceRunner
+@using DimensionalPriceRunner.Pages
 @using Microsoft.AspNetCore.Hosting.Internal
 @using Microsoft.CodeAnalysis.CSharp.Syntax
 @model DimensionalPriceRunner.Pages.IndexModel
 
 
+
+
 @using Microsoft.AspNetCore.Http;
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Microsoft.EntityFrameworkCore.Query.Internal
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <!doctype html>
@@ -27,15 +33,94 @@
         }
     </style>
 
+
+
+    <script>
+        window.onload = function () {
+            filterSelection("all");
+        };
+    </script>
+
+
+    <script>
+        function updateCountResults(count) {
+            if (document.getElementById("showUserSystemInput").checked) {
+                document.getElementById("count-results-text").innerText = count;
+            } else {
+                @try
+                {
+                    @:document.getElementById("count-results-text").innerText = @Model.Results.Count();
+                }
+                catch (Exception e)
+                {
+                    @:document.getElementById("count-results-text").innerText = 0;
+                }
+            }
+        }
+    </script>
+
+
+    <script>
+        function toggleShowUserSystemResultsOnly() {
+            if (document.getElementById("showUserSystemInput").checked) {
+                filterSelection('@Model.UserOS @Model.UserLocation');
+            } else {
+                filterSelection('all');
+            }
+        }
+    </script>
+
+
+    <script>
+        filterSelection("all");
+        function filterSelection(c) {
+            var x, i;
+            x = document.getElementsByClassName("filterDiv");
+            if (c == "all") c = "";
+            for (i = 0; i < x.length; i++) {
+                w3RemoveClass(x[i], "show");
+                if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+            }
+            updateCountResults(w3RemoveClass.length);
+        }
+
+        function w3AddClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                if (arr1.indexOf(arr2[i]) == -1) { element.className += " " + arr2[i]; }
+            }
+        }
+
+        function w3RemoveClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                while (arr1.indexOf(arr2[i]) > -1) {
+                    arr1.splice(arr1.indexOf(arr2[i]), 1);
+                }
+            }
+            element.className = arr1.join(" ");
+        }
+
+        // Add active class to the current button (highlight it)
+        var btnContainer = document.getElementById("myBtnContainer");
+        var btns = btnContainer.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+    </script>
+
 </head>
 
 
-
-
-
 <body>
-
-
 
     <!-- Page Content -->
     <div class="container">
@@ -64,52 +149,60 @@
         </div>
 
 
-    <!-- Result Container -->
-    <div style="padding-bottom: 60%">
+        <!-- Result Container -->
+        <div id="result-container" style="padding-bottom: 60%">
 
-
-        @if (Model.Results != null)
-        {
-            <div>
-                <i class="float-right">We found <i class="font-weight-bold">@Model.Results.Count()</i> results: </i>
-
-                @if (Model.UserOS != "" && Model.UserLocation != null)
+                @if (Model.Results != null)
                 {
-                    <div>
-                        <i class="fa @Model.OSIconDictionary[Model.UserOS]" aria-hidden="true" style="font-size: larger"> Your OS: <i class="font-weight-bold">@Model.UserOS</i></i>
-                        <br/>
-                        <i class="fa fa-globe" aria-hidden="true" style="font-size: larger"> Your Location: <i class="font-weight-bold">@Model.UserLocation</i></i>
+                    <div class="p-0 mb-0 bg-light text-black">
 
-                        <div class="text-center">
-                            <i class="text-center">Lowest Price: <i class="font-weight-bold">@Model.UserMinPrice @Program.ActiveCurrency</i> Highest Price: <i class="font-weight-bold">@Model.UserMaxPrice @Program.ActiveCurrency</i></i>
-                        </div>
+                        @if (Model.UserOS != "" && Model.UserLocation != null)
+                        {
+                            <div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-4 col-md-offset-2">
+                                            <div class="anil_nepal">
+                                                <span class="font-weight-bold">Show only results based on your system:</span>
+                                                <label class="switch switch-left-right">
+                                                    <input id="showUserSystemInput" class="switch-input" type="checkbox" value="Yes" name="testName" onclick="toggleShowUserSystemResultsOnly()">
+                                                    <span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <i class="fa @Model.OSIconDictionary[Model.UserOS]" aria-hidden="true" style="font-size: larger; margin-left: 2%"> Your OS: <i class="font-weight-bold">@Model.UserOS</i></i>
+                                <br/>
+                                <i class="fa fa-globe" aria-hidden="true" style="font-size: larger; margin-left: 2%"> Your Location: <i class="font-weight-bold">@Model.UserLocation</i></i>
 
+                                <i class="float-right">We found <i id="count-results-text" class="font-weight-bold"></i> results: </i>
 
+                                @*<h1>Client IP: @HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()</h1>*@
 
-                        @*<h1>Client IP: @HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()</h1>*@
-
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="font-weight-bold">We couldn't find your OS or Location, and the filter option have been disabled</span>
+                            <i class="float-right">We found <i class="font-weight-bold">@Model.Results.Count()</i> results: </i>
+                        }
 
                     </div>
                 }
-                else
-                {
-                    <h1>We couldn't find your OS or Location</h1>
-                }
 
 
-
-            </div>
-        }
-
-
+            
 
 
             <div class="row">
+                @*@if (Model.Results != null)*@
                 @if (Model.Results != null)
                 {
                     foreach (var result in Model.Results)
                     {
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="filterDiv col-lg-3 col-md-4 col-sm-6 col-6 @result.OS @result.VPNLocation">
                             <div class="my-list">
                                 <img src="@result.Ticket.Airline" style="width: 100%; height: auto" />
                                 <div class="offer" style="width: 100%">
@@ -239,7 +332,7 @@
                                 </div>
                             </div>
                         </div>
-                    }
+                        }
                 }
                 else
                 {
@@ -253,7 +346,6 @@
                         <h4 class="text-center">@Model.S2</h4>
                     </div>
                 }
-
 
             </div>
         </div>
