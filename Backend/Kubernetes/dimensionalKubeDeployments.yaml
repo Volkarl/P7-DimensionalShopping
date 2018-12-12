@@ -59,6 +59,13 @@ spec:
           capabilities:
             add:
               - NET_ADMIN # Allows us to modify tun/tap device drivers from within the container
+        readinessProbe: # Defines how the load balancer should check if the containers are ready for more traffic
+          exec:
+            command: # If the file /tmp/ready exists, this succeeds and the container will be marked as not busy
+            - cat
+            - /tmp/ready
+          initialDelaySeconds: 2
+          periodSeconds: 1
         env: # Environment variables for the session, useful for debugging. Source: https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
           - name: MY_NODE_NAME
             valueFrom:

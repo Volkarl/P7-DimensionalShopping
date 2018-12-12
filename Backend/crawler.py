@@ -1,7 +1,7 @@
 import tldextract, re
 
 def markAsResult(text):
-	return f'RESULT:<{text}>'
+	return f'RESULT:<{text}>:RESULT'
 
 def getElementText(driver, xpath):
 	return driver.find_element_by_xpath(xpath).text
@@ -57,24 +57,24 @@ def crawlUserAgent(driver):
 
 def valuta(x):
     return {
-        'com'   : '$',			############# WATCH OUT, BECAUSE .COM DATES ARE DIFFERENT, SO WE CAN'T JUST CONVERT 
+        'com'   : '$',
         'dk'   	: 'DKK ',
         'co.uk' : '£', 
-        'de' 	: '€' 			############# THIS DOESN'T WORK EITHER, SINCE .DE PRICES ARE REVERSED: 210 € instead of € 210 |||| yey regex boiiii
+        'de' 	: '€'
     }.get(x, 'DKK')    
 
 # Returns price of top element in flightModuleList
 def crawlExpedia(driver, urlSuffix):
 	print(f'suffix: {urlSuffix}')
-	text      = getElementText(driver, '//*[@id="flightModuleList"]')
+	text = getElementText(driver, '//*[@id="flightModuleList"]')
 
-	priceList = regexFindAllIn(text, "\d+[,.]?\d*\s*"+re.escape(valuta(urlSuffix))+"|"+re.escape(valuta(urlSuffix))+"\s*\d+[.,]?\d*", "Price")
+	priceList = regexFindAllIn(text, "\d+[,.]?\d*\s*"+ re.escape(valuta(urlSuffix)) + "|" + re.escape(valuta(urlSuffix)) + "\s*\d+[.,]?\d*", "Price")
 	durationList = regexFindAllIn(text, "[\d]+:[\d]+[^A-Z]*[[\d]+:[\d]+[^\s]*", "Duration")
 	ratingList = regexFindAllIn(text, "\(\d*.\d*\/\d*\)", "Rating")
 	timeList = regexFindAllIn(text, "\d+[a-zA-Z]+\s\d*[a-zA-Z]*\s\W(?:\d+\s*)?[a-zA-Z]*\W", "Time")
 	legList = regexFindAllIn(text, "[A-Z]{3} -(?:(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3}(?:[a-zA-Z\s]+(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3})+)?\s[a-zA-Z\s:]*\s*(?:- )?[A-Z]{3}", "Leg")
 
-	resultList = priceList[0]+"\n"+durationList[0]+"\n"+ratingList[0]+"\n"+ timeList[0]+"\n"+ legList[0]
+	resultList = priceList[0] + "\n" + durationList[0] + "\n" + ratingList[0] + "\n" + timeList[0]+  "\n" + legList[0]
 	return markAsResult(resultList)
 
 
@@ -86,4 +86,4 @@ def regexFindAllIn(textToSearch, regexString, resultName):
         resultList[0] = f"---{resultName}---\n{resultList[0]}"
         return resultList
     else: print(f'{resultName} was empty')
-    return resultList
+    return []

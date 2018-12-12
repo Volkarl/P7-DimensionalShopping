@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys, subprocess, os
+import sys, subprocess, os, time
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from switchUserAgent import getUserAgentString
@@ -53,6 +53,9 @@ if (location != "none"):
 
 # Initialize
 driver = webdriver.Firefox(executable_path = f'{homeDir}/webdriver/geckodriver', options = options)
+time.sleep(3)
+# Sleeping 3 seconds helps (mostly) fix a race condition within selenium (marionette). A stupid workaround for an incomprehensible problem.
+# Sometimes it still fails with: "Failed to decode marionette", but now less so than previously. What the fuck. 
 
 # Cookies
 if deleteCookies: 
