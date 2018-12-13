@@ -35,7 +35,8 @@
 
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
+            switchlang(document.getElementById('dropdownMenu-language').value);
             filterSelection("all");
         };
     </script>
@@ -117,6 +118,17 @@
                     current[0].className = current[0].className.replace(" active", "");
                     this.className += " active";
                 });
+        }
+    </script>
+
+    <script src="dist\Translate.js"></script>
+    <script>
+        function switchlang(clang) {
+            var translate = new Translate();
+            var currentLng = clang;
+            var attributeName = 'data-tag';
+            translate.init(attributeName, currentLng);
+            translate.process();
         }
     </script>
 
