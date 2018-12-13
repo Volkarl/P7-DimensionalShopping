@@ -44,8 +44,8 @@ homeDir = f'/home/{pcUsername}'
 
 # Initialize
 driver = webdriver.Firefox(executable_path = f'{homeDir}/webdriver/geckodriver', options = options)
-# time.sleep(3)
-# Sleeping 3 seconds helps (mostly) fix a race condition within selenium (marionette). A stupid workaround for an incomprehensible problem.
+time.sleep(1)
+# Sleeping a few seconds helps (mostly) fix a race condition within selenium (marionette). A stupid workaround for an incomprehensible problem.
 # Sometimes it still fails with: "Failed to decode marionette", but now less so than previously. What the fuck. 
 
 # Cookies
@@ -58,7 +58,8 @@ driver.get(url)
 
 # Crawl HTML of website
 result = crawlUrl(driver, url)
-print(result)
+print(result.encode('ascii', 'ignore').decode('ascii'))
+# Silently removes all non-ascii characters, as those don't interact with Python well
 
 # Terminate VPN connection and selenium session
 driver.quit()

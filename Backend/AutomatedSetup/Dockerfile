@@ -71,3 +71,4 @@ RUN npm install morgan && npm install express
 RUN chmod +x callQuery.sh
 WORKDIR /home/$username
 # We need to be in /home/$username because both query.js and startVPN.exp use relative paths
+RUN chmod +x P7-DimensionalShopping/Backend/callQueryWithUser.sh
