@@ -20,13 +20,12 @@ router.get('/', (req, res, next) => {
    });
 });
 
-router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
+router.get('/:URL/:UA/:DELETECOOKIES', (req, res, next) => {
     const curURL           = req.params.URL;
     const curUA            = req.params.UA;
     const curDELETECOOKIES = req.params.DELETECOOKIES;
-    const curLOCATION      = req.params.LOCATION;
 
-    exec(`./P7-DimensionalShopping/Backend/nodejs/callQuery.sh ${curURL} ${curUA} ${curDELETECOOKIES} ${curLOCATION}`, function(err, stdout, stderr) {
+    exec(`./P7-DimensionalShopping/Backend/query.py ${curURL} ${curUA} ${curDELETECOOKIES}`, function(err, stdout, stderr) {
         if (err) {
             res.status(400).json({
                 error: stderr
@@ -44,7 +43,6 @@ router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
                 url:            curURL,
                 ua:             curUA,
                 cookies:        curDELETECOOKIES,
-                location:       curLOCATION,
                 result:         outputResult,
                 log:            output,
                 nodeName:       process.env.MY_NODE_NAME,

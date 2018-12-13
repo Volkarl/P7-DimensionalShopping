@@ -9,10 +9,7 @@ from crawler import crawlUrl
 url = sys.argv[1]
 requestedUserAgent = sys.argv[2]
 deleteCookies = sys.argv[3]
-locationURL = sys.argv[4] # Valid locations are found using this site: https://account.ipvanish.com/index.php?t=Server+List&page=1
-ipvanishEmail = sys.argv[5]
-ipvanishPassword = sys.argv[6]
-pcUsername = sys.argv[7]
+pcUsername = bashCall("cat /etc/username")
 
 def bashCall(cmdString):
     subprocess.call(cmdString, shell=True)
@@ -45,15 +42,9 @@ options.add_argument(f'user-agent={userAgent}')
 homeDir = f'/home/{pcUsername}'
 # We use full path to ensure the files can be found where we expect
 
-# Initialize VPN Connection
-location = getServerURL(locationURL)
-if (location != "none"):
-	bashCall(f'sudo {homeDir}/P7-DimensionalShopping/Backend/startVPN.exp {location} {ipvanishEmail} {ipvanishPassword} {homeDir}')
-	# Calls an expect script with a bash subshell that enters our ipvanish user information whenever it is prompted
-
 # Initialize
 driver = webdriver.Firefox(executable_path = f'{homeDir}/webdriver/geckodriver', options = options)
-time.sleep(3)
+# time.sleep(3)
 # Sleeping 3 seconds helps (mostly) fix a race condition within selenium (marionette). A stupid workaround for an incomprehensible problem.
 # Sometimes it still fails with: "Failed to decode marionette", but now less so than previously. What the fuck. 
 
@@ -61,7 +52,6 @@ time.sleep(3)
 if deleteCookies: 
 	print("Deleting Cookies")
 	driver.delete_all_cookies()
-#### Is this necessary? I feel like we're not using any cookies anyway, since we open a new webdriver each request
 
 # Get website
 driver.get(url)
@@ -71,8 +61,6 @@ result = crawlUrl(driver, url)
 print(result)
 
 # Terminate VPN connection and selenium session
-if (location != "none"):
-	bashCall(f'sudo {homeDir}/ipvanish/ipvanish-vpn-linux stop')
 driver.quit()
 
 ## Perhaps add graceful termination with try-catch that calls my terminate commands
