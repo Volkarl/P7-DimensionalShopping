@@ -158,9 +158,11 @@ namespace DimensionalPriceRunner.Pages
 
 
 
-                UserLocation = GetUserCountryByIp("162.210.211.225");
+                //UserLocation = GetUserCountryByIp("162.210.211.225");
 
-                //UserLocation = GetUserCountryByIp(HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
+                //string ip = HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                UserLocation = GetUserCountryByIp(ip);
 
 
 
@@ -189,9 +191,11 @@ namespace DimensionalPriceRunner.Pages
                 NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
 
 
-                //Program.ProcessRepositories().Wait();
 
+                //Program.ProcessRepositories().Wait();
                 //S2 = test;
+
+                S2 = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             }
 
