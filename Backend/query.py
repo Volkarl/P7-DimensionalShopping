@@ -9,6 +9,7 @@ from crawler import crawlUrl
 url = sys.argv[1]
 requestedUserAgent = sys.argv[2]
 deleteCookies = sys.argv[3]
+pcUsername = sys.argv[4]
 
 def bashCall(cmdString):
     subprocess.call(cmdString, shell=True)
@@ -22,8 +23,6 @@ if isUserRoot():
     exit("Running with root privileges is not allowed. Exiting.")
     # Root is not allowed when running browsers (risky)
     # I couldn't downgrade privileges, so this was the best alternative
-
-pcUsername = bashCall("cat /etc/username")
 
 # Options and user agent string
 options = Options()
