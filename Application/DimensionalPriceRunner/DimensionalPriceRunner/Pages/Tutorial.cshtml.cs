@@ -8,7 +8,7 @@ using static DimensionalPriceRunner.Program;
 
 namespace DimensionalPriceRunner.Pages
 {
-    public class HomeModel : PageModel
+    public class TutorialModel : PageModel
     {
         public void OnGet()
         {
@@ -22,16 +22,16 @@ namespace DimensionalPriceRunner.Pages
             var searchInput = Request.Form["search"];
             ViewData["search-input"] = searchInput;
 
-            string te = Request.Form["test"];
-            if (te != null)
+            string selectedCurrency = Request.Form["selected-currency"];
+            if (selectedCurrency != null)
             {
-                ActiveCurrency = (Program.Currency)Enum.Parse(typeof(Program.Currency), te);
+                ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), selectedCurrency);
             }
 
-            string te2 = Request.Form["test2"];
-            if (te2 != null)
+            string selectedLanguage = Request.Form["selected-language"];
+            if (selectedLanguage != null)
             {
-                ActiveLanguage = (Program.Language)Enum.Parse(typeof(Program.Language), te2);
+                ActiveLanguage = (Language)Enum.Parse(typeof(Language), selectedLanguage);
             }
 
         }

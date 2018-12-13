@@ -1,19 +1,6 @@
 ﻿@page
-@using System.Globalization
-@using System.Net.Mime
 @using DimensionalPriceRunner
-@using DimensionalPriceRunner.Pages
-@using Microsoft.AspNetCore.Hosting.Internal
-@using Microsoft.CodeAnalysis.CSharp.Syntax
 @model DimensionalPriceRunner.Pages.IndexModel
-
-
-
-
-@using Microsoft.AspNetCore.Http;
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@using Microsoft.EntityFrameworkCore.Query.Internal
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <!doctype html>
 <html lang="en">
@@ -23,7 +10,7 @@
     <!-- Font Awesome -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-
+    @* Limits Modal from making the navbar smaller when open/closing *@
     <style>
         .modal-open {
             position: fixed;
@@ -35,31 +22,35 @@
 
 
     <script>
-        window.onload = function () {
+        window.onload = function() {
             switchlang(document.getElementById('dropdownMenu-language').value);
             filterSelection("all");
         };
     </script>
 
 
+    @* Using try/catch here in case there is no results, which will mean you are calling .Count() on null. *@
     <script>
-        function updateCountResults(count) {
-            if (document.getElementById("showUserSystemInput").checked) {
-                document.getElementById("count-results-text").innerText = count;
-            } else {
-                @try
-                {
-                    @:document.getElementById("count-results-text").innerText = @Model.Results.Count();
-                }
-                catch (Exception e)
-                {
-                    @:document.getElementById("count-results-text").innerText = 0;
-                }
+        function updateCountResults() {
+            @try
+            {
+                <text>
+                    if (document.getElementById("showUserSystemInput").checked) {
+                        document.getElementById("count-results-text").innerText =
+                            @Model.Results.Where(x => x.OS == Model.UserOS && x.VPNLocation == Model.UserLocation).Count();
+                    } else {
+                        document.getElementById("count-results-text").innerText = @Model.Results.Count();
+                    }
+                </text>
+            }
+            catch (Exception)
+            {
+                @:document.getElementById("count-results-text").innerText = 0;
             }
         }
     </script>
 
-
+    @* Shows all or filter active results based on the user's system *@
     <script>
         function toggleShowUserSystemResultsOnly() {
             if (document.getElementById("showUserSystemInput").checked) {
@@ -82,7 +73,7 @@
                 w3RemoveClass(x[i], "show");
                 if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
             }
-            updateCountResults(w3RemoveClass.length);
+            updateCountResults();
         }
 
         function w3AddClass(element, name) {
@@ -106,18 +97,6 @@
                 }
             }
             element.className = arr1.join(" ");
-        }
-
-        // Add active class to the current button (highlight it)
-        var btnContainer = document.getElementById("myBtnContainer");
-        var btns = btnContainer.getElementsByClassName("btn");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click",
-                function() {
-                    var current = document.getElementsByClassName("active");
-                    current[0].className = current[0].className.replace(" active", "");
-                    this.className += " active";
-                });
         }
     </script>
 
@@ -154,7 +133,9 @@
                         <input id="search-input" class="form-control" type="url" name="search" placeholder="Flight url..." required value="@ViewData["search-input"]"/>
                         <span class="input-group-btn">
                             <button class="btn btn-success" type="submit" style="z-index: 1">
-                                <i class="fa fa-search" aria-hidden="true" style="font-size: larger"> <label data-tag="search"></label></i>
+                                <i class="fa fa-search" aria-hidden="true" style="font-size: larger">
+                                    <text data-tag="search"></text>
+                                </i>
                             </button>
                         </span>
                     </div>
@@ -166,12 +147,10 @@
 
 
 <!-- Result Container -->
-<div id="result-container" style="padding-bottom: 60%">
-
+<div id="result-container">
     @if (Model.Results != null)
     {
         <div class="p-0 mb-0 bg-light text-black">
-
             @if (Model.UserOS != "" && Model.UserLocation != null)
             {
                 <div>
@@ -188,15 +167,10 @@
                             </div>
                         </div>
                     </div>
-
                     <i class="fa @Model.OSIconDictionary[Model.UserOS]" aria-hidden="true" style="font-size: larger; margin-left: 2%"> Your OS: <i class="font-weight-bold">@Model.UserOS</i></i>
                     <br/>
                     <i class="fa fa-globe" aria-hidden="true" style="font-size: larger; margin-left: 2%"> Your Location: <i class="font-weight-bold">@Model.UserLocation</i></i>
-
                     <i class="float-right">We found <i id="count-results-text" class="font-weight-bold"></i> results: </i>
-
-                    @*<h1>Client IP: @HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()</h1>*@
-
                 </div>
             }
             else
@@ -204,7 +178,6 @@
                 <span class="font-weight-bold">We couldn't find your OS or Location, and the filter option have been disabled</span>
                 <i class="float-right">We found <i class="font-weight-bold">@Model.Results.Count()</i> results: </i>
             }
-
         </div>
     }
 
@@ -240,19 +213,20 @@
                             <span class="float-right">@result.Ticket.Price @Program.ActiveCurrency</span>
                         </div>
 
-
                         <div class="detail">
                             <div class="img-wrapper">
                                 <img class="img-responsive" src=@result.Ticket.Airline style="opacity: 0.7">
                                 <div class="img-overlay">
-                                    <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" data-target="#@result.ID"><label data-tag="information"></label></button>
+                                    <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" data-target="#@result.ID">
+                                        <label data-tag="information"></label>
+                                    </button>
 
                                     <!-- Modal Ticket Info -->
                                     <div class="modal fade" id="@result.ID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h2 class="modal-title" id="exampleModalLabel">@result.Name - @result.OS - @result.VPNLocation - @result.Ticket.Price @Program.ActiveCurrency</h2>
+                                                    <h2 class="modal-title" id="exampleModalLabel">Flight Information</h2>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -261,7 +235,6 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-5 col-md-5">
                                                             <img src="@result.Ticket.Airline" style="width: 100%; height: auto"/>
-
                                                             @for (int i = 0; i < Int32.Parse(result.Ticket.Rating[0]); i++)
                                                             {
                                                                 <i class="fa fa-star"></i>
@@ -282,64 +255,75 @@
                                                                 }
                                                             }
 
-                                                            <div class="vl"></div>
-
-                                                            <h3 class="text-center font-weight-bold"><label data-tag="os"></label> @result.OS</h3>
-                                                            <h3 class="text-center font-weight-bold"><label data-tag="vpnlocation"></label> @result.VPNLocation</h3>
-
+                                                            <div class="green-breakline"></div>
+                                                            <h3 class="text-center font-weight-bold">
+                                                                <text data-tag="os"></text> @result.OS</h3>
+                                                            <h3 class="text-center font-weight-bold">
+                                                                <text data-tag="vpnlocation"></text> @result.VPNLocation
+                                                            </h3>
                                                             <h1 class="text-primary">@result.Ticket.Price @Program.ActiveCurrency</h1>
-
                                                         </div>
                                                         <div class="col-xs-12 col-sm-7 col-md-7">
-
                                                             <table class="table table-hover border-bottom">
                                                                 <tbody>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row"><label data-tag="airline"></label></th>
+                                                                    <th class="text-left" scope="row">
+                                                                        <label data-tag="airline"></label>
+                                                                    </th>
                                                                     <td>@result.Name</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row"><label data-tag="leg"></label></th>
+                                                                    <th class="text-left" scope="row">
+                                                                        <label data-tag="leg"></label>
+                                                                    </th>
                                                                     <td>@result.Ticket.Leg</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row"><label data-tag="takeoff"></label></th>
+                                                                    <th class="text-left" scope="row">
+                                                                        <label data-tag="takeoff"></label>
+                                                                    </th>
                                                                     <td>@result.Ticket.TakeoffTime</td>
                                                                 </tr>
-
                                                                 <tr>
-                                                                    <th class="text-left" scope="row"><label data-tag="time"></label></th>
+                                                                    <th class="text-left" scope="row">
+                                                                        <label data-tag="time"></label>
+                                                                    </th>
                                                                     <td>@result.Ticket.FlightLength</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row"><label data-tag="airport"></label></th>
+                                                                    <th class="text-left" scope="row">
+                                                                        <label data-tag="airport"></label>
+                                                                    </th>
                                                                     <td>@result.Ticket.Airports</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row"><label data-tag="stopsh"></label></th>
+                                                                    <th class="text-left" scope="row">
+                                                                        <label data-tag="stopsh"></label>
+                                                                    </th>
                                                                     <td>@result.Ticket.Stops</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row"><label data-tag="tickettype"></label></th>
+                                                                    <th class="text-left" scope="row">
+                                                                        <label data-tag="tickettype"></label>
+                                                                    </th>
                                                                     <td>@result.Ticket.TicketType</td>
                                                                 </tr>
-
                                                                 </tbody>
                                                             </table>
-
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><label data-tag="close"></label></button>
-                                                    <a class="btn btn-primary" href="@result.Ticket.TicketUrl" role="button"><label data-tag="gototicket"></label></a>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                        <label data-tag="close"></label>
+                                                    </button>
+                                                    <a class="btn btn-primary" href="@result.Ticket.TicketUrl" role="button">
+                                                        <label data-tag="gototicket"></label>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -349,38 +333,18 @@
         }
         else
         {
-                    @*<script>
-                            document.getElementById("search-bar").style.marginTop = "@Model.SearchBarMarginTop%";
-                        </script>*@
-
             <div class="container my-4">
                 <img id="no-result" class="rounded mx-auto d-block" src="@Model.NoResultImg" style="width: 25%; height: auto; margin-bottom: 3%"/>
-                <h1 class="text-center">@Model.S</h1>
-                <h4 class="text-center">@Model.S2</h4>
+                <h1 class="text-center">@Model.NoResultStringHead</h1>
+                <h4 class="text-center">@Model.NoResultStringBody</h4>
             </div>
         }
-
     </div>
 </div>
 </div>
 
 
-<!-- Footer -->
-<footer class="py-3 bg-dark">
-    <div class="container">
-
-
-
-
-
-        @*<p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>*@
-    </div>
-    <!-- /.container -->
-</footer>
-
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- jQuery, Popper.js, Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

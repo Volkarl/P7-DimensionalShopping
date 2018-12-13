@@ -1,7 +1,4 @@
 @using DimensionalPriceRunner
-@using DimensionalPriceRunner.Pages
-
-@using Microsoft.AspNetCore.Http
 
 <head>
     <!-- Font Awesome -->
@@ -12,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    
+
     <script>
         window.onload = function() {
             setActivePage();
@@ -21,7 +18,6 @@
 
     <script>
         function setActivePage() {
-
             var path = window.location.pathname;
             var page = path.split("/").pop();
             var element;
@@ -35,182 +31,75 @@
             }
         }
     </script>
-    
- 
 
 </head>
 
 
-    
+<nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" asp-page="Index">DimensionalShopping</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li id="home-page" class="nav-item">
+                <a class="nav-link" asp-page="Index">
+                    <i class="fa fa-home"></i>
+                    Home
+                </a>
+            </li>
+            <li id="tutorials-page" class="nav-item">
+                <a class="nav-link" asp-page="Tutorial">
+                    <i class="fa fa-book"></i>
+                    Tutorials
+                </a>
+            </li>
 
+        </ul>
+        
+        @* Currency Selector *@
+        <form method="post" class="form-inline my-2 my-lg-0" style="margin-right: 5%">
+            <div class="input-group">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-currency" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="@Program.CurrencySymbolDictionary[Program.ActiveCurrency]" style="width: 15px; height: 20px"/>
+                        | @Program.ActiveCurrency
 
-    <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" asp-page="Index">DimensionalShopping</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li id="home-page" class="nav-item">
-                    <a class="nav-link" asp-page="Index">
-                        <i class="fa fa-home"></i>
-                        Home
-                    </a>
-                </li>
-                <li id="tutorials-page" class="nav-item">
-                    <a class="nav-link" asp-page="Home">
-                        <i class="fa fa-book"></i>
-                        Tutorials
-                    </a>
-                </li>
-
-            </ul>
-
-            <form method="post" class="form-inline my-2 my-lg-0" style="margin-right: 5%">
-                <div class="input-group">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-currency" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="@Program.CurrencySymbolDictionary[Program.ActiveCurrency]" style="width: 15px; height: 20px" />
-                            | @Program.ActiveCurrency
-
-
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenu-currency">
-                            @foreach (Program.Currency currency in (Program.Currency[])Enum.GetValues(typeof(Program.Currency)))
-                            {
-                                @*<input id="test-input" class="form-control" name="test" value="@currency" />*@
-                                <button class="dropdown-item" type="submit" name="test" value="@currency" onClick="window.location.reload()">
-                                    <img src="@Program.CurrencySymbolDictionary[currency]" style="width: 15%; height: auto" />
-                                    | @currency
-                                </button>
-                            }
-                        </div>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu-currency">
+                        @foreach (Program.Currency currency in (Program.Currency[]) Enum.GetValues(typeof(Program.Currency)))
+                        {
+                            <button class="dropdown-item" type="submit" name="selected-currency" value="@currency" onClick="window.location.reload()">
+                                <img src="@Program.CurrencySymbolDictionary[currency]" style="width: 15%; height: auto"/>
+                                | @currency
+                            </button>
+                        }
                     </div>
-                </div>
-
-                <div class="input-group">
-                    <div class="dropdown">
-                        <button class="btn btn-info dropdown-toggle" type="button" value="@Program.ActiveLanguage" id="dropdownMenu-language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 8%">
-                            <img src="@Program.LanguageFlagDictionary[Program.ActiveLanguage]" style="width: 25px; height: 20px" />
-                            | @Program.ActiveLanguage
-
-
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenu-language">
-                            @foreach (Program.Language language in (Program.Language[])Enum.GetValues(typeof(Program.Language)))
-                            {
-                                @*<input id="test-input" class="form-control" name="test" value="@currency" />*@
-                                <button class="dropdown-item" type="submit" name="test2" value="@language" onClick="window.location.reload()">
-                                    <img src="@Program.LanguageFlagDictionary[language]" style="width: 25%; height: auto" />
-                                    | @language
-                                </button>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-            </form>
-        </div>
-
-
-
-    </nav>
-
-
-
-    @*<form method="post" role="form" id="form-buscar" style="width: 80%; margin-left: 10%">
-            <div class="form-group">
-                <div class="input-group">
-                    <input id="search-input" class="form-control" type="url" name="search" placeholder="Flight url..." required value="@ViewData["search-input"]" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-success" type="submit" style="z-index: 1">
-                            <i class="fa fa-search" aria-hidden="true" style="font-size:larger"> Search</i>
-                        </button>
-                    </span>
                 </div>
             </div>
-        </form>*@
+            
+            @* Language Selector *@
+            <div class="input-group">
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" value="@Program.ActiveLanguage" id="dropdownMenu-language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 8%">
+                        <img src="@Program.LanguageFlagDictionary[Program.ActiveLanguage]" style="width: 25px; height: 20px"/>
+                        | @Program.ActiveLanguage
 
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu-language">
+                        @foreach (Program.Language language in (Program.Language[]) Enum.GetValues(typeof(Program.Language)))
+                        {
+                            <button class="dropdown-item" type="submit" name="selected-language" value="@language" onClick="window.location.reload()">
+                                <img src="@Program.LanguageFlagDictionary[language]" style="width: 25%; height: auto"/>
+                                | @language
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</nav>
 
-    @*
-        <div class="input-group">
-            <input id="search-input" class="form-control" type="url" name="search" placeholder="Flight url..." required value="@ViewData["search-input"]" />
-            <span class="input-group-btn">
-                <button class="btn btn-success" type="submit" style="z-index: 1">
-                    <i class="fa fa-search" aria-hidden="true" style="font-size:larger"> Search</i>
-                </button>
-            </span>
-        </div>
-    *@
-
-
-
-
-
-
-
-
-    @*
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <a class="navbar-brand" asp-page="Index">DimensionalShopping</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-            <script src="dist\Translate.js"></script>
-            <script>
-                function switchlang(clang){
-                    var translate = new Translate();
-                    var currentLng = clang;
-                    var attributeName = 'data-tag';
-                    translate.init(attributeName, currentLng);
-                    translate.process();
-                }
-            </script>
-
-            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-
-            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-              <ul class="navbar-nav mr-auto">
-                  <li class="nav-item">
-                      <a class="nav-link" asp-page="Index">Home</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" asp-page="Home">Tutorials</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <div class="dropdown">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Dropdown
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                              <button class="dropdown-item" type="button">Action</button>
-                              <button class="dropdown-item" type="button">Another action</button>
-                              <button class="dropdown-item" type="button">Something else here</button>
-                          </div>
-                      </div>
-                  </li>
-
-
-
-                  <div class="container; top-right">
-                      <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-language"></i> Language</a>
-                          <div class="dropdown-menu">
-                              <a class="dropdown-item"onclick="switchlang('Danish')" href="#">Danish</a>
-                              <a class="dropdown-item"onclick="switchlang('English')" href="#">English</a>
-                          </div>
-                      </li>
-                  </div>
-
-              </ul>
-          </div>
-        </nav>
-    *@
+ 

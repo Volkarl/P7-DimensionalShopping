@@ -18,11 +18,6 @@ namespace DimensionalPriceRunner.Pages
     {
         public IEnumerable<Result> Results { get; set; }
 
-
-
-        public static string test { get; set; }
-
-
         public enum Airlines { Default, SAS, BritishAirways }
 
         // Airline Links should be in 2:1 format
@@ -30,12 +25,9 @@ namespace DimensionalPriceRunner.Pages
         {
             { Airlines.SAS, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png"},
             { Airlines.BritishAirways, "https://www.alternativeairlines.com/images/global/airlinelogos/ba_logo.gif"},
-
             { Airlines.Default, "http://betlosers.com/images/stories/flexicontent/leagueimages/m_fld34_NoImageAvailable.jpg" } 
-            // tag højde for sporg? http://betlosers.com/images/stories/flexicontent/leagueimages/m_fld34_NoImageAvailable.jpg
-            // https://premium.wpmudev.org/blog/wp-content/uploads/2012/06/no.image_.600x300.png
-        };
 
+        };
 
         private static readonly Dictionary<string, string> OSUserAgentStrings = new Dictionary<string, string>()
         {
@@ -60,8 +52,6 @@ namespace DimensionalPriceRunner.Pages
             { "iOS", "fa-apple" },
             { "Android", "fa-android" }
         };
-
-
 
 
         public class Ticket
@@ -114,34 +104,29 @@ namespace DimensionalPriceRunner.Pages
         public void OnGet()
         {
             // Moves the Logo/Search html element more to the center of the screen, when first loading the page.
-            SearchBarMarginTop = 25;
+            SearchBarMarginTop = 20;
         }
 
 
-
-
-
-
-
-
+        
         public void OnPost()
         {
+            // Gets the URL search input from the user.
             var searchInput = Request.Form["search"];
+            // Sets the searchBar inner value to the URL from input
             ViewData["search-input"] = searchInput;
 
 
-
-
-            string te = Request.Form["test"];
-            if (te != null)
+            string selectedCurrency = Request.Form["selected-currency"];
+            if (selectedCurrency != null)
             {
-                ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), te);
+                ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), selectedCurrency);
             }
 
-            string te2 = Request.Form["test2"];
-            if (te2 != null)
+            string selectedLanguage = Request.Form["selected-language"];
+            if (selectedLanguage != null)
             {
-                ActiveLanguage = (Language)Enum.Parse(typeof(Language), te2);
+                ActiveLanguage = (Language)Enum.Parse(typeof(Language), selectedLanguage);
             }
 
             // Moves the Logo/Search html element to the top of the page, to make room for the result container.
@@ -153,14 +138,9 @@ namespace DimensionalPriceRunner.Pages
                 MakeTestResults();
 
 
-
-
-
-
-
                 //UserLocation = GetUserCountryByIp("162.210.211.225");
 
-                //string ip = HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                //Final
                 string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
                 UserLocation = GetUserCountryByIp(ip);
 
@@ -178,24 +158,17 @@ namespace DimensionalPriceRunner.Pages
                 }
 
 
-
-
-
-
-                //FindUserMinMaxPrice();
             }
             else
             {
-                S = "We did not find any plane tickets";
-                S2 = "please verify you entered a valid web address";
+                NoResultStringHead = "We did not find any plane tickets";
+                NoResultStringBody = "please verify you entered a valid web address";
                 NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
-
-
 
                 //Program.ProcessRepositories().Wait();
                 //S2 = test;
 
-                S2 = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                NoResultStringBody = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             }
 
@@ -203,13 +176,17 @@ namespace DimensionalPriceRunner.Pages
 
         }
 
+
+        public static string test { get; set; }
+
         public int SearchBarMarginTop { get; set; }
         public string NoResultImg { get; set; }
 
-        public string S { get; set; }
-        public string S2 { get; set; }
+        public string NoResultStringHead { get; set; }
+        public string NoResultStringBody { get; set; }
 
-
+        public string UserLocation { get; set; }
+        public string UserOS { get; set; }
 
 
 
@@ -238,8 +215,7 @@ namespace DimensionalPriceRunner.Pages
 
 
 
-        public string UserLocation { get; set; }
-        public string UserOS { get; set; }
+
 
 
 

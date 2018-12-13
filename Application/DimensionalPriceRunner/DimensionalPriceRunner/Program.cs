@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using DimensionalPriceRunner.Pages;
@@ -64,14 +65,13 @@ namespace DimensionalPriceRunner
             client.Timeout = new TimeSpan(0, 0, 180);
 
             var stringTask = client.GetStringAsync("http://40.112.69.3/query/%22https%3A%2F%2Fwww.expedia.dk%2FFlights-Search%3Ftrip%3Doneway%26leg1%3Dfrom%253ALondon%252C%2520England%252C%2520Storbritannien%2520%28LON%29%252Cto%253AK%25C3%25B8benhavn%252C%2520Danmark%2520%28CPH%29%252Cdeparture%253A21%252F12%252F2018TANYT%26passengers%3Dadults%253A1%252Cchildren%253A0%252Cseniors%253A0%252Cinfantinlap%253AY%26options%3Dcabinclass%253Aeconomy%26mode%3Dsearch%26origref%3Dwww.expedia.dk%22/PcWindowsChrome/True/None");
-
-
-
-
-
-
             var msg = await stringTask;
-            IndexModel.test = msg;
+
+            Match match = Regex.Match(msg, @"¤{Price}¤\\n([^¤]*)(?:\\n)?(?:¤|\Z)", RegexOptions.IgnoreCase);
+
+
+            IndexModel.test = match.ToString();
+
         }
 
 
