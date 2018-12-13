@@ -10,9 +10,9 @@ chmod 666 /dev/net/tun
 
 pcUsername=$(cat /etc/username)
 
-echo $location $(cat /etc/ipvanish/email) $(cat /etc/ipvanish/password) $pcUsername > /home/$pcUsername/arguments
+echo $location $(cat /etc/ipvanish/email) $(cat /etc/ipvanish/password) /home/$pcUsername > /home/$pcUsername/arguments
 sudo -u $pcUsername -i /bin/bash - <<-'EOF'
-	~/P7-DimensionalShopping/Backend/startVPN.exp $(cat arguments)
+	sudo ~/P7-DimensionalShopping/Backend/startVPN.exp $(cat arguments)
 EOF
 # We impersonate the user $pcUsername (which ensures that our home directory ~ points to the correct location)
 # Connects to the VPN location

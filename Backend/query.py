@@ -9,7 +9,7 @@ from crawler import crawlUrl
 url = sys.argv[1]
 requestedUserAgent = sys.argv[2]
 deleteCookies = sys.argv[3]
-pcUsername = bashCall("cat /etc/username")
+pcUsername = sys.argv[4]
 
 def bashCall(cmdString):
     subprocess.call(cmdString, shell=True)
