@@ -31,13 +31,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: dsb-serviceSA
+  name: dsb-service-sa
 spec:
   type: LoadBalancer  
   ports:
   - port: 80
   selector:
-    app: ds-backendSA
+    app: ds-backend-sa
 
 ---
 
@@ -45,13 +45,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: dsb-serviceUSA
+  name: dsb-service-usa
 spec:
   type: LoadBalancer  
   ports:
   - port: 80
   selector:
-    app: ds-backendUSA
+    app: ds-backend-usa
 
 ---
 
@@ -127,22 +127,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dsbSA
+  name: dsb-sa
   labels:
-    app: ds-backendSA
+    app: ds-backend-sa
 spec:
   replicas: 1 
   selector: 
     matchLabels:
-      app: ds-backendSA
+      app: ds-backend-sa
   template:
     metadata: 
       labels: 
-        app: ds-backendSA
+        app: ds-backend-sa
     spec: 
       containers: 
       - name: dsb-i 
-        image: thinhar/dsb-speed 
+        image: thinhar/node-speed 
         ports: 
         - containerPort: 80 
         volumeMounts:
@@ -194,29 +194,29 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dsbUSA
+  name: dsb-usa
   labels:
-    app: ds-backendUSA
+    app: ds-backend-usa
 spec:
   replicas: 1 
   selector: 
     matchLabels:
-      app: ds-backendUSA
+      app: ds-backend-usa
   template:
     metadata: 
       labels: 
-        app: ds-backendUSA
+        app: ds-backend-usa
     spec: 
       containers: 
       - name: dsb-i
-        image: thinhar/dsb-speed 
+        image: thinhar/node-speed:latest
         ports: 
         - containerPort: 80 
         volumeMounts:
           - name: ipvanish-secret-volume 
             mountPath: /etc/ipvanish 
         command: ["/bin/bash"]
-        args: ["-c", "/entrypoint.sh", "iad-a01.ipvanish.com"]
+        args: ["-c", "/dockerEntrypoint.sh iad-a01.ipvanish.com"]
         securityContext:
           capabilities:
             add:
