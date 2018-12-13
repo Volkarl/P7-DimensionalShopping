@@ -154,7 +154,7 @@
                         <input id="search-input" class="form-control" type="url" name="search" placeholder="Flight url..." required value="@ViewData["search-input"]"/>
                         <span class="input-group-btn">
                             <button class="btn btn-success" type="submit" style="z-index: 1">
-                                <i class="fa fa-search" aria-hidden="true" style="font-size: larger"> Search</i>
+                                <i class="fa fa-search" aria-hidden="true" style="font-size: larger"> <label data-tag="search"></label></i>
                             </button>
                         </span>
                     </div>
@@ -221,21 +221,21 @@
                         <div class="offer" style="width: 100%">
                             <div class="btn; float-left" data-toggle="tooltip" data-placement="top"
                                  title="An operating system(OS) is a system software that manages your device, examples of operating systems are: Windows(7,8,10), Android, macOS(Apple devices), Linux etc.">
-                                OS:
+                                <label data-tag="os"></label>
                             </div>
                             <span class="float-right">@result.OS</span>
                         </div>
                         <div class="offer" style="width: 100%">
                             <div class="btn; float-left" data-toggle="tooltip" data-placement="top"
                                  title="A Virtual Private Network(VPN) is connection method that can be used to obtain an IP address, which websites uses to determine your location. You can thereby appear to be in another country than you currently is.">
-                                VPN Location:
+                                <label data-tag="vpnlocation"></label>
                             </div>
                             <span class="float-right">@result.VPNLocation</span>
                         </div>
                         <div class="offer" style="width: 100%">
                             <div class="btn; float-left" data-toggle="tooltip" data-placement="top"
                                  title="Price of the flight ticket in assumption that the specified OS and VPN location are used.">
-                                Price:
+                                <label data-tag="price"></label>
                             </div>
                             <span class="float-right">@result.Ticket.Price @Program.ActiveCurrency</span>
                         </div>
@@ -245,7 +245,7 @@
                             <div class="img-wrapper">
                                 <img class="img-responsive" src=@result.Ticket.Airline style="opacity: 0.7">
                                 <div class="img-overlay">
-                                    <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" data-target="#@result.ID">Information</button>
+                                    <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" data-target="#@result.ID"><label data-tag="information"></label></button>
 
                                     <!-- Modal Ticket Info -->
                                     <div class="modal fade" id="@result.ID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -284,8 +284,8 @@
 
                                                             <div class="vl"></div>
 
-                                                            <h3 class="text-center font-weight-bold">OS: @result.OS</h3>
-                                                            <h3 class="text-center font-weight-bold">VPN Location: @result.VPNLocation</h3>
+                                                            <h3 class="text-center font-weight-bold"><label data-tag="os"></label> @result.OS</h3>
+                                                            <h3 class="text-center font-weight-bold"><label data-tag="vpnlocation"></label> @result.VPNLocation</h3>
 
                                                             <h1 class="text-primary">@result.Ticket.Price @Program.ActiveCurrency</h1>
 
@@ -295,32 +295,32 @@
                                                             <table class="table table-hover border-bottom">
                                                                 <tbody>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row">Airline</th>
+                                                                    <th class="text-left" scope="row"><label data-tag="airline"></label></th>
                                                                     <td>@result.Name</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row">Leg</th>
+                                                                    <th class="text-left" scope="row"><label data-tag="leg"></label></th>
                                                                     <td>@result.Ticket.Leg</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row">Takeoff Time</th>
+                                                                    <th class="text-left" scope="row"><label data-tag="takeoff"></label></th>
                                                                     <td>@result.Ticket.TakeoffTime</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th class="text-left" scope="row">Flight Length</th>
+                                                                    <th class="text-left" scope="row"><label data-tag="time"></label></th>
                                                                     <td>@result.Ticket.FlightLength</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row">Airports</th>
+                                                                    <th class="text-left" scope="row"><label data-tag="airport"></label></th>
                                                                     <td>@result.Ticket.Airports</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row">Stops</th>
+                                                                    <th class="text-left" scope="row"><label data-tag="stopsh"></label></th>
                                                                     <td>@result.Ticket.Stops</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-left" scope="row">Ticket Type</th>
+                                                                    <th class="text-left" scope="row"><label data-tag="tickettype"></label></th>
                                                                     <td>@result.Ticket.TicketType</td>
                                                                 </tr>
 
@@ -332,8 +332,8 @@
 
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <a class="btn btn-primary" href="@result.Ticket.TicketUrl" role="button">Goto Ticket</a>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><label data-tag="close"></label></button>
+                                                    <a class="btn btn-primary" href="@result.Ticket.TicketUrl" role="button"><label data-tag="gototicket "></label></a>
                                                 </div>
                                             </div>
                                         </div>
