@@ -266,3 +266,7 @@ Application/BuildScripts/package-lock\.json
 Application/BuildScripts/package\.json
 
 package-lock\.json
+
+Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/styles\.css
+
+Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/

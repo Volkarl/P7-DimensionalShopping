@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env = {}, argv = {}) => {
 
@@ -18,7 +19,10 @@ module.exports = (env = {}, argv = {}) => {
         plugins: [
             new MiniCssExtractPlugin({
                 filename: 'styles.css'
-            })
+            }),
+            new CopyWebpackPlugin([
+                { from: 'languageSupport' }
+            ])
         ],
         module: {
             rules: [
