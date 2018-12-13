@@ -74,7 +74,7 @@ spec:
     spec: # Define the template to build on: useually a docker image
       containers: 
       - name: dsb-i # Give the container a name
-        image: thinhar/dsb-node3 # Which docker image it should be based on
+        image: thinhar/dsb-node4 # Which docker image it should be based on
         ports: # Open ports in the containers (this basically just adds an option to the docker run command)
         - containerPort: 80 # Same port as its corresponding load balancer
         volumeMounts:
@@ -149,7 +149,7 @@ spec:
           - name: ipvanish-secret-volume 
             mountPath: /etc/ipvanish 
         command: ["/bin/bash"]
-        args: ["-c", "/entrypoint.sh", "jnb-c01.ipvanish.com"]
+        args: ["-c", "/dockerEntrypoint.sh jnb-c01.ipvanish.com"]
         securityContext:
           capabilities:
             add:
