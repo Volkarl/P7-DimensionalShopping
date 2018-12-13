@@ -34,8 +34,11 @@ router.get('/:URL/:UA/:DELETECOOKIES/:LOCATION', (req, res, next) => {
         }
         else {
             output = stdout;
-            resultRegex = /RESULT:<([^>]*)>:RESULT/gm;
-            outputResult = resultRegex.exec(output)[1]; // Match the text within RESULT:<HERE>:RESULT and allows newlines
+            resultRegex = /RESULT:<([^>]*)>:RESULT/gm; // Match the text within RESULT:<HERE>:RESULT and allows newlines
+            outputResult = resultRegex.exec(output); 
+            if (outputResult !== null && outputResult !== undefined) {
+                outputResult = outputResult[1]; // Return only what we found within the capture group (ie. the parentheses)
+            }
             res.status(200).json({
                 message:        "Result from backend",
                 url:            curURL,
