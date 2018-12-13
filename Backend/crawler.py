@@ -83,7 +83,7 @@ def regexFindAllIn(textToSearch, regexString, resultName):
     regex  = re.compile(intermidiarryVariable)
     resultList = regex.findall(textToSearch)
     if resultList:
-        resultList[0] = f"¤{resultName}¤\n{resultList[0]}"
+        resultList[0] = f"|{resultName}|\n{resultList[0]}"
         return resultList
     else: print(f'{resultName} was empty')
     return []
