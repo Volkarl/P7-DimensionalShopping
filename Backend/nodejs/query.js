@@ -25,7 +25,7 @@ router.get('/:URL/:UA/:DELETECOOKIES', (req, res, next) => {
     const curUA            = req.params.UA;
     const curDELETECOOKIES = req.params.DELETECOOKIES;
 
-    exec(`./P7-DimensionalShopping/Backend/query.py ${curURL} ${curUA} ${curDELETECOOKIES}`, function(err, stdout, stderr) {
+    exec(`./P7-DimensionalShopping/Backend/callQueryWithUser.py ${curURL} ${curUA} ${curDELETECOOKIES}`, function(err, stdout, stderr) {
         if (err) {
             res.status(400).json({
                 error: stderr
