@@ -31,7 +31,7 @@
             }
         }
     </script>
-
+    
 </head>
 
 
@@ -70,7 +70,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu-currency">
                         @foreach (Program.Currency currency in (Program.Currency[]) Enum.GetValues(typeof(Program.Currency)))
                         {
-                            <button class="dropdown-item" type="submit" name="selected-currency" value="@currency" onClick="window.location.reload()">
+                            <button class="dropdown-item" type="submit" name="selected-currency" value="@currency" onClick="location.reload(false)">
                                 <img src="@Program.CurrencySymbolDictionary[currency]" style="width: 15%; height: auto"/>
                                 | @currency
                             </button>

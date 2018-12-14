@@ -170,8 +170,8 @@ namespace DimensionalPriceRunner.Pages
                 NoResultStringBody = "please verify you entered a valid web address";
                 NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
 
-
-                Program.ProcessFlightSearch("https://api.github.com/orgs/dotnet/repos").Wait();
+                //string uri = Uri.EscapeDataString("https://www.expedia.dk/Flights-Search?flight-type=on&starDate=21.12.2018&endDate=21.12.2018&mode=search&trip=roundtrip&leg1=from%3ABillund%2C+Danmark+%28BLL-Billund+Lufthavn%29%2Cto%3ALondon%2C+England%2C+Storbritannien%2Cdeparture%3A21.12.2018TANYT&leg2=from%3ALondon%2C+England%2C+Storbritannien%2Cto%3ABillund%2C+Danmark+%28BLL-Billund+Lufthavn%29%2Cdeparture%3A21.12.2018TANYT&passengers=children%3A1%5B12%5D%2Cadults%3A2%2Cseniors%3A0%2Cinfantinlap%3AY");
+                Program.ProcessFlightSearch("https://www.expedia.dk/Flights-Search?flight-type=on&starDate=21.12.2018&endDate=21.12.2018&mode=search&trip=roundtrip&leg1=from%3ABillund%2C+Danmark+%28BLL-Billund+Lufthavn%29%2Cto%3ALondon%2C+England%2C+Storbritannien%2Cdeparture%3A21.12.2018TANYT&leg2=from%3ALondon%2C+England%2C+Storbritannien%2Cto%3ABillund%2C+Danmark+%28BLL-Billund+Lufthavn%29%2Cdeparture%3A21.12.2018TANYT&passengers=children%3A1%5B12%5D%2Cadults%3A2%2Cseniors%3A0%2Cinfantinlap%3AY").Wait();
                 NoResultStringBody = test;
 
             }

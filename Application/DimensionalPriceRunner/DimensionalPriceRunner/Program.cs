@@ -66,9 +66,9 @@ namespace DimensionalPriceRunner
 
         public static async Task ProcessFlightSearch(string flightSearchUrl)
         {
-            string uri = Uri.EscapeUriString(flightSearchUrl);
+            string uri = Uri.EscapeDataString(flightSearchUrl);
 
-            var stringTask = client.GetStringAsync("http://40.69.2.46/query/" + "\"" + uri + "\"" + "/PcWindowsChrome/True");
+            var stringTask = client.GetStringAsync("http://94.245.93.167/query/" + "\"" + uri + "\"" + "/PcWindowsChrome/True");
             var msg = await stringTask;
 
             Match match = Regex.Match(msg, @"---Price---\\n([^\\n]*)(?:\\n)?(?:---|\Z)");
