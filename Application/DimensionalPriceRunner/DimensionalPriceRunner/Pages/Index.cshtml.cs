@@ -165,14 +165,13 @@ namespace DimensionalPriceRunner.Pages
                 NoResultStringBody = "please verify you entered a valid web address";
                 NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
 
-                //Program.ProcessRepositories().Wait();
-                //S2 = test;
 
-                NoResultStringBody = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                Program.ProcessFlightSearch("https://api.github.com/orgs/dotnet/repos").Wait();
+                NoResultStringBody = test;
 
             }
 
-            
+
 
         }
 
@@ -193,10 +192,14 @@ namespace DimensionalPriceRunner.Pages
 
 
 
-        // TODO: Is default Valuta always the same? This method asumes start valuta is always in USD
-        private decimal ConvertToCurrency(Currency currency, decimal price)
+        private decimal ConvertToActiveCurrency(Currency originCurrency, decimal price)
         {
-            switch (currency)
+            if (originCurrency == ActiveCurrency)
+                return price;
+
+            price = ConvertToUSD(originCurrency, price);
+
+            switch (ActiveCurrency)
             {
                 case Currency.DKK:
                     return Math.Round(price * 6.61244462m, 2);
@@ -204,8 +207,27 @@ namespace DimensionalPriceRunner.Pages
                     return price;
                 case Currency.EUR:
                     return Math.Round(price * 0.886194857m, 2);
+                case Currency.GBP:
+                    return Math.Round(price * 0.795780m, 2);
                 default:
-                    throw new Exception("Currency not defined");
+                    return price;
+            }
+        }
+
+        private decimal ConvertToUSD(Currency originCurrency, decimal price)
+        {
+            switch (originCurrency)
+            {
+                case Currency.DKK:
+                    return Math.Round(price * 0.151343m, 2);
+                case Currency.USD:
+                    return price;
+                case Currency.EUR:
+                    return Math.Round(price * 1.12994m, 2);
+                case Currency.GBP:
+                    return Math.Round(price * 1.25684m, 2);
+                default:
+                    return price;
             }
         }
 
@@ -280,9 +302,9 @@ namespace DimensionalPriceRunner.Pages
             Result one = new Result("a" + Guid.NewGuid(),
                 Airlines.SAS.ToString(),
                 "Windows 8", "United States",
-                new Ticket(ConvertToCurrency(ActiveCurrency, 1000),
+                new Ticket(ConvertToActiveCurrency(Currency.DKK, 1000),
                     AirlineDictionary[Airlines.SAS],
-                    "3,5".Split(new[] {',', '.'}),
+                    "3,5".Split(new[] { ',', '.' }),
                     "Cityjet",
                     "10.10 - 15.20",
                     "5 t. 10 min.",
@@ -295,7 +317,7 @@ namespace DimensionalPriceRunner.Pages
             Result two = new Result("a" + Guid.NewGuid(),
                 Airlines.SAS.ToString(),
                 "Windows 10", "United States",
-                new Ticket(ConvertToCurrency(ActiveCurrency, 2000),
+                new Ticket(ConvertToActiveCurrency(Currency.DKK, 2000),
                     AirlineDictionary[Airlines.BritishAirways],
                     "5,0".Split(new[] { ',', '.' }),
                     "Cityjet",
@@ -309,7 +331,7 @@ namespace DimensionalPriceRunner.Pages
             Result three = new Result("a" + Guid.NewGuid(),
                 Airlines.SAS.ToString(),
                 "Windows 10", "United States",
-                new Ticket(ConvertToCurrency(ActiveCurrency, 3000),
+                new Ticket(ConvertToActiveCurrency(Currency.DKK, 3000),
                     AirlineDictionary[Airlines.SAS],
                     "3,5".Split(new[] { ',', '.' }),
                     "Cityjet",
@@ -323,7 +345,7 @@ namespace DimensionalPriceRunner.Pages
             Result four = new Result("a" + Guid.NewGuid(),
                 Airlines.SAS.ToString(),
                 "Windows 8", "Denmark",
-                new Ticket(ConvertToCurrency(ActiveCurrency, 4000),
+                new Ticket(ConvertToActiveCurrency(Currency.DKK, 4000),
                     AirlineDictionary[Airlines.Default],
                     "1,4".Split(new[] { ',', '.' }),
                     "Cityjet",
@@ -337,7 +359,7 @@ namespace DimensionalPriceRunner.Pages
             Result five = new Result("a" + Guid.NewGuid(),
                 Airlines.SAS.ToString(),
                 "Windows 10", "Denmark",
-                new Ticket(ConvertToCurrency(ActiveCurrency, 5000),
+                new Ticket(ConvertToActiveCurrency(Currency.DKK, 5000),
                     AirlineDictionary[Airlines.SAS],
                     "4,9".Split(new[] { ',', '.' }),
                     "Cityjet",
