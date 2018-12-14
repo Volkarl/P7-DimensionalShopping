@@ -19,13 +19,30 @@ body {
     width: 100%;
 }
 
-#logo h1 {
-    font-size: 60px;
-    text-shadow: 1px 2px 3px #999;
-    font-family: Roboto, sans-serif;
-    font-weight: 700;
-    letter-spacing: -1px;
+
+/* If the screen size is 801px wide or more, set the font-size to 80px */
+@media screen and (min-width: 801px) {
+    #logo h1 {
+        font-size: 60px;
+        text-shadow: 1px 2px 3px #999;
+        font-family: Roboto, sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
 }
+
+/* If the screen size is 800px wide or less, set the font-size to 30px */
+@media screen and (max-width: 800px) {
+    #logo h1 {
+        font-size: 40px;
+        text-shadow: 1px 2px 3px #999;
+        font-family: Roboto, sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+}
+
+
 
 #logo p {
     padding-bottom: 20px;
@@ -487,5 +504,6 @@ footer{
     bottom:0; 
     width:100%;  
 }
+
 
 
