@@ -142,7 +142,7 @@ spec:
     spec: 
       containers: 
       - name: dsb-i 
-        image: thinhar/node-speed 
+        image: thinhar/node-speed2
         ports: 
         - containerPort: 80 
         volumeMounts:
@@ -209,7 +209,7 @@ spec:
     spec: 
       containers: 
       - name: dsb-i
-        image: thinhar/node-speed:latest
+        image: thinhar/node-speed2
         ports: 
         - containerPort: 80 
         volumeMounts:
