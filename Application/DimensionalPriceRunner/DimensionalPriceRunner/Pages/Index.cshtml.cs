@@ -26,7 +26,6 @@ namespace DimensionalPriceRunner.Pages
             { Airlines.SAS, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png"},
             { Airlines.BritishAirways, "https://www.alternativeairlines.com/images/global/airlinelogos/ba_logo.gif"},
             { Airlines.Default, "http://betlosers.com/images/stories/flexicontent/leagueimages/m_fld34_NoImageAvailable.jpg" } 
-
         };
 
         private static readonly Dictionary<string, string> OSUserAgentStrings = new Dictionary<string, string>()
@@ -117,17 +116,33 @@ namespace DimensionalPriceRunner.Pages
             ViewData["search-input"] = searchInput;
 
 
+
+            //if (selectedCurrency != null)
+            //{
+            //    ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), selectedCurrency);
+            //}
+
+            //if (selectedLanguage != null)
+            //{
+            //    //ActiveLanguage = (Language)Enum.Parse(typeof(Language), selectedLanguage);
+            //}
+
+
             string selectedCurrency = Request.Form["selected-currency"];
-            if (selectedCurrency != null)
+            Currency activeCurrency;
+            if (Enum.TryParse(selectedCurrency, out activeCurrency))
             {
-                ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), selectedCurrency);
+                ActiveCurrency = activeCurrency;
             }
 
             string selectedLanguage = Request.Form["selected-language"];
-            if (selectedLanguage != null)
+            Language activeLanguage;
+            if (Enum.TryParse(selectedLanguage, out activeLanguage))
             {
-                ActiveLanguage = (Language)Enum.Parse(typeof(Language), selectedLanguage);
+                ActiveLanguage = activeLanguage;
             }
+
+
 
             // Moves the Logo/Search html element to the top of the page, to make room for the result container.
             SearchBarMarginTop = 1;
@@ -140,23 +155,13 @@ namespace DimensionalPriceRunner.Pages
 
                 //UserLocation = GetUserCountryByIp("162.210.211.225");
 
-                //Final
-                string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-                UserLocation = GetUserCountryByIp(ip);
+                //Finds and sets UserLocation based on their public IP
+                string userIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                UserLocation = GetUserCountryByIp(userIp);
 
-
-
-                string userOS = Request.Headers["User-Agent"];
-
-                foreach (var key in OSUserAgentStrings.Keys)
-                {
-                    if (userOS.Contains(key))
-                    {
-                        UserOS = OSUserAgentStrings[key];
-                        break;
-                    }
-                }
-
+                //Finds and sets UserOS based on their User-Agent string
+                string userAgent = Request.Headers["User-Agent"];
+                UserOS = FindUserOS(userAgent);
 
             }
             else
@@ -190,7 +195,17 @@ namespace DimensionalPriceRunner.Pages
 
 
 
-
+        private string FindUserOS(string userAgent)
+        {
+            foreach (var key in OSUserAgentStrings.Keys)
+            {
+                if (userAgent.Contains(key))
+                {
+                    return OSUserAgentStrings[key];
+                }
+            }
+            return "";
+        }
 
         private decimal ConvertToActiveCurrency(Currency originCurrency, decimal price)
         {
