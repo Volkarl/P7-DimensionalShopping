@@ -53,15 +53,15 @@ if deleteCookies:
 	print("Deleting Cookies")
 	driver.delete_all_cookies()
 
-# Get website
-driver.get(url)
+try:
+	driver.get(url)
+	# Get website
 
-# Crawl HTML of website
-result = crawlUrl(driver, url)
-print(result.encode('ascii', 'ignore').decode('ascii'))
-# Silently removes all non-ascii characters, as those don't interact with Python well
+	# Crawl HTML of website
+	result = crawlUrl(driver, url)
+	print(result)
+except Exception as e:
+	print(e)
 
 # Terminate VPN connection and selenium session
 driver.quit()
-
-## Perhaps add graceful termination with try-catch that calls my terminate commands
