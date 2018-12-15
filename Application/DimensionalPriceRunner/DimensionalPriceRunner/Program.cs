@@ -68,20 +68,21 @@ namespace DimensionalPriceRunner
         {
             string uri = Uri.EscapeDataString(flightSearchUrl);
 
-            var stringTask = client.GetStringAsync("http://94.245.93.167/query/" + "\"" + uri + "\"" + "/PcWindowsChrome/True");
+            var stringTask = client.GetStringAsync("http://94.245.93.167/query/" + "%22" + uri + "%22" + "/PcWindowsChrome/True");
             var msg = await stringTask;
 
-            Match match = Regex.Match(msg, @"---Price---\\n([^\\n]*)(?:\\n)?(?:---|\Z)");
+            //Match match = Regex.Match(msg, @"---Price---\\n([^\\n]*)(?:\\n)?(?:---|\Z)");
 
-            if (match.Success)
-            {
-                IndexModel.test = match.Groups[1].Value;
-            }
-            else
-            {
-                IndexModel.test = msg;
-            }
+            //if (match.Success)
+            //{
+            //    IndexModel.test = match.Groups[1].Value;
+            //}
+            //else
+            //{
+            //    IndexModel.test = msg;
+            //}
 
+            IndexModel.test = msg;
 
             // TryParse on valuta etc.
 
