@@ -98,10 +98,24 @@ namespace DimensionalPriceRunner.Pages
             // Moves the Logo/Search html element to the top of the page, to make room for the result container.
             SearchBarMarginTop = 1;
 
-            Task<Result> task = ProcessFlightSearch(searchInput);
-            task.Wait();
-            Results = new List<Result> { task.Result }; 
+            List<Task<Result>> tasks = new List<Task<Result>> {
+                ProcessFlightSearch(searchInput, Location.USA, "PcWindowsChrome"),
+                ProcessFlightSearch(searchInput, Location.SouthAfrica, "PcWindowsChrome"),
+                ProcessFlightSearch(searchInput, Location.USA, "PhoneIOSSafari"),
+                ProcessFlightSearch(searchInput, Location.SouthAfrica, "PhoneIOSSafari")
+            };
+            //tasks.Select(x => x.ContinueWith(y => Results.Add(y.Result)));
+
+            var allResults = Task.WhenAll(tasks);
+            allResults.Wait();
+            //task.Wait();
+            Results = new List<Result>(allResults.Result);
             // do something with += maybe? Add it to the list once they are ready
+
+            // Start all tasks 
+
+
+
 
             //if (searchInput == "https://www.google.dk/")
             //{
@@ -128,7 +142,7 @@ namespace DimensionalPriceRunner.Pages
             //    //string uri = Uri.EscapeDataString(searchInput);
             //    Program.ProcessFlightSearch(searchInput).Wait();
             //    NoResultStringBody = test;
-                 
+
             //}
 
 

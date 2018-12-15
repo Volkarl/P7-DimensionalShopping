@@ -55,12 +55,9 @@ namespace DimensionalPriceRunner
         private static readonly HttpClient client = new HttpClient();
 
 
-        public static async Task<Result> ProcessFlightSearch(string flightSearchUrl)
+        public static async Task<Result> ProcessFlightSearch(string flightSearchUrl, Location location, string userAgent)
         {
             string uri = Uri.EscapeDataString(flightSearchUrl);
-
-            var userAgent = "PcWindowsChrome";
-            var location = Location.USA;
             var vpnUrl = LocationIPDictionary[location];
 
             var stringTask = client.GetStringAsync("http://" + vpnUrl + "/query/" + "%22" + uri + "%22" + "/" + userAgent + "/True");

@@ -33,12 +33,13 @@ namespace DimensionalPriceRunner
             decimal price = 0;
             decimal.TryParse(GetMatchValue(priceCurrency, 2), out price);
             Currency currency = Currency.USD;
-            switch (currencySymbol)
+            switch (currencySymbol.Trim())
             {
                 case "DKK": currency = Currency.DKK; break;
                 case "€": currency = Currency.EUR; break;
                 case "£": currency = Currency.GBP; break;
                 case "$": currency = Currency.USD; break;
+                case "": currency = Currency.USD; break; // If we didn't get any proper results from our crawling
                 default: throw new NotSupportedException(currencySymbol);
             }
 
@@ -63,7 +64,6 @@ namespace DimensionalPriceRunner
             string airports = GetMatchValue(airportMatch, 1);
             // Match the remaining characters
 
-            // string resultString = flightDuration + airline + correctedRating + time + stops + airports;
             return BuildResult(airline, userAgent, vpnLoc, currency, price, correctedRating, flightDuration, 
                 time, airports, stops, "", "");
         }
@@ -73,7 +73,8 @@ namespace DimensionalPriceRunner
             if (!ratingMatch.Success) return "";
             double res = 0;
             double.TryParse(GetMatchValue(ratingMatch, 1) + "." + GetMatchValue(ratingMatch, 2), out res);
-            return (res / 2).ToString();
+            //return (res / 2).ToString() SHIT?
+            return "REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe";
         }
 
         private static string GetMatchValue(Match match, int groupNo)
