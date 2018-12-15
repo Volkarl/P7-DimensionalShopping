@@ -1,0 +1,143 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using static DimensionalPriceRunner.Pages.IndexModel;
+using static DimensionalPriceRunner.Program;
+
+namespace DimensionalPriceRunner
+{
+    public class Result
+    {
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public string OS { get; set; }
+        public string VPNLocation { get; set; }
+        public Ticket Ticket { get; set; }
+
+        public Result(string id, string name, string os, string vpnLoc, Ticket ticket)
+        {
+            this.ID = id;
+            this.Name = name;
+            this.OS = os;
+            this.VPNLocation = vpnLoc;
+            this.Ticket = ticket;
+        }
+
+        public static Result BuildResult(string resultString, string userAgent, string vpnLoc)
+        {
+            Match priceCurrency = Regex.Match(resultString, @"\|Price\|\s*([^\d]*)([\d]*)\s*([^\s\|]*)\s*");
+            // Valuata is either in the first or the third match group, price is always in the second
+            string currencySymbol = GetMatchValue(priceCurrency, 1) != "" ? GetMatchValue(priceCurrency, 1) : GetMatchValue(priceCurrency, 3);
+            decimal price = 0;
+            decimal.TryParse(GetMatchValue(priceCurrency, 2), out price);
+            Currency currency = Currency.USD;
+            switch (currencySymbol)
+            {
+                case "DKK": currency = Currency.DKK; break;
+                case "€": currency = Currency.EUR; break;
+                case "£": currency = Currency.GBP; break;
+                case "$": currency = Currency.USD; break;
+                default: throw new NotSupportedException(currencySymbol);
+            }
+
+            Match dur = Regex.Match(resultString, @"\|Duration\|\s*([\d]*):([\d]*)\s-\s([\d]*):([\d]*)\s*");
+            // Match group 1: TakeoffHour, 2: TakeoffMinutes, 3: LandingHour, 4: LandingMinutes
+            string flightDuration = !dur.Success ? "" : $"{dur.Groups[1].Value}:{dur.Groups[2].Value} - {dur.Groups[3].Value}:{dur.Groups[4].Value}";
+
+            Match airlineMatch = Regex.Match(resultString, @"\|Airline\|\s*([^|]*)");
+            string airlineStr = GetMatchValue(airlineMatch, 1).Trim();
+            Airlines airline = Airlines.Default;
+            Enum.TryParse(airlineStr, out airline);
+
+            Match ratingMatch = Regex.Match(resultString, @"\|Rating\|\s*\((\d*).(\d*)\/(\d*)\)\s*");
+            string correctedRating = CorrectRating(ratingMatch);
+            // Has to be divisible by 5 instead of the 10 that we get the value in
+
+            Match timeStops = Regex.Match(resultString, @"\|Time\|\s*([\d]*h\s[\d]*m)\s*\((.*)\)");
+            string time = GetMatchValue(timeStops, 1);
+            string stops = GetMatchValue(timeStops, 2);
+
+            Match airportMatch = Regex.Match(resultString, @"\|Leg\|\s*(.*)");
+            string airports = GetMatchValue(airportMatch, 1);
+            // Match the remaining characters
+
+            // string resultString = flightDuration + airline + correctedRating + time + stops + airports;
+            return BuildResult(airline, userAgent, vpnLoc, currency, price, correctedRating, flightDuration, 
+                time, airports, stops, "", "");
+        }
+
+        private static string CorrectRating(Match ratingMatch)
+        {
+            if (!ratingMatch.Success) return "";
+            double res = 0;
+            double.TryParse(GetMatchValue(ratingMatch, 1) + "." + GetMatchValue(ratingMatch, 2), out res);
+            return (res / 2).ToString();
+        }
+
+        private static string GetMatchValue(Match match, int groupNo)
+        {
+            return match.Success ? match.Groups[groupNo].Value : "";
+        }
+
+        public static Result BuildResult(Airlines airline, string os, string vpnLoc, Currency currency, decimal price, string rating,
+            string flightDuration, string flightLength, string airports, string stops, string ticketType, string ticketUrl)
+        {
+            return
+                new Result("a" + Guid.NewGuid(), // Not allowed to start on a number, so we select an arbitrary character
+                airline.ToString(),
+                os,
+                vpnLoc,
+                new Ticket(ConvertToActiveCurrency(currency, price),
+                    AirlineDictionary[airline],
+                    rating.Split(new[] { ',', '.' }), //TODO convert to int, divide by two, convert back?
+                    "",
+                    flightDuration,
+                    flightLength,
+                    airports,
+                    stops,
+                    ticketType,
+                    ticketUrl));
+        }
+
+        public static decimal ConvertToActiveCurrency(Currency originCurrency, decimal price)
+        {
+            if (originCurrency == ActiveCurrency)
+                return price;
+
+            price = ConvertToUSD(originCurrency, price);
+
+            switch (ActiveCurrency)
+            {
+                case Currency.DKK:
+                    return Math.Round(price * 6.61244462m, 2);
+                case Currency.USD:
+                    return price;
+                case Currency.EUR:
+                    return Math.Round(price * 0.886194857m, 2);
+                case Currency.GBP:
+                    return Math.Round(price * 0.795780m, 2);
+                default:
+                    return price;
+            }
+        }
+
+        private static decimal ConvertToUSD(Currency originCurrency, decimal price)
+        {
+            switch (originCurrency)
+            {
+                case Currency.DKK:
+                    return Math.Round(price * 0.151343m, 2);
+                case Currency.USD:
+                    return price;
+                case Currency.EUR:
+                    return Math.Round(price * 1.12994m, 2);
+                case Currency.GBP:
+                    return Math.Round(price * 1.25684m, 2);
+                default:
+                    return price;
+            }
+        }
+    }
+}
