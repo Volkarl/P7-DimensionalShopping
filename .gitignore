@@ -270,3 +270,5 @@ package-lock\.json
 Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/styles\.css
 
 Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/
+
+Backend/Kubernetes/sek\.yaml

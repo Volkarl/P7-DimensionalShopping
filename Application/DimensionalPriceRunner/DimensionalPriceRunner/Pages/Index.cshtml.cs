@@ -18,16 +18,6 @@ namespace DimensionalPriceRunner.Pages
     {
         public IEnumerable<Result> Results { get; set; }
 
-        public enum Airlines { Default, SAS, BritishAirways }
-
-        // Airline Links should be in 2:1 format
-        private static readonly Dictionary<Airlines, string> AirlineDictionary = new Dictionary<Airlines, string>()
-        {
-            { Airlines.SAS, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png"},
-            { Airlines.BritishAirways, "https://www.alternativeairlines.com/images/global/airlinelogos/ba_logo.gif"},
-            { Airlines.Default, "http://betlosers.com/images/stories/flexicontent/leagueimages/m_fld34_NoImageAvailable.jpg" } 
-        };
-
         private static readonly Dictionary<string, string> OSUserAgentStrings = new Dictionary<string, string>()
         {
             { "Windows NT 5.1", "Windows XP" },
@@ -205,45 +195,6 @@ namespace DimensionalPriceRunner.Pages
                 }
             }
             return "";
-        }
-
-        private decimal ConvertToActiveCurrency(Currency originCurrency, decimal price)
-        {
-            if (originCurrency == ActiveCurrency)
-                return price;
-
-            price = ConvertToUSD(originCurrency, price);
-
-            switch (ActiveCurrency)
-            {
-                case Currency.DKK:
-                    return Math.Round(price * 6.61244462m, 2);
-                case Currency.USD:
-                    return price;
-                case Currency.EUR:
-                    return Math.Round(price * 0.886194857m, 2);
-                case Currency.GBP:
-                    return Math.Round(price * 0.795780m, 2);
-                default:
-                    return price;
-            }
-        }
-
-        private decimal ConvertToUSD(Currency originCurrency, decimal price)
-        {
-            switch (originCurrency)
-            {
-                case Currency.DKK:
-                    return Math.Round(price * 0.151343m, 2);
-                case Currency.USD:
-                    return price;
-                case Currency.EUR:
-                    return Math.Round(price * 1.12994m, 2);
-                case Currency.GBP:
-                    return Math.Round(price * 1.25684m, 2);
-                default:
-                    return price;
-            }
         }
 
 
