@@ -59,8 +59,7 @@ try:
 
 	# Crawl HTML of website
 	result = crawlUrl(driver, url)
-	print(result.encode('utf-8', 'ignore').decode('utf-8'))
-	# Silently removes all non-ascii characters, as those don't interact with Python well
+	print(result)
 except Exception as e:
 	print(e)
 

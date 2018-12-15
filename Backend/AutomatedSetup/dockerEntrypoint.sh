@@ -8,6 +8,9 @@ mknod /dev/net/tun c 10 200
 chmod 666 /dev/net/tun
 # Changes permissions to allow all users to read and write (not execute)
 
+export LANG=en_GB.UTF-8
+# Set UTF8 language to allow for printing symbols such as £ in terminal
+
 pcUsername=$(cat /etc/username)
 
 echo $location $(cat /etc/ipvanish/email) $(cat /etc/ipvanish/password) /home/$pcUsername > /home/$pcUsername/arguments

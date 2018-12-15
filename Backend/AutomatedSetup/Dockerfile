@@ -40,6 +40,9 @@ RUN apt-get install tzdata -y
 # other packages. This is installed here to avoid the problem of future apt-get commands 
 # installing this package and prompting us for user input
 
+RUN apt-get install language-pack-en
+# Allows us to print UK utf8 characters in console, so long as we remember to run "export LANG=en_GB.UTF-8"
+
 # -------------------------------------------------------------------
 # Install git and download repository
 
