@@ -142,7 +142,7 @@ spec:
     spec: 
       containers: 
       - name: dsb-i 
-        image: thinhar/node-speed 
+        image: thinhar/node-speed5
         ports: 
         - containerPort: 80 
         volumeMounts:
@@ -198,7 +198,7 @@ metadata:
   labels:
     app: ds-backend-usa
 spec:
-  replicas: 1 
+  replicas: 1
   selector: 
     matchLabels:
       app: ds-backend-usa
@@ -209,7 +209,7 @@ spec:
     spec: 
       containers: 
       - name: dsb-i
-        image: thinhar/node-speed
+        image: thinhar/node-speed5
         ports: 
         - containerPort: 80 
         volumeMounts:

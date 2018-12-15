@@ -70,11 +70,12 @@ def crawlExpedia(driver, urlSuffix):
 
 	priceList = regexFindAllIn(text, "\d+[,.]?\d*\s*"+ re.escape(valuta(urlSuffix)) + "|" + re.escape(valuta(urlSuffix)) + "\s*\d+[.,]?\d*", "Price")
 	durationList = regexFindAllIn(text, "[\d]+:[\d]+[^A-Z]*[[\d]+:[\d]+[^\s]*", "Duration")
+	airlineList = regexFindAllIn(text, "[\d]+:[\d]+[^A-Z]*[[\d]+:[\d]+[^\s]*\s([^\n]*)", "Airline")
 	ratingList = regexFindAllIn(text, "\(\d*.\d*\/\d*\)", "Rating")
 	timeList = regexFindAllIn(text, "\d+[a-zA-Z]+\s\d*[a-zA-Z]*\s\W(?:\d+\s*)?[a-zA-Z]*\W", "Time")
 	legList = regexFindAllIn(text, "[A-Z]{3} -(?:(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3}(?:[a-zA-Z\s]+(?:\s*\d+[a-z]+)+\s[a-z]+\s+[A-Z]{3})+)?\s[a-zA-Z\s:]*\s*(?:- )?[A-Z]{3}", "Leg")
 
-	resultList = priceList[0] + "\n" + durationList[0] + "\n" + ratingList[0] + "\n" + timeList[0]+  "\n" + legList[0]
+	resultList = priceList[0] + "\n" + durationList[0] + "\n" + airlineList[0] + "\n" + ratingList[0] + "\n" + timeList[0]+  "\n" + legList[0]
 	return markAsResult(resultList)
 
 
