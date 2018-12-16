@@ -27,6 +27,9 @@ namespace DimensionalPriceRunner
 
         public static Result BuildResult(string resultString, string userAgent, string vpnLoc)
         {
+            if(resultString == String.Empty)
+                return BuildResult(Airlines.NotFound, userAgent, vpnLoc, Currency.USD, 0, new[] { "0", "0" }, "", "", "", "", "", "");
+
             Match priceCurrency = Regex.Match(resultString, @"\|Price\|[\\n\s]*([^\d]*)([\d\.]*)\s*([^\s\|]*)\s*");
             // Valuata is either in the first or the third match group, price is always in the second
             string currencySymbol = GetMatchValue(priceCurrency, 1) != "" ? GetMatchValue(priceCurrency, 1) : GetMatchValue(priceCurrency, 3);

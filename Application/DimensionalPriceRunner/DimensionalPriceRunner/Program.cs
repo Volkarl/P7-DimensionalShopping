@@ -71,13 +71,13 @@ namespace DimensionalPriceRunner
             JObject dictionary = JObject.Parse(json);
             var backendResult = dictionary["result"];
 
-            if (backendResult.ToString() == null && tryNo < 3)
+            if (backendResult.ToString() == String.Empty && tryNo < 3) // Max three tries
             {
                 var otherTry = QueryBackend(queryUrl, userAgent, location, ++tryNo);
                 otherTry.Wait();
                 return otherTry.Result;
             }
-            return Result.BuildResult(backendResult.ToString(), userAgent, location);
+            else return Result.BuildResult(backendResult.ToString(), userAgent, location);
         }
 
 

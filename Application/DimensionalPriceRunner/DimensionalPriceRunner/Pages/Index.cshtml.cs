@@ -43,14 +43,15 @@ namespace DimensionalPriceRunner.Pages
             { "Android", "fa-android" }
         };
 
-        public enum Airlines { Default, SAS, BritishAirways }
+        public enum Airlines { Default, NotFound, SAS, BritishAirways }
 
         // Airline Links should be in 2:1 format
         public static readonly Dictionary<Airlines, string> AirlineDictionary = new Dictionary<Airlines, string>()
         {
             { Airlines.SAS, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png"},
             { Airlines.BritishAirways, "https://www.alternativeairlines.com/images/global/airlinelogos/ba_logo.gif"},
-            { Airlines.Default, "http://betlosers.com/images/stories/flexicontent/leagueimages/m_fld34_NoImageAvailable.jpg" }
+            { Airlines.Default, "http://betlosers.com/images/stories/flexicontent/leagueimages/m_fld34_NoImageAvailable.jpg" },
+            { Airlines.NotFound, "dist/orangeCross.PNG" }
         };
 
         public void OnGet()
@@ -66,19 +67,6 @@ namespace DimensionalPriceRunner.Pages
             // Sets the searchBar inner value to the URL from input
             ViewData["search-input"] = searchInput;
 
-
-
-            //if (selectedCurrency != null)
-            //{
-            //    ActiveCurrency = (Currency)Enum.Parse(typeof(Currency), selectedCurrency);
-            //}
-
-            //if (selectedLanguage != null)
-            //{
-            //    //ActiveLanguage = (Language)Enum.Parse(typeof(Language), selectedLanguage);
-            //}
-
-
             string selectedCurrency = Request.Form["selected-currency"];
             Currency activeCurrency;
             if (Enum.TryParse(selectedCurrency, out activeCurrency))
@@ -93,8 +81,6 @@ namespace DimensionalPriceRunner.Pages
                 ActiveLanguage = activeLanguage;
             }
 
-
-
             // Moves the Logo/Search html element to the top of the page, to make room for the result container.
             SearchBarMarginTop = 1;
 
@@ -104,49 +90,24 @@ namespace DimensionalPriceRunner.Pages
                 ProcessFlightSearch(searchInput, Location.USA, "PhoneIOSSafari"),
                 ProcessFlightSearch(searchInput, Location.SouthAfrica, "PhoneIOSSafari")
             };
-            //tasks.Select(x => x.ContinueWith(y => Results.Add(y.Result)));
-
-            var allResults = Task.WhenAll(tasks);
-            allResults.Wait();
-            //task.Wait();
-            Results = new List<Result>(allResults.Result);
-            // do something with += maybe? Add it to the list once they are ready
-
             // Start all tasks 
 
+            var allResults = Task.WhenAll(tasks);
+            // Wait for all tasks
+            allResults.Wait();
+            Results = new List<Result>(allResults.Result.OrderBy(x => x.Ticket.Price));
 
+            //Finds and sets UserLocation based on their public IP
+            string userIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            UserLocation = GetUserCountryByIp(userIp);
 
+            //Finds and sets UserOS based on their User-Agent string
+            string userAgent = Request.Headers["User-Agent"];
+            UserOS = FindUserOS(userAgent);
 
-            //if (searchInput == "https://www.google.dk/")
-            //{
-            //    //MakeTestResults();
-
-
-            //    //UserLocation = GetUserCountryByIp("162.210.211.225");
-
-            //    //Finds and sets UserLocation based on their public IP
-            //    string userIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-            //    UserLocation = GetUserCountryByIp(userIp);
-
-            //    //Finds and sets UserOS based on their User-Agent string
-            //    string userAgent = Request.Headers["User-Agent"];
-            //    UserOS = FindUserOS(userAgent);
-
-            //}
-            //else
-            //{
             //    NoResultStringHead = "We did not find any plane tickets";
-            //    NoResultStringBody = "please verify you entered a valid web address";
+            //    NoResultStringBody = "Please verify you entered a valid web address";
             //    NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
-
-            //    //string uri = Uri.EscapeDataString(searchInput);
-            //    Program.ProcessFlightSearch(searchInput).Wait();
-            //    NoResultStringBody = test;
-
-            //}
-
-
-
         }
 
         public static string test { get; set; }
@@ -160,7 +121,7 @@ namespace DimensionalPriceRunner.Pages
         public string UserLocation { get; set; }
         public string UserOS { get; set; }
 
-        private string FindUserOS(string userAgent)
+        public string FindUserOS(string userAgent)
         {
             foreach (var key in OSUserAgentStrings.Keys)
             {
