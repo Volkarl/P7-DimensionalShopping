@@ -96,8 +96,8 @@ namespace DimensionalPriceRunner.Pages
                 ProcessFlightSearch(searchInput, Location.SouthAfrica, "PcWindowsChrome"),
                 ProcessFlightSearch(searchInput, Location.Denmark, "PcWindowsChrome"),
                 ProcessFlightSearch(searchInput, Location.USA, "PhoneIOSSafari"),
-                ProcessFlightSearch(searchInput, Location.SouthAfrica, "PhoneIOSSafari"),
-                ProcessFlightSearch(searchInput, Location.Denmark, "PhoneIOSSafari")
+                // ProcessFlightSearch(searchInput, Location.SouthAfrica, "PhoneIOSSafari"),
+                // ProcessFlightSearch(searchInput, Location.Denmark, "PhoneIOSSafari")
             };
             // Start all tasks 
             var allResults = Task.WhenAll(tasks);
