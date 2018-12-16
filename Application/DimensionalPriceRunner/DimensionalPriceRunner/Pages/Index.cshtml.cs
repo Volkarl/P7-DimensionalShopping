@@ -93,8 +93,10 @@ namespace DimensionalPriceRunner.Pages
             List<Task<Result>> tasks = new List<Task<Result>> {
                 ProcessFlightSearch(searchInput, Location.USA, "PcWindowsChrome"),
                 ProcessFlightSearch(searchInput, Location.SouthAfrica, "PcWindowsChrome"),
+                ProcessFlightSearch(searchInput, Location.Denmark, "PcWindowsChrome"),
                 ProcessFlightSearch(searchInput, Location.USA, "PhoneIOSSafari"),
-                ProcessFlightSearch(searchInput, Location.SouthAfrica, "PhoneIOSSafari")
+                ProcessFlightSearch(searchInput, Location.SouthAfrica, "PhoneIOSSafari"),
+                ProcessFlightSearch(searchInput, Location.Denmark, "PhoneIOSSafari")
             };
             // Start all tasks 
             var allResults = Task.WhenAll(tasks);
@@ -103,13 +105,13 @@ namespace DimensionalPriceRunner.Pages
             allResults.Wait();
             Results = new List<Result>(allResults.Result.OrderBy(x => x.Ticket.Price));
 
-            if (!Results.Any())
-            {
-                Results = null;
-                NoResultStringHead = "We did not find any plane tickets";
-                NoResultStringBody = "Please verify you entered a valid web address";
-                NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
-            }
+            //if (!Results.Any())
+            //{
+            //    Results = null;
+            //    NoResultStringHead = "We did not find any plane tickets";
+            //    NoResultStringBody = "Please verify you entered a valid web address";
+            //    NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
+            //}
 
 
 

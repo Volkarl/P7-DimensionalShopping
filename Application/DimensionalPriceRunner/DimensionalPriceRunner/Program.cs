@@ -27,7 +27,7 @@ namespace DimensionalPriceRunner
         public static Language ActiveLanguage { get; set; }
         public enum Language { English, Dansk }
 
-        public enum Location { USA, SouthAfrica }
+        public enum Location { USA, SouthAfrica, Denmark }
 
         // flags used taken from here: http://flag-icon-css.lip.is/
         public static readonly Dictionary<Language, string> LanguageFlagDictionary = new Dictionary<Language, string>()
@@ -50,6 +50,7 @@ namespace DimensionalPriceRunner
         {
             { Location.SouthAfrica, "94.245.93.167"},
             { Location.USA, "94.245.95.6"},
+            { Location.Denmark, "104.41.222.232" }
         };
 
         private static readonly HttpClient client = new HttpClient();
