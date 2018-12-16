@@ -44,13 +44,14 @@ namespace DimensionalPriceRunner.Pages
             { "Android", "fa-android" }
         };
 
-        public enum Airlines { Default, NotFound, SAS, BritishAirways }
+        public enum Airlines { Default, NotFound, SAS, BritishAirways, Ryanair }
 
         // Airline Links should be in 2:1 format
         public static readonly Dictionary<Airlines, string> AirlineDictionary = new Dictionary<Airlines, string>()
         {
             { Airlines.SAS, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Scandinavian_Airlines_logo.svg/1280px-Scandinavian_Airlines_logo.svg.png"},
             { Airlines.BritishAirways, "https://www.alternativeairlines.com/images/global/airlinelogos/ba_logo.gif"},
+            { Airlines.Ryanair, "https://cdn0.scrvt.com/airportdtm/public/airportdtm/a81362c0976d30cc/09b48a2d6bb4d49babe1b39ac2ecf9e1/Airlinelogo_ryanair.png" },
             { Airlines.Default, "http://betlosers.com/images/stories/flexicontent/leagueimages/m_fld34_NoImageAvailable.jpg" },
             { Airlines.NotFound, "dist/orangeCross.PNG" }
         };
