@@ -55,19 +55,29 @@ namespace DimensionalPriceRunner
         private static readonly HttpClient client = new HttpClient();
 
 
-        public static async Task<Result> ProcessFlightSearch(string flightSearchUrl, Location location, string userAgent)
+        public static async Task<Result> ProcessFlightSearch(string flightSearchUrl, Location location, string userAgent, int tryNo = 0)
         {
             string uri = Uri.EscapeDataString(flightSearchUrl);
             var vpnUrl = LocationIPDictionary[location];
+            var queryUrl = "http://" + vpnUrl + "/query/" + "%22" + uri + "%22" + "/" + userAgent + "/True";
 
-            var stringTask = client.GetStringAsync("http://" + vpnUrl + "/query/" + "%22" + uri + "%22" + "/" + userAgent + "/True");
-            //var testResult = "|Price| 190 € |Duration| 18:15 - 09:05 |Airline| SAS |Rating| (3.2/10) |Time| 14h 50m (2 stops) |Leg| AAL - AMS - CDG";
+            return await QueryBackend(queryUrl, userAgent, location.ToString());
+        }
 
-            string json = await stringTask; // TODO REMOVE THIS AWAIT I THINK IT REMOVES ALL PARALELLISM
+        public static async Task<Result> QueryBackend(string queryUrl, string userAgent, string location, int tryNo = 0)
+        {
+            var stringTask = client.GetStringAsync(queryUrl);
+            string json = await stringTask;
             JObject dictionary = JObject.Parse(json);
             var backendResult = dictionary["result"];
 
-            return Result.BuildResult(backendResult.ToString(), "PLACEHOLDER UA", "");
+            if (backendResult.ToString() == null && tryNo < 3)
+            {
+                var otherTry = QueryBackend(queryUrl, userAgent, location, ++tryNo);
+                otherTry.Wait();
+                return otherTry.Result;
+            }
+            return Result.BuildResult(backendResult.ToString(), userAgent, location);
         }
 
 
