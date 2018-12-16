@@ -34,7 +34,7 @@ namespace DimensionalPriceRunner
             // Valuata is either in the first or the third match group, price is always in the second
             string currencySymbol = GetMatchValue(priceCurrency, 1) != "" ? GetMatchValue(priceCurrency, 1) : GetMatchValue(priceCurrency, 3);
             decimal price = 0;
-            decimal.TryParse(GetMatchValue(priceCurrency, 2), out price);
+            decimal.TryParse(GetMatchValue(priceCurrency, 2).Replace(".", String.Empty), out price);
             Currency currency = Currency.USD;
             switch (currencySymbol.Trim())
             {

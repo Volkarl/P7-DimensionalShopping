@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DimensionalPriceRunner.Pages
 {
@@ -84,6 +85,11 @@ namespace DimensionalPriceRunner.Pages
             // Moves the Logo/Search html element to the top of the page, to make room for the result container.
             SearchBarMarginTop = 1;
 
+            if (String.IsNullOrEmpty(searchInput))
+            {
+                return;
+            }
+
             List<Task<Result>> tasks = new List<Task<Result>> {
                 ProcessFlightSearch(searchInput, Location.USA, "PcWindowsChrome"),
                 ProcessFlightSearch(searchInput, Location.SouthAfrica, "PcWindowsChrome"),
@@ -91,11 +97,25 @@ namespace DimensionalPriceRunner.Pages
                 ProcessFlightSearch(searchInput, Location.SouthAfrica, "PhoneIOSSafari")
             };
             // Start all tasks 
-
             var allResults = Task.WhenAll(tasks);
+
             // Wait for all tasks
             allResults.Wait();
             Results = new List<Result>(allResults.Result.OrderBy(x => x.Ticket.Price));
+
+            if (!Results.Any())
+            {
+                Results = null;
+                NoResultStringHead = "We did not find any plane tickets";
+                NoResultStringBody = "Please verify you entered a valid web address";
+                NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
+            }
+
+
+
+            
+
+
 
             //Finds and sets UserLocation based on their public IP
             string userIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
@@ -105,9 +125,7 @@ namespace DimensionalPriceRunner.Pages
             string userAgent = Request.Headers["User-Agent"];
             UserOS = FindUserOS(userAgent);
 
-            //    NoResultStringHead = "We did not find any plane tickets";
-            //    NoResultStringBody = "Please verify you entered a valid web address";
-            //    NoResultImg = "https://image.flaticon.com/icons/png/512/885/885161.png";
+
         }
 
         public static string test { get; set; }
