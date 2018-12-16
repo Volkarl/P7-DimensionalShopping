@@ -278,3 +278,5 @@ Application/DimensionalPriceRunner/DimensionalPriceRunner/Properties/PublishProf
 Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/styles\.css
 
 Backend/Kubernetes/secret\.yaml
+
+Application/DimensionalPriceRunner/DimensionalPriceRunner/wwwroot/dist/

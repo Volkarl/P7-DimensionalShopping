@@ -1,0 +1,55 @@
+
+# Frontend load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsf-service
+spec: # Specify data about which pods the service should enable inter-cluster-comunication for
+  type: LoadBalancer 
+  ports: # Which port communication will go through
+  - port: 80 # HTTP Default 
+  selector: # Defines the target label of the pods that the service should function as a load balancer for
+    app: ds-frontend
+
+---
+
+# Frontend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dsf # Dimensional Shopping Frontend
+  labels:
+    app: ds-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ds-frontend
+  template:
+    metadata:
+      labels:
+        app: ds-frontend
+    spec:
+      containers:
+      - name: dsf-i
+        image: thinhar/dimensionalpricerunner
+        ports:
+        - containerPort: 80 
+        env: # Declare environment variables useful for debugging and testing the load balancer
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+

@@ -1,18 +1,4 @@
 
-# Frontend load balancer
-apiVersion: v1
-kind: Service
-metadata:
-  name: dsf-service
-spec: # Specify data about which pods the service should enable inter-cluster-comunication for
-  type: LoadBalancer 
-  ports: # Which port communication will go through
-  - port: 80 # HTTP Default 
-  selector: # Defines the target label of the pods that the service should function as a load balancer for
-    app: ds-frontend
-
----
-
 # Backend: All locations load balancer
 apiVersion: v1
 kind: Service
@@ -52,6 +38,20 @@ spec:
   - port: 80
   selector:
     app: ds-backend-usa
+
+---
+
+# Backend: Denmark
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service-den
+spec:
+  type: LoadBalancer  
+  ports:
+  - port: 80
+  selector:
+    app: ds-backend-den
 
 ---
 
@@ -142,7 +142,7 @@ spec:
     spec: 
       containers: 
       - name: dsb-i 
-        image: thinhar/node-speed5
+        image: thinhar/node-speed6
         ports: 
         - containerPort: 80 
         volumeMounts:
@@ -209,7 +209,7 @@ spec:
     spec: 
       containers: 
       - name: dsb-i
-        image: thinhar/node-speed5
+        image: thinhar/node-speed6
         ports: 
         - containerPort: 80 
         volumeMounts:
@@ -256,29 +256,45 @@ spec:
             secretName: ipvanish
 ---
 
-# Frontend
+# Backend: Denmark
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dsf # Dimensional Shopping Frontend
+  name: dsb-den
   labels:
-    app: ds-frontend
+    app: ds-backend-den
 spec:
-  replicas: 1
-  selector:
+  replicas: 1 
+  selector: 
     matchLabels:
-      app: ds-frontend
+      app: ds-backend-den
   template:
-    metadata:
-      labels:
-        app: ds-frontend
-    spec:
-      containers:
-      - name: dsf-i
-        image: thinhar/dimensionalpricerunner
-        ports:
+    metadata: 
+      labels: 
+        app: ds-backend-den
+    spec: 
+      containers: 
+      - name: dsb-i 
+        image: thinhar/node-speed6
+        ports: 
         - containerPort: 80 
-        env: # Declare environment variables useful for debugging and testing the load balancer
+        volumeMounts:
+          - name: ipvanish-secret-volume 
+            mountPath: /etc/ipvanish 
+        command: ["/bin/bash"]
+        args: ["-c", "/dockerEntrypoint.sh cph-c03.ipvanish.com"]
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN 
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/ready
+          initialDelaySeconds: 2
+          periodSeconds: 1
+        env: 
           - name: MY_NODE_NAME
             valueFrom:
               fieldRef:
@@ -295,4 +311,12 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: status.podIP
-
+      dnsPolicy: "None" 
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 8.8.4.4
+      volumes:
+        - name: ipvanish-secret-volume
+          secret:
+            secretName: ipvanish
