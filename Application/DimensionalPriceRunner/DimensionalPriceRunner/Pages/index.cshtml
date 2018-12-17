@@ -150,39 +150,46 @@
 <div id="result-container">
     @if (Model.Results != null)
     {
-        <div class="p-0 mb-0 bg-light text-black">
-            @if (Model.UserOS != "" && Model.UserLocation != null)
-            {
-                <div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-4 col-md-offset-2">
-                                <div class="switch-con">
-                                    <span class="font-weight-bold"><text data-tag="showresults"></text></span>
-                                    <label class="switch switch-left-right">
-                                        <input id="showUserSystemInput" class="switch-input" type="checkbox" value="Yes" onclick="toggleShowUserSystemResultsOnly()">
-                                        <span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span>
-                                    </label>
-                                </div>
+    <div class="p-0 mb-0 bg-light text-black">
+        @if (Model.UserOS != "" && Model.UserLocation != null)
+        {
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-2">
+                            <div class="switch-con">
+                                <span class="font-weight-bold"><text data-tag="showresults"></text></span>
+                                <label class="switch switch-left-right">
+                                    <input id="showUserSystemInput" class="switch-input" type="checkbox" value="Yes" onclick="toggleShowUserSystemResultsOnly()">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span>
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <i class="fa @Model.OSIconDictionary[Model.UserOS]" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="youros"></text> <i class="font-weight-bold">@Model.UserOS</i></i>
-                    <br />
-                    <i class="fa fa-globe" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="yourlocation"></text> <i class="font-weight-bold">@Model.UserLocation</i></i>
-                    <i class="float-right"><text data-tag="wefound"></text> <i id="count-results-text" class="font-weight-bold"></i> <text data-tag="results"></text> </i>
                 </div>
-            }
-            else
-            {
                 <i class="fa @Model.OSIconDictionary[Model.UserOS]" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="youros"></text> <i class="font-weight-bold">@Model.UserOS</i></i>
                 <br />
                 <i class="fa fa-globe" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="yourlocation"></text> <i class="font-weight-bold">@Model.UserLocation</i></i>
-                <br />
-                <span class="font-weight-bold"><text data-tag="couldnotfindos"></text></span>
-                <i class="float-right"><text data-tag="wefound"></text> <i class="font-weight-bold">@Model.Results.Count()</i> <text data-tag="results"></text> </i>
+                <i class="float-right"><text data-tag="wefound"></text> <i id="count-results-text" class="font-weight-bold"></i> <text data-tag="results"></text> </i>
+            </div>
+        }
+        else
+        {
+            if (Model.UserOS != "")
+            {
+                <i class="fa @Model.OSIconDictionary[Model.UserOS]" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="youros"></text> <i class="font-weight-bold">@Model.UserOS</i></i>
             }
-        </div>
+            else
+            {
+                <i class="fas fa-desktop" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="youros"></text> </i>
+            }
+            <br />
+            <i class="fa fa-globe" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="yourlocation"></text> <i class="font-weight-bold">@Model.UserLocation</i></i>
+            <br />
+            <span class="font-weight-bold"><text data-tag="couldnotfindos"></text></span>
+            <i class="float-right"><text data-tag="wefound"></text> <i class="font-weight-bold">@Model.Results.Count()</i> <text data-tag="results"></text> </i>
+        }
+    </div>
     }
     
 
