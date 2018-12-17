@@ -175,6 +175,10 @@
             }
             else
             {
+                <i class="fa @Model.OSIconDictionary[Model.UserOS]" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="youros"></text> <i class="font-weight-bold">@Model.UserOS</i></i>
+                <br />
+                <i class="fa fa-globe" aria-hidden="true" style="font-size: larger; margin-left: 2%"> <text data-tag="yourlocation"></text> <i class="font-weight-bold">@Model.UserLocation</i></i>
+                <br />
                 <span class="font-weight-bold"><text data-tag="couldnotfindos"></text></span>
                 <i class="float-right"><text data-tag="wefound"></text> <i class="font-weight-bold">@Model.Results.Count()</i> <text data-tag="results"></text> </i>
             }
