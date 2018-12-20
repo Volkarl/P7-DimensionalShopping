@@ -1,0 +1,322 @@
+
+# Backend: All locations load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service
+spec:
+  type: LoadBalancer  
+  ports:
+  - port: 80
+  selector:
+    app: ds-backend
+
+---
+
+# Backend: SouthAfrica
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service-sa
+spec:
+  type: LoadBalancer  
+  ports:
+  - port: 80
+  selector:
+    app: ds-backend-sa
+
+---
+
+# Backend: USA
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service-usa
+spec:
+  type: LoadBalancer  
+  ports:
+  - port: 80
+  selector:
+    app: ds-backend-usa
+
+---
+
+# Backend: Denmark
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsb-service-den
+spec:
+  type: LoadBalancer  
+  ports:
+  - port: 80
+  selector:
+    app: ds-backend-den
+
+---
+
+# Backend: All locations, Here we run image without overriding its entrypoint
+apiVersion: apps/v1 # This is fucked up: https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+kind: Deployment # Define what should be made deployment or service. Deployments define the actual pods where services are used for comuncation to the pod 
+metadata:
+  name: dsb # Dimensional Shopping Backend
+  labels: # Label used by the pod template to find what deplyment they are.
+    app: ds-backend
+spec:
+  replicas: 1 # How many pods should coexist
+  selector: # Defines what pods the deplyment should manage
+    matchLabels: # Select the label of the pods that the deployment should manage
+      app: ds-backend
+  template: # Define the template of a pod
+    metadata: # Define the metadata of the template pod
+      labels: # Define label of template pod
+        app: ds-backend
+    spec: # Define the template to build on: useually a docker image
+      containers: 
+      - name: dsb-i # Give the container a name
+        image: thinhar/dsb-node4 # Which docker image it should be based on
+        ports: # Open ports in the containers (this basically just adds an option to the docker run command)
+        - containerPort: 80 # Same port as its corresponding load balancer
+        volumeMounts:
+          - name: ipvanish-secret-volume # Name must match the volume name below
+            mountPath: /etc/ipvanish # The path where the secret volume ends up (within the docker container)
+        # To override the docker entrypoint and keeping the container alive to debug it manually write the commands below:
+        # command: ["/bin/bash"]
+        # args: ["-c", "sleep infinity"]
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN # Allows us to modify tun/tap device drivers from within the container
+        readinessProbe: # Defines how the load balancer should check if the containers are ready for more traffic
+          exec:
+            command: # If the file /tmp/ready exists, this succeeds and the container will be marked as not busy
+            - cat
+            - /tmp/ready
+          initialDelaySeconds: 2
+          periodSeconds: 1
+        env: # Environment variables for the session, useful for debugging. Source: https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+      dnsPolicy: "None" # Ensures that the containers do not inherit their DNS configurations from Kube. Otherwise we wouldn't be able to resolve DNS's once we've VPN'ed to a different location than where Kube is hosted
+      dnsConfig: # Configurations in this field end up in the file /etc/resolv.conf, which is where Linux looks to resolve DNS requests
+        nameservers: # Google's DNS servers, available anywhere in the world, necessary to resolve DNS once we've connected to a VPN
+          - 8.8.8.8
+          - 8.8.4.4
+      volumes:
+        - name: ipvanish-secret-volume
+          secret: # The secret volume (as shown within file secret-template) contains 
+            secretName: ipvanish
+
+---
+
+# Backend: South Africa
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dsb-sa
+  labels:
+    app: ds-backend-sa
+spec:
+  replicas: 1 
+  selector: 
+    matchLabels:
+      app: ds-backend-sa
+  template:
+    metadata: 
+      labels: 
+        app: ds-backend-sa
+    spec: 
+      containers: 
+      - name: dsb-i 
+        image: thinhar/node-speed6
+        ports: 
+        - containerPort: 80 
+        volumeMounts:
+          - name: ipvanish-secret-volume 
+            mountPath: /etc/ipvanish 
+        command: ["/bin/bash"]
+        args: ["-c", "/dockerEntrypoint.sh jnb-c01.ipvanish.com"]
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN 
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/ready
+          initialDelaySeconds: 2
+          periodSeconds: 1
+        env: 
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+      dnsPolicy: "None" 
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 8.8.4.4
+      volumes:
+        - name: ipvanish-secret-volume
+          secret:
+            secretName: ipvanish
+
+---
+
+# Backend: USA
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dsb-usa
+  labels:
+    app: ds-backend-usa
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: ds-backend-usa
+  template:
+    metadata: 
+      labels: 
+        app: ds-backend-usa
+    spec: 
+      containers: 
+      - name: dsb-i
+        image: thinhar/node-speed6
+        ports: 
+        - containerPort: 80 
+        volumeMounts:
+          - name: ipvanish-secret-volume 
+            mountPath: /etc/ipvanish 
+        command: ["/bin/bash"]
+        args: ["-c", "/dockerEntrypoint.sh iad-a01.ipvanish.com"]
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN 
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/ready
+          initialDelaySeconds: 2
+          periodSeconds: 1
+        env: 
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+      dnsPolicy: "None" 
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 8.8.4.4
+      volumes:
+        - name: ipvanish-secret-volume
+          secret:
+            secretName: ipvanish
+---
+
+# Backend: Denmark
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dsb-den
+  labels:
+    app: ds-backend-den
+spec:
+  replicas: 1 
+  selector: 
+    matchLabels:
+      app: ds-backend-den
+  template:
+    metadata: 
+      labels: 
+        app: ds-backend-den
+    spec: 
+      containers: 
+      - name: dsb-i 
+        image: thinhar/node-speed6
+        ports: 
+        - containerPort: 80 
+        volumeMounts:
+          - name: ipvanish-secret-volume 
+            mountPath: /etc/ipvanish 
+        command: ["/bin/bash"]
+        args: ["-c", "/dockerEntrypoint.sh cph-c03.ipvanish.com"]
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN 
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/ready
+          initialDelaySeconds: 2
+          periodSeconds: 1
+        env: 
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+      dnsPolicy: "None" 
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 8.8.4.4
+      volumes:
+        - name: ipvanish-secret-volume
+          secret:
+            secretName: ipvanish
