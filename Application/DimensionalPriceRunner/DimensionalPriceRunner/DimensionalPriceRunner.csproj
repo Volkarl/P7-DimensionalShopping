@@ -8,7 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\dist\Translate.js" />
+    <None Remove="ClientApp\languageSupport\Translate.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\languageSupport\Translate.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

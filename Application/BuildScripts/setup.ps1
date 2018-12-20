@@ -21,6 +21,7 @@ npm install --save jquery popper.js bootstrap
 npm install --save-dev webpack webpack-cli style-loader css-loader
 npm install --save-dev aspnet-webpack webpack-dev-middleware webpack-hot-middleware
 npm install --save-dev mini-css-extract-plugin
+npm install --save-dev copy-webpack-plugin
 # Downloads the necessary packages required for building the project with webpack
 # Additionally, downloads jquery and bootstrap
 

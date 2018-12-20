@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DimensionalPriceRunner
 {
@@ -48,6 +50,11 @@ namespace DimensionalPriceRunner
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(30));
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -103,6 +110,11 @@ namespace DimensionalPriceRunner
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            //app.UseSession();
+
+            app.UseCookiePolicy();
+
             app.UseMvc();
         }
 
